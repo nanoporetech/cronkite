@@ -35,7 +35,7 @@
 .component-panel {
   background-color: rgba(0,0,0,0.1);
   overflow: hidden;
-  display: flex;
+  display: flex !important;
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;

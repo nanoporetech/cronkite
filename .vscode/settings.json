@@ -1,0 +1,7 @@
+{
+  "[javascriptreact]": {
+        "editor.autoIndent": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+    }
+}

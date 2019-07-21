@@ -3,44 +3,42 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import uuidv4 from 'uuid/v4';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+import Selector from './components/Selector'
 import './App.css';
 import {loadReportLayout, mapAttributesToProps, saveReportLayout} from './utils';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
-const idWorkflowInstance = 207139;
+// const idWorkflowInstance = 207139;
+const idWorkflowInstance = 207024;
+// const idWorkflowInstance = 207357;
 
 const ReportComponent = function (props) {
-  const {element: CustomElement, listen, ...attributes} = props;
-  console.info('ReportComponent')
+  const {element: CustomElement, listen, hidden, ...attributes} = props;
   const customElRef = useRef();
   const [customElProps, setCustomRefProps] = useState({});
 
   const eventHandler = async (event) => {
     const { detail } = event
-    console.info('IN EVENT HANDLER FOR ', customElRef.current)
     if (!detail) return
     const newProps = await mapAttributesToProps(attributes, detail)
     setCustomRefProps(newProps)
   }
 
   useEffect(() => {
-    console.info(`Adding listener ${listen} to ${CustomElement}`)
     listen && window.addEventListener(listen, eventHandler);
     return function cleanup() {
-      // console.info("In useEffect CLEANUP")
       window.removeEventListener(listen, eventHandler);
     };
   });
 
-  // return React.createElement(element, {id: attributes.id, ...elmProps})
-  console.info('Rendering Custom Element', CustomElement)
-  return <CustomElement ref={customElRef} {...customElProps} ></CustomElement>
+  return CustomElement === 'Selector'
+  ? <Selector ref={customElRef} {...customElProps}></Selector>
+  : <CustomElement id={props.id} ref={customElRef} {...customElProps} ></CustomElement>
 }
 
 function App() {
   const reportLayout = loadReportLayout(idWorkflowInstance, 'qc');
   const autoSaveLayout = false;
-  // console.info('App');
   return (
     <React.Fragment>
       {
@@ -80,7 +78,7 @@ function App() {
         {
           reportLayout.components.map((compDef, i) => {
           const uuid = compDef.layout.i || uuidv4();
-          return (<div className="component-panel" key={uuid} data-grid={compDef.layout}>
+          return (<div className="component-panel"  style={{display: compDef.hidden ? 'none' : 'initial' }}  key={uuid} data-grid={compDef.layout}>
               <ReportComponent id={uuid} {...compDef} />
             </div>)
           })
