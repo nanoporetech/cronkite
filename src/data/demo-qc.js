@@ -8,17 +8,19 @@ export default {
       "@label-y": "COUNT",
       "@units-y": "",
       "@units-x": "%",
-      "@label-x-left": "60%",
-      "@label-x-right": "100%",
+      "@tooltip-format-x": "value => `${value}%`",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
       "@data": {
         "fn:jmespath": "barcodes[].payload[? exit_status == 'Workflow successful'][].accuracy.hist[].{x: @[0], y: @[1]}"
       },
       "element": "epi-coverageplot",
       "layout": {
-        "w": 17,
-        "h": 25,
-        "x": 7,
-        "y": 33,
+        "w": 15,
+        "h": 22,
+        "x": 5,
+        "y": 27,
         "i": "1db9205e-a720-4ced-9cf3-5fddbfef1b3c",
         "moved": false,
         "static": false
@@ -31,10 +33,10 @@ export default {
       },
       "element": "epi-coverageplot",
       "layout": {
-        "w": 17,
-        "h": 25,
-        "x": 7,
-        "y": 8,
+        "w": 15,
+        "h": 21,
+        "x": 5,
+        "y": 6,
         "i": "f817a852-4922-466c-8c3e-f1231ba11f0c",
         "moved": false,
         "static": false
@@ -50,10 +52,10 @@ export default {
       "@selector": "region",
       "element": "Selector",
       "layout": {
-        "w": 7,
-        "h": 10,
+        "w": 5,
+        "h": 11,
         "x": 0,
-        "y": 18,
+        "y": 40,
         "i": "546c4038-45a0-4744-93ab-bb889a09358e",
         "moved": false,
         "static": false
@@ -67,10 +69,10 @@ export default {
       "@selector": "barcode",
       "element": "Selector",
       "layout": {
-        "w": 7,
-        "h": 10,
+        "w": 5,
+        "h": 21,
         "x": 0,
-        "y": 8,
+        "y": 6,
         "i": "e19ca404-29c5-4db8-b8fb-1d4134384480",
         "moved": false,
         "static": false
@@ -100,10 +102,10 @@ export default {
       },
       "element": "epi-donutsummary",
       "layout": {
-        "w": 7,
-        "h": 22,
+        "w": 5,
+        "h": 13,
         "x": 0,
-        "y": 28,
+        "y": 27,
         "i": "5a063459-6496-43eb-8fd2-d54b3623f4fd",
         "moved": false,
         "static": false
@@ -119,9 +121,9 @@ export default {
       },
       "element": "epi-headlinevalue",
       "layout": {
-        "w": 6,
-        "h": 8,
-        "x": 18,
+        "w": 5,
+        "h": 6,
+        "x": 15,
         "y": 0,
         "i": "6d471c02-da3a-4c02-ab23-bc24466e8e8e",
         "moved": false,
@@ -140,9 +142,9 @@ export default {
       },
       "element": "epi-headlinevalue",
       "layout": {
-        "w": 6,
-        "h": 8,
-        "x": 12,
+        "w": 5,
+        "h": 6,
+        "x": 10,
         "y": 0,
         "i": "8ade28b3-849e-4d3c-b163-92941b504bb7",
         "moved": false,
@@ -164,9 +166,9 @@ export default {
       },
       "element": "epi-headlinevalue",
       "layout": {
-        "w": 6,
-        "h": 8,
-        "x": 6,
+        "w": 5,
+        "h": 6,
+        "x": 5,
         "y": 0,
         "i": "9ccb1fbb-0976-4d1e-a0a8-25a726e4d908",
         "moved": false,
@@ -183,8 +185,8 @@ export default {
       },
       "element": "epi-headlinevalue",
       "layout": {
-        "w": 6,
-        "h": 8,
+        "w": 5,
+        "h": 6,
         "x": 0,
         "y": 0,
         "i": "31664bd5-3bb5-4f70-9826-62346494cf71",
@@ -202,10 +204,10 @@ export default {
       },
       "element": "epi-headlinevalue",
       "layout": {
-        "w": 7,
-        "h": 8,
+        "w": 5,
+        "h": 6,
         "x": 0,
-        "y": 50,
+        "y": 51,
         "i": "fa74ea8b-3cf1-4e71-a8b9-3993f82ca84b",
         "moved": false,
         "static": false
@@ -215,12 +217,17 @@ export default {
   ],
   "streams": [
     {
-      "flavour": "basecalling_1d_barcode-v1",
-      "type": "telemetry"
+      "@broadcast": "telemetry:qc",
+      "element": "epi-workflow-instance-datastream",
+      "@flavour": "basecalling_1d_barcode-v1",
+      "@poll-frequency": 25000,
+      "@type": "telemetry"
     },
     {
-      "flavour": "simple_aligner_barcode_compact_quick-v1",
-      "type": "telemetry"
+      "element": "epi-workflow-instance-datastream",
+      "@flavour": "simple_aligner_barcode_compact_quick-v1",
+      "@poll-frequency": 25000,
+      "@type": "telemetry"
     }
   ]
 }

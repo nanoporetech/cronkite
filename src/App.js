@@ -1,61 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import uuidv4 from 'uuid/v4';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
-import Selector from './components/Selector'
+import ReportComponent from './components/ReportComponent'
+import ReportStream from './components/ReportStream'
 import './App.css';
-import {loadReportLayout, mapAttributesToProps, saveReportLayout} from './utils';
+import {loadReportLayout, saveReportLayout} from './utils';
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
-// const idWorkflowInstance = 207139;
-const idWorkflowInstance = 207024;
-// const idWorkflowInstance = 207357;
-
-const ReportComponent = function (props) {
-  const {element: CustomElement, listen, hidden, ...attributes} = props;
-  const customElRef = useRef();
-  const [customElProps, setCustomRefProps] = useState({});
-
-  const eventHandler = async (event) => {
-    const { detail } = event
-    if (!detail) return
-    const newProps = await mapAttributesToProps(attributes, detail)
-    setCustomRefProps(newProps)
-  }
-
-  useEffect(() => {
-    listen && window.addEventListener(listen, eventHandler);
-    return function cleanup() {
-      window.removeEventListener(listen, eventHandler);
-    };
-  });
-
-  return CustomElement === 'Selector'
-  ? <Selector ref={customElRef} {...customElProps}></Selector>
-  : <CustomElement id={props.id} ref={customElRef} {...customElProps} ></CustomElement>
+const DEFAULT_LAYOUT = {
+  x: 0,
+  y: 0,
+  w: 8,
+  h: 2
 }
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
+// const idWorkflowInstance = 207139;
+// const idWorkflowInstance = 207024;
+// const idWorkflowInstance = 207357;
+const idWorkflowInstance = 207912;
+
 
 function App() {
   const reportLayout = loadReportLayout(idWorkflowInstance, 'qc');
-  const autoSaveLayout = false;
+  const autoSaveLayout = true;
   return (
     <React.Fragment>
       {
-        reportLayout.streams.map(({type, flavour}) => <epi-datastream
-          key={`${idWorkflowInstance}-${type}-${flavour}`}
-          type={type}
-          flavour={flavour}
-          id-subject={idWorkflowInstance}
-          poll-frequency="25000"
-          ></epi-datastream>
+        reportLayout.streams.map((streamProps, i) =>
+          <ReportStream key={`${streamProps.element || 'stream'}-${i}`} idSubject={idWorkflowInstance} {...streamProps}></ReportStream>
         )
       }
       <ResponsiveGridLayout
         className="layout"
         breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
         cols={{lg: 24, md:20, sm: 12, xs: 8, xxs: 2}}
-        rowHeight={5}
+        rowHeight={80}
         onResizeStop={(
           _,
           newItem,
@@ -67,8 +48,14 @@ function App() {
             return
           }
           const {width, height} = vizComponent.parentNode.getBoundingClientRect()
-          vizComponent.width = Math.floor(width);
-          vizComponent.height = Math.floor(height - 10);
+          if (vizComponent.tagName.toLowerCase()=== 'epi-donutsummary') {
+            const minDimension = Math.floor(Math.min(width - 20, height - 20));
+            vizComponent.width = minDimension;
+            vizComponent.height = minDimension;
+            return;
+          }
+          vizComponent.width = Math.floor(width * 0.6);
+          vizComponent.height = Math.floor((height - 20) * 0.6);
         }}
         onLayoutChange={(newLayout) => {
           reportLayout.components = reportLayout.components.map((componentDef, i) => Object.assign({}, componentDef, { layout: newLayout[i] }))
@@ -77,9 +64,10 @@ function App() {
       >
         {
           reportLayout.components.map((compDef, i) => {
-          const uuid = compDef.layout.i || uuidv4();
-          return (<div className="component-panel"  style={{display: compDef.hidden ? 'none' : 'initial' }}  key={uuid} data-grid={compDef.layout}>
-              <ReportComponent id={uuid} {...compDef} />
+          const componentDefinition = compDef.layout ? compDef : {...compDef, layout: DEFAULT_LAYOUT}
+          const uuid = componentDefinition.layout.i || uuidv4();
+          return (<div className="component-panel"  style={{display: componentDefinition.hidden ? 'none' : 'initial' }}  key={uuid} data-grid={componentDefinition.layout}>
+              <ReportComponent id={uuid} {...componentDefinition} />
             </div>)
           })
         }

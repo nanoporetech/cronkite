@@ -1,7 +1,46 @@
 import {struct} from 'superstruct';
 import demoLayoutCTC from '../data/demo-ctc';
-import demoLayoutQC from '../data/demo-qc';
+// import demoLayoutQC from '../data/demo-qc';
+import demoLayoutQC from '../data/qc';
 import {pluckJMESPath} from '../workers/jsonpath.worker';
+import numberScale from 'number-scale';
+
+numberScale.defineScale(
+  'genome',
+  {
+    y: 1e-24,
+    z: 1e-21,
+    a: 1e-18,
+    f: 1e-15,
+    p: 1e-12,
+    n: 1e-9,
+    µ: 1e-6,
+    m: 1e-3,
+    base: 1,
+    k: 1e3,
+    M: 1e6,
+    G: 1e9,
+    T: 1e12,
+    P: 1e15,
+    E: 1e18,
+    Z: 1e21,
+    Y: 1e24,
+  },
+  1,
+);
+
+numberScale.defineScale(
+  'filesize',
+  {
+    '': 1024 ** 0,
+    k: 1024 ** 1,
+    M: 1024 ** 2,
+    G: 1024 ** 3,
+    T: 1024 ** 4,
+    P: 1024 ** 5,
+  },
+  1,
+);
 
 export const CoordinateTuple = struct(['number', 'number'])
 export const Coordinate = struct({x: 'number', y: 'number'})
@@ -38,14 +77,42 @@ const transformValue = async (value, data) => {
 
 const applyFunction = async (func, val, data) => {
   let result;
+  let arg;
+  let precision;
+  let unit;
   switch (func) {
     case 'fn:sum':
       result = (await transformValue(val, data))[0] || []
       return result.reduce((a, b) => a + b, 0)
-    case 'fn:tofixed':
-      const [arg, decimals] = val
+    case 'fn:formatNumber':
+      [arg, precision, unit] = val
+      console.info('FORMAT NUMBER', arg, precision, unit)
       result = (await transformValue(arg, data))[0] || 0.0
-      return Number.parseFloat(result).toFixed(decimals)
+      let formattedNumber = numberScale(result, {
+        precision,
+        recursive: 4
+      })[0];
+      console.info(formattedNumber, /\d+/g.exec(formattedNumber))
+      let hasOne = /\d+/g.exec(formattedNumber)[0] === "1"
+      return `${formattedNumber}${unit}${hasOne ? '': 's'}`
+    case 'fn:tofixed':
+      [arg, precision] = val
+      result = (await transformValue(arg, data))[0] || 0.0
+      return Number.parseFloat(result).toFixed(precision)
+    case 'fn:mode':
+      [arg, precision] = val
+      result = (await transformValue(arg, data))[0] || 0.0
+      result = result.sort((a, b) => a - b )
+        .reduce((valueCount, newValue) => {
+          let valueKey = Number.parseFloat(newValue).toFixed(precision);
+          valueCount[valueKey] = (valueCount[valueKey] || 0) + 1
+          if (valueCount[valueKey] >= valueCount.modeCount) {
+            valueCount.mode = newValue
+            valueCount.modeCount = valueCount[valueKey]
+          }
+          return valueCount
+        }, {mode: 0, modeCount: 0})
+      return result.mode
     case 'fn:uniq':
       result = (await transformValue(val, data))[0] || []
       return result.reduce((a, b) => {!a.includes(b) && a.push(b); return a}, [])
@@ -73,7 +140,6 @@ const applyFunction = async (func, val, data) => {
       return Math.round((await transformValue(val, data))[0] || 0)
       // return (await transformValue(val, data))[0].reduce((a, b) => a + b, 0)
     case 'fn:count':
-
       return (await transformValue(val, data))[0].length
     case 'fn:average':
       const averages = (await transformValue(val, data))[0] || []

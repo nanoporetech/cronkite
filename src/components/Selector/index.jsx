@@ -53,7 +53,7 @@ export default React.forwardRef(function Selector(props, ref) {
             return true // Only filter if it has what you're looking for
         };
 
-        document.querySelectorAll('epi-datastream').forEach(stream => {
+        document.querySelectorAll('.epi-filtered-datastream').forEach(stream => {
             stream.addFilter(props.selector, newFilter)
         })
     }
