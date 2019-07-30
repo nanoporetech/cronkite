@@ -9,6 +9,7 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
+    <!-- <base href="%PUBLIC_URL%" /> -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -19,11 +20,323 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Metrichor Dashboard</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <noscript>You need to enable JavaScript to view this dashboard.</noscript>
+    <script>
+      const defaultConfig = {
+        id: `dashboard:workflow:instance:${id_workflow_instance}`,
+        components: [
+          {
+            "@label": "Instance ID",
+            "@value": { "fn:jmespath": "data.id_workflow_instance" },
+            element: "epi-headlinevalue",
+            listen: "instance:data",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 0,
+              y: 0,
+              i: "db20beef-8e92-4959-8e22-cf41b43ee44f",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Workflow state",
+            "@value": { "fn:jmespath": "data.state" },
+            element: "epi-headlinevalue",
+            listen: "instance:data",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 2,
+              y: 0,
+              i: "c261ac02-e2c8-4459-a279-1d111ff81069",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@selectList": {
+              "fn:uniq": {
+                "fn:jmespath":
+                  "data[? @.exit_status == 'Workflow successful'].run_id"
+              }
+            },
+            "@selector": "run_id",
+            element: "Selector",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 2,
+              h: 2,
+              x: 0,
+              y: 1,
+              i: "7c561107-ae27-44fa-84ae-2f90df60b410",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Average Sequence length",
+            "@value": {
+              "fn:tofixed": [
+                {
+                  "fn:jmespath":
+                    "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
+                },
+                0
+              ]
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 1,
+              h: 1,
+              x: 2,
+              y: 1,
+              i: "92b0b9b3-5fb4-40c6-b0dc-732df2290fb2",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "AVERAGE QUALITY SCORE",
+            "@value": {
+              "fn:jmespath":
+                "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 1,
+              h: 1,
+              x: 3,
+              y: 2,
+              i: "4a0cb4fe-57ce-488b-81e8-783f664fd30d",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "TOTAL YIELD",
+            "@case-sensitive": "true",
+            "@value": {
+              "fn:formatNumber": [
+                {
+                  "fn:jmespath":
+                    "sum(data[? @.exit_status == 'Workflow successful'].seqlen.total)"
+                },
+                2,
+                "base"
+              ]
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 1,
+              h: 1,
+              x: 3,
+              y: 1,
+              i: "da0c14bd-52e4-4de0-b6ae-30bbeb760fc2",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "READS ANALYSED",
+            "@value": {
+              "fn:jmespath":
+                "sum(data[? @.exit_status == 'Workflow successful'].count)"
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 1,
+              h: 1,
+              x: 2,
+              y: 2,
+              i: "10b063a1-a08a-4bcd-9e79-ecdec73a495b",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Mode",
+            "@value": {
+              "fn:mode": [
+                {
+                  "fn:jmespath":
+                    "data[? @.exit_status == 'Workflow successful'].mean_qscore.avg"
+                },
+                2
+              ]
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 0,
+              y: 3,
+              i: "8f534c78-0855-4b98-9e6b-8fbbb48ad3f9",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Average",
+            "@value": {
+              "fn:jmespath":
+                "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 2,
+              y: 3,
+              i: "52b31750-bba6-490f-aa3e-c2b1775d6708",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label-x": "Quality score",
+            "@label-y": "Read Count",
+            "@units-y": "",
+            "@units-x": "",
+            "@tooltip-format-x": "value => `${value}`",
+            "@tooltip-format-y": "value => `${value} reads`",
+            "@label-x-left": "",
+            "@label-x-right": "",
+            "@data": {
+              "fn:jmespath":
+                "sort_by(data[? @.exit_status == 'Workflow successful'].mean_qscore.hist[].{x: @[0], y: @[1]}, &x)"
+            },
+            element: "epi-coverageplot",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 4,
+              h: 4,
+              x: 0,
+              y: 4,
+              i: "232ce690-6c7d-4294-ab58-88149036efdd",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Sequence Length Mode",
+            "@case-sensitive": "true",
+            "@value": {
+              "fn:formatNumber": [
+                {
+                  "fn:mode": [
+                    {
+                      "fn:jmespath":
+                        "data[? @.exit_status == 'Workflow successful'].seqlen.avg"
+                    },
+                    2
+                  ]
+                },
+                0,
+                "base"
+              ]
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 2,
+              y: 8,
+              i: "dc966885-1373-49e0-9079-85381d160276",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label": "Sequence Length Average",
+            "@value": {
+              "fn:tofixed": [
+                {
+                  "fn:jmespath":
+                    "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
+                },
+                0
+              ]
+            },
+            element: "epi-headlinevalue",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 2,
+              h: 1,
+              x: 0,
+              y: 8,
+              i: "85ff20bd-a2dc-4723-b71a-6f937d091330",
+              moved: false,
+              static: false
+            }
+          },
+          {
+            "@label-x": "Sequence Length (bases)",
+            "@label-y": "Read Count",
+            "@units-y": "",
+            "@units-x": "",
+            "@tooltip-format-x": "value => `${value} bases`",
+            "@tooltip-format-y": "value => `${value} reads`",
+            "@label-x-left": "",
+            "@label-x-right": "",
+            "@data": {
+              "fn:jmespath":
+                "sort_by(data[? @.exit_status == 'Workflow successful'].seqlen.hist[].{x: @[0], y: @[1]}, &x)"
+            },
+            element: "epi-coverageplot",
+            listen: "qctelemetry:basecalling1d:1",
+            layout: {
+              w: 4,
+              h: 4,
+              x: 0,
+              y: 9,
+              i: "e2325eee-a028-4ff6-8e2d-15b050d78c31",
+              moved: false,
+              static: false
+            }
+          }
+        ],
+        streams: [
+          {
+            "@channel": "instance:data",
+            element: "epi-poll-datastream",
+            "@url": `https://${location.host}/workflow_instance/${id_workflow_instance}.json`,
+            "@poll-frequency": 1e9
+          },
+          {
+            "@channel": "qctelemetry",
+            element: "epi-workflow-instance-datastream",
+            "@id-workflow-instance": id_workflow_instance,
+            "@flavour": "basecalling_1d_barcode-v1",
+            "@poll-frequency": 25000,
+            "@type": "telemetry"
+          }
+        ]
+      };
+      const rootEl = document.createElement("div");
+      rootEl.id = "root";
+      rootEl.setAttribute(
+        "data-dashboard-config",
+        window.instance_report_config ? window.instance_report_config : localStorage.getItem(
+          `dashboard:workflow:instance:${id_workflow_instance}`
+        ) || JSON.stringify(defaultConfig)
+      );
+      document.body.prepend(rootEl);
+    </script>
+
+    <!-- <div id="root" data-dashboard-config='@@DASHBOARD_CONFIG_JSON@@'></div> -->
+    <!-- data-dashboard-config='{"components": [{"@label": "User defined values","@value": "Hello World!","element": "epi-headlinevalue"},{"@label": "Native DOM events","@value": {"fn:jmespath": "[@.clientX, @.clientY]"},"element": "epi-headlinevalue","listen": "mousemove"},{"@label": "Custom events (user datastreams)","@value": {"fn:jmespath": "length(data.resultList.result[])"},"element": "epi-headlinevalue","listen": "bos:beraad"}],"id": "hello:world","streams": [{"@channel": "bos:beraad","@credentials": "omit","@poll-frequency": 25000,"@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json","element": "epi-poll-datastream"}]}' -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

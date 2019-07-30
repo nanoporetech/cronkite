@@ -40,13 +40,16 @@
   flex-direction: column;
   justify-content: center;
 }
-/* 
-.headline {
-  margin: auto !important;
-  box-sizing: border-box !important;
-} */
-
+:root {
+  .headline {
+    padding: 0 !important;
+  }
+}
 epi-headlinevalue {
   display: block;
   margin: 0 auto;
+
+  & .headline {
+    padding: 0 !important;
+  }
 }

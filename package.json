@@ -2,17 +2,15 @@
   "name": "reporter",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3000",
+  "proxy": "https://epi2me.nanoporetech.com",
+  "homepage": ".",
   "dependencies": {
     "epi2me-ui-checkmark": "2019.5.30-2453041",
     "epi2me-ui-coverageplot": "2019.7.22-2581832",
+    "epi2me-ui-datastream": "2019.7.30-2601313",
     "epi2me-ui-donut": "2019.6.26-2513484",
     "epi2me-ui-headlinevalue": "2019.7.14-2560723",
     "greenlet": "1.0.1",
-    "jmespath": "0.15.0",
-    "json-path": "0.1.3",
-    "jsonpath": "1.0.2",
-    "jsonpath-plus": "0.20.1",
     "number-scale": "0.0.9",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -20,8 +18,7 @@
     "react-resizable": "1.8.0",
     "react-scripts": "3.0.1",
     "superstruct": "0.6.1",
-    "uuid": "3.3.2",
-    "workerize-loader": "1.0.4"
+    "uuid": "3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

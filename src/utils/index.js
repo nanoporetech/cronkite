@@ -1,8 +1,5 @@
 import {struct} from 'superstruct';
-import demoLayoutCTC from '../data/demo-ctc';
-// import demoLayoutQC from '../data/demo-qc';
-import demoLayoutQC from '../data/qc';
-import {pluckJMESPath} from '../workers/jsonpath.worker';
+import { jmespath } from '../workers/jmespath.worker';
 import numberScale from 'number-scale';
 
 numberScale.defineScale(
@@ -86,13 +83,11 @@ const applyFunction = async (func, val, data) => {
       return result.reduce((a, b) => a + b, 0)
     case 'fn:formatNumber':
       [arg, precision, unit] = val
-      console.info('FORMAT NUMBER', arg, precision, unit)
       result = (await transformValue(arg, data))[0] || 0.0
       let formattedNumber = numberScale(result, {
         precision,
         recursive: 4
       })[0];
-      console.info(formattedNumber, /\d+/g.exec(formattedNumber))
       let hasOne = /\d+/g.exec(formattedNumber)[0] === "1"
       return `${formattedNumber}${unit}${hasOne ? '': 's'}`
     case 'fn:tofixed':
@@ -145,21 +140,33 @@ const applyFunction = async (func, val, data) => {
       const averages = (await transformValue(val, data))[0] || []
       return (averages.reduce((a, b) => a + b, 0)/(averages.length || 1))
     case 'fn:jmespath':
-      // console.info('JMESPATH', val, data, await pluckJMESPath(val, data))
-      return await pluckJMESPath(val, data);
+      // console.info('JMESPATH', val, data, await jmespath(val, data))
+      return await jmespath(val, data);
     default:
       break;
   }
   return {[func]: val}
 }
 
-export const loadReportLayout = (idInstance, demoType) => {
-    const localLayout = localStorage.getItem(`epi-workflowlayout:${idInstance}`)
-    return (localLayout && JSON.parse(localLayout)) || demoType === 'qc' ? demoLayoutQC : demoLayoutCTC;
+export const loadDashboardLayout = async (dashboardId, demoType) => {
+  let dashboardLayout = {}
+
+  if (dashboardId) {
+    try {
+      dashboardLayout = JSON.parse(localStorage.getItem(dashboardId))
+      // console.info('Loading from local storage')
+    } catch (ignore) {}
+  } else {
+    const demoLayout = await import(`../data/${demoType}`)
+    dashboardLayout = demoLayout.default
+    // console.info('Loading from demo layout')
+  }
+  return dashboardLayout;
 }
 
-export const saveReportLayout = (idInstance, layout) => {
-    localStorage.setItem(`epi-workflowlayout:${idInstance}`, JSON.stringify(layout))
+export const saveDashboardLayout = (dashboardId, layout) => {
+  // console.info('SAVING to localstorage', dashboardId, layout)
+  localStorage.setItem(dashboardId, JSON.stringify(layout))
 }
 
 export const processValue = async (data, value) => {

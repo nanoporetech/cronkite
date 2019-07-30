@@ -1,41 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import uuidv4 from 'uuid/v4';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import ReportComponent from './components/ReportComponent'
 import ReportStream from './components/ReportStream'
-import './App.css';
-import {loadReportLayout, saveReportLayout} from './utils';
+import './App.scss';
+import {loadDashboardLayout, saveDashboardLayout} from './utils';
 
 const DEFAULT_LAYOUT = {
-  x: 0,
-  y: 0,
-  w: 8,
+  x: 4,
+  y: 4,
+  w: 4,
   h: 2
 }
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-// const idWorkflowInstance = 207139;
-// const idWorkflowInstance = 207024;
-// const idWorkflowInstance = 207357;
-const idWorkflowInstance = 207912;
 
+const DashboardApp = React.forwardRef((props, ref) => {
 
-function App() {
-  const reportLayout = loadReportLayout(idWorkflowInstance, 'qc');
-  const autoSaveLayout = true;
-  return (
+  const [dashboardConfig, setDashboardConfig] = useState(props.dashboardConfig || null)
+  const [autoSave] = useState(true)
+
+  useEffect(() => {
+    const fetchDashboardConfig = async () => {
+      const reportLayout = await loadDashboardLayout(null, 'helloWorld');
+      setDashboardConfig(reportLayout)
+    }
+    if (dashboardConfig === null) {
+      fetchDashboardConfig()
+    }
+    if (dashboardConfig !== null && props.dashboardConfig !== null && dashboardConfig !== props.dashboardConfig) {
+      const {id: dashboardId} = dashboardConfig;
+      saveDashboardLayout(dashboardId, dashboardConfig)
+    }
+    return () => {
+      //  sync dashboardConfig ?
+    };
+  }, [dashboardConfig, props])
+
+  return dashboardConfig ? (
     <React.Fragment>
       {
-        reportLayout.streams.map((streamProps, i) =>
-          <ReportStream key={`${streamProps.element || 'stream'}-${i}`} idSubject={idWorkflowInstance} {...streamProps}></ReportStream>
+        dashboardConfig.streams.map((streamProps, i) =>
+          <ReportStream key={`${streamProps.element || 'stream'}-${i}`} {...streamProps}></ReportStream>
         )
       }
       <ResponsiveGridLayout
         className="layout"
-        breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
-        cols={{lg: 24, md:20, sm: 12, xs: 8, xxs: 2}}
+        // breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+        cols={{lg: 4, md:4, sm: 4, xs: 2, xxs: 1}}
         rowHeight={80}
         onResizeStop={(
           _,
@@ -58,12 +72,12 @@ function App() {
           vizComponent.height = Math.floor((height - 20) * 0.6);
         }}
         onLayoutChange={(newLayout) => {
-          reportLayout.components = reportLayout.components.map((componentDef, i) => Object.assign({}, componentDef, { layout: newLayout[i] }))
-          autoSaveLayout && saveReportLayout(idWorkflowInstance, reportLayout)
+          dashboardConfig.components = dashboardConfig.components.map((componentDef, i) => Object.assign({}, componentDef, { layout: newLayout[i] }))
+          autoSave && saveDashboardLayout(dashboardConfig.id || null,  dashboardConfig)
         }}
       >
         {
-          reportLayout.components.map((compDef, i) => {
+          dashboardConfig.components.map((compDef, i) => {
           const componentDefinition = compDef.layout ? compDef : {...compDef, layout: DEFAULT_LAYOUT}
           const uuid = componentDefinition.layout.i || uuidv4();
           return (<div className="component-panel"  style={{display: componentDefinition.hidden ? 'none' : 'initial' }}  key={uuid} data-grid={componentDefinition.layout}>
@@ -73,7 +87,7 @@ function App() {
         }
       </ResponsiveGridLayout>
     </React.Fragment>
-  );
-}
+  ) : null;
+});
 
-export default App;
+export default DashboardApp;

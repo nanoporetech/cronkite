@@ -18,7 +18,7 @@ export default React.forwardRef(function Selector(props, ref) {
 
     useEffect(() => {
         try {
-            const newReference = JSON.parse(props.selectList)
+            const newReference = props.selectList ? JSON.parse(props.selectList) : []
             if (newReference.length > reference.length) {
                 setReference(newReference)
                 const active = Object

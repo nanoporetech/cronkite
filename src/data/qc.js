@@ -1,152 +1,147 @@
 /* eslint-disable no-template-curly-in-string */
 
+// const idWorkflowInstance = 207139;
+// const idWorkflowInstance = 207024;
+// const idWorkflowInstance = 207357;
+const idWorkflowInstance = 207912;
 
 export default {
+  "id": `dashboard:workflow:instance:${idWorkflowInstance}`,
   "components": [
+    {
+      "@label-x": "ALIGNMENT ACCURACY (%)",
+      "@label-y": "COUNT",
+      "@units-y": "",
+      "@units-x": "%",
+      "@tooltip-format-x": "value => `${value}%`",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "barcodes[].payload[? exit_status == 'Workflow successful'][].accuracy.hist[].{x: @[0], y: @[1]}"
+      },
+      "element": "epi-coverageplot",
+      "listen": "instance:telemetry:alignment-ecoli:1:barcodes"
+    },
+    {
+      "@data": {
+        "fn:jmespath": "sort_by(barcodes[].payload[? exit_status == 'Workflow successful'][].mean_qscore.hist[].{x: @[0], y: @[1]}, &x)"
+      },
+      "element": "epi-coverageplot",
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
+    },
     {
       "@selectList": {
         "fn:uniq": {
-          "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].run_id"
+          "fn:jmespath": "data[? @.region != ''].region[]"
         }
       },
-      "@selector": "run_id",
+      "@selector": "region",
       "element": "Selector",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:alignment-ecoli:1"
     },
     {
-      "@label": "Average Sequence length",
-      "@value": {
-        "fn:tofixed": [
+      "@selectList": {
+        "fn:jmespath": "barcodeIds"
+      },
+      "@selector": "barcode",
+      "element": "Selector",
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
+    },
+    {
+      "@data": {
+        "fn:map": [
           {
-            "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
+            "name": "Workflow successful",
+            "value": {
+              "fn:sum": {
+                "fn:jmespath": "data[?exit_status == 'Workflow successful'].count"
+              }
+            }
           },
-          0
+          {
+            "name": "Basecall failed qscore filter",
+            "value": {
+              "fn:sum": {
+                "fn:jmespath": "data[?exit_status == 'Basecall failed qscore filter'].count"
+              }
+            }
+          }
         ]
       },
-      "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
-    },
-    {
-      "@label": "AVERAGE QUALITY SCORE",
-      "@value": {
-        "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
-      },
-      "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "element": "epi-donutsummary",
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
       "@label": "TOTAL YIELD",
-      "@case-sensitive": "true",
       "@value": {
-        "fn:formatNumber": [
-          {
-            "fn:jmespath": "sum(data[? @.exit_status == 'Workflow successful'].seqlen.total)"
-          },
-          2,
-          'base'
-        ]
+        "fn:sum": {
+          "fn:jmespath": "data[?exit_status == 'Workflow successful'].seqlen.total"
+        }
       },
       "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
-      "@label": "READS ANALYSED",
+      "@label": "AVG SEQUENCE LENGTH",
       "@value": {
-        "fn:jmespath": "sum(data[? @.exit_status == 'Workflow successful'].count)"
+        "fn:round": {
+          "fn:average": {
+            "fn:jmespath": "data[?exit_status == 'Workflow successful'].seqlen.avg"
+          }
+        }
       },
       "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
-      "@label": "Mode",
+      "@label": "AVG QUALITY SCORE",
       "@value": {
-        "fn:mode": [
+        "fn:tofixed": [
           {
-            "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].mean_qscore.avg"
+            "fn:average": {
+              "fn:jmespath": "data[?exit_status == 'Workflow successful'].mean_qscore.avg"
+            }
           },
           2
         ]
       },
       "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
-      "@label": "Average",
+      "@label": "READS ANALYSED",
       "@value": {
-        "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
+        "fn:sum": {
+          "fn:jmespath": "barcodes[].payload[].count"
+        }
       },
       "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
     },
     {
-      "@label-x": "Quality score",
-      "@label-y": "Read Count",
-      "@units-y": "",
-      "@units-x": "",
-      "@tooltip-format-x": "value => `${value}`",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "sort_by(data[? @.exit_status == 'Workflow successful'].mean_qscore.hist[].{x: @[0], y: @[1]}, &x)"
-      },
-      "element": "epi-coverageplot",
-      "listen": "datastream:telemetry:basecalling1d:1"
-    },
-    {
-      "@label": "Sequence Length Mode",
-      "@case-sensitive": "true",
+      "@label": "Total reads",
       "@value": {
-        "fn:formatNumber": [
-          {
-            "fn:mode": [
-              {
-                "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].seqlen.avg"
-              },
-              2
-            ]
-          },
-          0,
-          "base"
-        ]
+        "fn:sum": {
+          "fn:jmespath": "data[].count"
+        }
       },
       "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
-    },
-    {
-      "@label": "Sequence Length Average",
-      "@value": {
-        "fn:tofixed": [
-          {
-            "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
-          },
-          0
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "datastream:telemetry:basecalling1d:1"
-    },
-    {
-      "@label-x": "Sequence Length (bases)",
-      "@label-y": "Read Count",
-      "@units-y": "",
-      "@units-x": "",
-      "@tooltip-format-x": "value => `${value} bases`",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "sort_by(data[? @.exit_status == 'Workflow successful'].seqlen.hist[].{x: @[0], y: @[1]}, &x)"
-      },
-      "element": "epi-coverageplot",
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     }
   ],
   "streams": [
     {
       "@broadcast": "telemetry:qc",
+      "@id-workflow-instance": idWorkflowInstance,
       "element": "epi-workflow-instance-datastream",
       "@flavour": "basecalling_1d_barcode-v1",
+      "@poll-frequency": 25000
+    },
+    {
+      "element": "epi-workflow-instance-datastream",
+      "@id-workflow-instance": idWorkflowInstance,
+      "@flavour": "simple_aligner_barcode_compact_quick-v1",
       "@poll-frequency": 25000,
       "@type": "telemetry"
     }

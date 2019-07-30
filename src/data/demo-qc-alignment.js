@@ -1,7 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
 
+const idWorkflowInstance = 207024;
 
 export default {
+  "id": `dashboard:workflow:instance:${idWorkflowInstance}`,
   "components": [
     {
       "@label-x": "ALIGNMENT ACCURACY (%)",
@@ -16,32 +18,14 @@ export default {
         "fn:jmespath": "barcodes[].payload[? exit_status == 'Workflow successful'][].accuracy.hist[].{x: @[0], y: @[1]}"
       },
       "element": "epi-coverageplot",
-      "layout": {
-        "w": 15,
-        "h": 22,
-        "x": 5,
-        "y": 27,
-        "i": "1db9205e-a720-4ced-9cf3-5fddbfef1b3c",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:alignment-ecoli:1:barcodes"
+      "listen": "instance:telemetry:alignment-ecoli:1:barcodes"
     },
     {
       "@data": {
         "fn:jmespath": "sort_by(barcodes[].payload[? exit_status == 'Workflow successful'][].mean_qscore.hist[].{x: @[0], y: @[1]}, &x)"
       },
       "element": "epi-coverageplot",
-      "layout": {
-        "w": 15,
-        "h": 21,
-        "x": 5,
-        "y": 6,
-        "i": "f817a852-4922-466c-8c3e-f1231ba11f0c",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1:barcodes"
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
     },
     {
       "@selectList": {
@@ -51,16 +35,7 @@ export default {
       },
       "@selector": "region",
       "element": "Selector",
-      "layout": {
-        "w": 5,
-        "h": 11,
-        "x": 0,
-        "y": 40,
-        "i": "546c4038-45a0-4744-93ab-bb889a09358e",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:alignment-ecoli:1"
+      "listen": "instance:telemetry:alignment-ecoli:1"
     },
     {
       "@selectList": {
@@ -68,16 +43,7 @@ export default {
       },
       "@selector": "barcode",
       "element": "Selector",
-      "layout": {
-        "w": 5,
-        "h": 21,
-        "x": 0,
-        "y": 6,
-        "i": "e19ca404-29c5-4db8-b8fb-1d4134384480",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1:barcodes"
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
     },
     {
       "@data": {
@@ -101,16 +67,7 @@ export default {
         ]
       },
       "element": "epi-donutsummary",
-      "layout": {
-        "w": 5,
-        "h": 13,
-        "x": 0,
-        "y": 27,
-        "i": "5a063459-6496-43eb-8fd2-d54b3623f4fd",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
       "@label": "TOTAL YIELD",
@@ -120,16 +77,7 @@ export default {
         }
       },
       "element": "epi-headlinevalue",
-      "layout": {
-        "w": 5,
-        "h": 6,
-        "x": 15,
-        "y": 0,
-        "i": "6d471c02-da3a-4c02-ab23-bc24466e8e8e",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
       "@label": "AVG SEQUENCE LENGTH",
@@ -141,16 +89,7 @@ export default {
         }
       },
       "element": "epi-headlinevalue",
-      "layout": {
-        "w": 5,
-        "h": 6,
-        "x": 10,
-        "y": 0,
-        "i": "8ade28b3-849e-4d3c-b163-92941b504bb7",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
       "@label": "AVG QUALITY SCORE",
@@ -165,16 +104,7 @@ export default {
         ]
       },
       "element": "epi-headlinevalue",
-      "layout": {
-        "w": 5,
-        "h": 6,
-        "x": 5,
-        "y": 0,
-        "i": "9ccb1fbb-0976-4d1e-a0a8-25a726e4d908",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     },
     {
       "@label": "READS ANALYSED",
@@ -184,16 +114,7 @@ export default {
         }
       },
       "element": "epi-headlinevalue",
-      "layout": {
-        "w": 5,
-        "h": 6,
-        "x": 0,
-        "y": 0,
-        "i": "31664bd5-3bb5-4f70-9826-62346494cf71",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1:barcodes"
+      "listen": "instance:telemetry:basecalling1d:1:barcodes"
     },
     {
       "@label": "Total reads",
@@ -203,29 +124,24 @@ export default {
         }
       },
       "element": "epi-headlinevalue",
-      "layout": {
-        "w": 5,
-        "h": 6,
-        "x": 0,
-        "y": 51,
-        "i": "fa74ea8b-3cf1-4e71-a8b9-3993f82ca84b",
-        "moved": false,
-        "static": false
-      },
-      "listen": "datastream:telemetry:basecalling1d:1"
+      "listen": "instance:telemetry:basecalling1d:1"
     }
   ],
   "streams": [
     {
       "@broadcast": "telemetry:qc",
+      "@credentials": "omit",
       "element": "epi-workflow-instance-datastream",
       "@flavour": "basecalling_1d_barcode-v1",
+      "@id-workflow-instance": idWorkflowInstance,
       "@poll-frequency": 25000,
       "@type": "telemetry"
     },
     {
+      "@credentials": "omit",
       "element": "epi-workflow-instance-datastream",
       "@flavour": "simple_aligner_barcode_compact_quick-v1",
+      "@id-workflow-instance": idWorkflowInstance,
       "@poll-frequency": 25000,
       "@type": "telemetry"
     }
