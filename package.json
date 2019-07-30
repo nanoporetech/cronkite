@@ -1,8 +1,7 @@
 {
-  "name": "reporter",
+  "name": "cronkite",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://epi2me.nanoporetech.com",
   "homepage": ".",
   "dependencies": {
     "epi2me-ui-checkmark": "2019.5.30-2453041",
