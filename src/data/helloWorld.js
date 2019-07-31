@@ -12,7 +12,8 @@ export default {
       "element": "epi-headlinevalue",
       "@label": "Native DOM events",
       "@value": {
-        "fn:jmespath": "[@.clientX, @.clientY]"
+        // "fn:jmespath": "[@.clientX, @.clientY]"
+        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
       },
       "listen": "mousemove"
     },

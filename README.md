@@ -1,68 +1,154 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Cronkite - One __*hell*__ of a reporter
 
-## Available Scripts
+## Introduction
 
-In the project directory, you can run:
+Conkite is a (sort of) UI framework for rendering UI interfaces (`dashboards`) that have been defined in a JSON schema. Basically, the JSON schema defines:
 
-### `npm start`
+1. sources of data
+2. HTML tags to render
+4. Event listeners attached to the HTML element
+3. How data from event payloads map to attributes on HTML elements
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Design
 
-### `npm test`
+### Components
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 1. ADDING HTML TAGS/ELEMENTS/WEB COMPONENTS
 
-### `npm run build`
+The most simple report would be one with a single component, no listeners and no data sources e.g:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```javascript
+{
+    "components": [
+        {
+            "element": "div"
+        }
+    ],
+    "streams" : []
+}
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+would render...
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`<div></div>`
 
-### `npm run eject`
+> #### What's going on
+>
+> We define HTML elements to render in `components`. The JSON above will render a single `div` element but you wouldn't see > anything on the `dashboard` because we haven't added and data of text.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<hr />
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 2. ADDING ATTRIBUTES TO TAGS
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We will now add attributes to the div tag. Attributes are described in the JSON using the `@` prefix. We'll add the a `foo` attribute to the div tag below:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```javascript
+{
+    "components": [
+        {
+            "element": "div",
+            "@foo": "bar"
+        }
+    ],
+    "streams" : []
+}
+```
 
-## Learn More
+would render...
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+`<div foo="bar"></div>`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> #### What's going on
+>
+> Any key prefixed with the `@` symbol will be set as an attribute on the HTML tag. There is *ONE EXCEPTION*, that being the `@children` attribute. `@children` does not set an attribute but instead sets the `innerText` of the HTML tag for example:
 
-### Code Splitting
+```javascript
+{
+    "components": [
+        {
+            "element": "div",
+            "@foo": "bar",
+            "@children": "Hello world!"
+        }
+    ],
+    "streams" : []
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+would render...
 
-### Analyzing the Bundle Size
+`<div foo="bar">Hello World</div>`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+<hr />
 
-### Making a Progressive Web App
+#### 3. EVENT LISTENERS PAYLOAD TRANSFORMS
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+In the example above `Hello world!` is hard coded as the text inside the div element. The value of any attribute (and hence the value of `@children` in the example above) can be extracted from the payload of any event emitted on in the UI. The events can be anything that inherit from `Event` such as `CustomEvent`. Events will usually carry a payload of data, and we can extract and transform values from these payloads using functions built into Cronkite. Pulling content out of complex JSON blobs is handled using the [JMESPath library](http://jmespath.org/) and spec. In order to reference the jmespath function in the `dashboard` JSON schema we use the following function reference:
 
-### Advanced Configuration
+```javascript
+{
+    "fn:jmespath": "JMESPath goes here!!"
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+So by way of example, lets display the `[clientX, clientY]` values of the mouse as it moves around over the UI. The corresponding JSON would look as follows:
 
-### Deployment
+```javascript
+{
+    "components": [
+        {
+            "element": "div",
+            "@foo": "bar",
+            "@children": {
+                "fn:jmespath": "[@.clientX, @.clientY]"
+            },
+            "listen": "mousemove"
+        }
+    ],
+    "streams" : []
+}
+```
+and would render...
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+`<div foo="bar">[123,456]</div>`
 
-### `npm run build` fails to minify
+and the X/Y coordinates would continue to change dynamically as the mouse is moved around
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+> #### What's going on
+>
+> Firstly, we set up a listener on the `element` using the `listen` and the value set to the __event name__ that will be listened to (`mousemove` in this case). `mousemove` events are emitted and carry a payload of information including the `clientX` and `clientY` for example:
+
+```javascript
+
+// MouseMoveEvent payload
+{
+    "altKey": false,
+    "bubbles": true,
+    "cancelable": true,
+    "clientX": 648,
+    "clientY": 928,
+    "layerX": 648,
+    "layerY": 2194,
+    // Many more attributes besides...
+}
+
+```
+
+Using the jmespath `[@.clientX, @.clientY]` we pull out the clientX and clientY from the payload root `@` and project them into a new array containing both coordinates.
+
+To demonstrate a more advanced JMESPath we could have set the `@children` value to `"Client X: NNN, Client Y: NNN"` with the following JMESPath config:
+
+```javascript
+{
+    "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+}
+```
+
+Payloads can be arbitrarily nested and this is supported in the JMESPath spec.
+We won't go into explaining the JMESPath above but if you're interested in finding out more then check out the [specification page](http://jmespath.org/specification.html).
+
+<hr />
+
