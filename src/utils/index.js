@@ -5,14 +5,6 @@ import numberScale from 'number-scale';
 numberScale.defineScale(
   'genome',
   {
-    y: 1e-24,
-    z: 1e-21,
-    a: 1e-18,
-    f: 1e-15,
-    p: 1e-12,
-    n: 1e-9,
-    µ: 1e-6,
-    m: 1e-3,
     base: 1,
     k: 1e3,
     M: 1e6,

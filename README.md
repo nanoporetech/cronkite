@@ -259,8 +259,32 @@ Each component in the `components` block of the JSON specifies a single HTML tag
 - `<epi-coverageplot>`
 - `<epi-donutsummary>`
 - `<epi-checkmark>`
+- `<Selector>`
 
 For information about the attributes available to set by the user see the [Storybook playground](https://metrichor-ui.git.oxfordnanolabs.local/component-storybook/?path=/story/epi2me-checkmark--default-configurable) where you can read documentation on the components and live-edit the values of attributes.
+
+### The `Selector` component
+
+The Selector component is a bit different to the others. It has been implemented as a proof of principle of how data streams can be filtered. It is intended to be a temporary solution while a selection `CustomElement` is being developed and so is likely to be deprecated in future. The `Selector` component currently has the following configuration as illustrated in the full example below:
+
+```javascript
+{
+  "@selectList": {
+    "fn:uniq": {
+      "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].barcode"
+    }
+  },
+  "@selector": "barcode",
+  "element": "Selector",
+  "listen": "qctelemetry:basecalling1d:1"
+}
+```
+
+> ### What's going on
+>
+> `element` specifies must be set to `Selector` to use this component. In the example above the value of the `@selectList` attribute is set to a list of unique barcodes pulled out of event payload using JMESPath. The event listened to is `qctelemetry:basecalling1d:1`. Once the user makes a selection, a filter predicate will be forwarded to all data streams which will filter the cached responses based on the `@selector` value.
+
+<hr/>
 
 ## PUTTING IT ALL TOGETHER
 
