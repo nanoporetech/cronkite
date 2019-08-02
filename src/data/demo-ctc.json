@@ -1,12 +1,5 @@
-/* eslint-disable no-template-curly-in-string */
-
-// const idWorkflowInstance = 207139;
-// const idWorkflowInstance = 207024;
-// const idWorkflowInstance = 207357;
-const idWorkflowInstance = 207912;
-
-export default {
-    "id": `dashboard:workflow:instance:${idWorkflowInstance}`,
+{
+    "id": "dashboard:workflow:instance:207912",
     "components": [
         {
             "@message": {
@@ -48,7 +41,7 @@ export default {
     "streams": [
         {
             "@broadcast": "telemetry:qc",
-            "@id-workflow-instance": idWorkflowInstance,
+            "@id-workflow-instance": 207912,
             "element": "epi-workflow-instance-datastream",
             "@flavour": "basecalling_1d_barcode-v1",
             "@poll-frequency": 25000,

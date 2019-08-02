@@ -57,14 +57,14 @@ export const validateArray = (arrayIn) => {
   return arrayIn
 }
 
-const transformValue = async (value, data) => {
+export const transformValue = async (value, data) => {
   if (typeof value === 'string' || Array.isArray(value)) return value
   return await Promise.all(Object.entries(value).map(async ([func, val]) => {
     return await applyFunction(func, val, data)
   }))
 }
 
-const applyFunction = async (func, val, data) => {
+export const applyFunction = async (func, val, data) => {
   let result;
   let arg;
   let precision;
@@ -77,11 +77,14 @@ const applyFunction = async (func, val, data) => {
       [arg, precision, unit] = val
       result = (await transformValue(arg, data))[0] || 0.0
       let formattedNumber = numberScale(result, {
+        scale: 'SI',
         precision,
-        recursive: 4
-      })[0];
+        recursive: 2,
+        unit: unit || ""
+      });
+      formattedNumber = typeof formattedNumber === 'string' ? formattedNumber : formattedNumber[0]
       let hasOne = /\d+/g.exec(formattedNumber)[0] === "1"
-      return `${formattedNumber}${unit}${hasOne ? '': 's'}`
+      return `${formattedNumber}${hasOne ? '': 's'}`
     case 'fn:tofixed':
       [arg, precision] = val
       result = (await transformValue(arg, data))[0] || 0.0
@@ -149,7 +152,7 @@ export const loadDashboardLayout = async (dashboardId, demoType) => {
       // console.info('Loading from local storage')
     } catch (ignore) {}
   } else {
-    const demoLayout = await import(`../data/${demoType}`)
+    const demoLayout = await import(`../data/${demoType}.json`)
     dashboardLayout = demoLayout.default
     // console.info('Loading from demo layout')
   }
@@ -157,8 +160,7 @@ export const loadDashboardLayout = async (dashboardId, demoType) => {
 }
 
 export const saveDashboardLayout = (dashboardId, layout) => {
-  // console.info('SAVING to localstorage', dashboardId, layout)
-  localStorage.setItem(dashboardId, JSON.stringify(layout))
+  localStorage.setItem(dashboardId, typeof layout === 'string' ? layout : JSON.stringify(layout))
 }
 
 export const processValue = async (data, value) => {

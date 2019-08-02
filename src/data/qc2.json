@@ -1,11 +1,5 @@
-/* eslint-disable no-template-curly-in-string */
-
-// const idWorkflowInstance = 207139;
-// const idWorkflowInstance = 207024;
-const idWorkflowInstance = 207357;
-
-export default {
-  "id": `dashboard:workflow:instance:${idWorkflowInstance}`,
+{
+  "id": "dashboard:workflow:instance:207357",
   "components": [
     {
       "@selectList": {
@@ -47,7 +41,7 @@ export default {
             "fn:jmespath": "sum(data[? @.exit_status == 'Workflow successful'].seqlen.total)"
           },
           2,
-          'base'
+          "base"
         ]
       },
       "element": "epi-headlinevalue",
@@ -150,7 +144,7 @@ export default {
     {
       "@channel": "qctelemetry",
       "element": "epi-workflow-instance-datastream",
-      "@id-workflow-instance": idWorkflowInstance,
+      "@id-workflow-instance": 207357,
       "@flavour": "basecalling_1d_barcode-v1",
       "@poll-frequency": 25000,
       "@type": "telemetry",

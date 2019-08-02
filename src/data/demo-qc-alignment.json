@@ -1,9 +1,5 @@
-/* eslint-disable no-template-curly-in-string */
-
-const idWorkflowInstance = 207024;
-
-export default {
-  "id": `dashboard:workflow:instance:${idWorkflowInstance}`,
+{
+  "id": "dashboard:workflow:instance:207024",
   "components": [
     {
       "@label-x": "ALIGNMENT ACCURACY (%)",
@@ -133,7 +129,7 @@ export default {
       "@credentials": "omit",
       "element": "epi-workflow-instance-datastream",
       "@flavour": "basecalling_1d_barcode-v1",
-      "@id-workflow-instance": idWorkflowInstance,
+      "@id-workflow-instance": 207024,
       "@poll-frequency": 25000,
       "@type": "telemetry"
     },
@@ -141,7 +137,7 @@ export default {
       "@credentials": "omit",
       "element": "epi-workflow-instance-datastream",
       "@flavour": "simple_aligner_barcode_compact_quick-v1",
-      "@id-workflow-instance": idWorkflowInstance,
+      "@id-workflow-instance": 207024,
       "@poll-frequency": 25000,
       "@type": "telemetry"
     }
