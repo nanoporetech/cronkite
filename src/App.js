@@ -17,7 +17,7 @@ const DEFAULT_LAYOUT = {
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 
-const DashboardApp = React.forwardRef((props, ref) => {
+const DashboardApp = props => {
 
   const [dashboardConfig, setDashboardConfig] = useState(props.dashboardConfig || null)
   const [autoSave] = useState(true)
@@ -35,7 +35,7 @@ const DashboardApp = React.forwardRef((props, ref) => {
       saveDashboardLayout(dashboardId, dashboardConfig)
     }
     return () => {
-      //  sync dashboardConfig ?
+      // cleanup
     };
   }, [dashboardConfig, props])
 
@@ -88,6 +88,6 @@ const DashboardApp = React.forwardRef((props, ref) => {
       </ResponsiveGridLayout>
     </React.Fragment>
   ) : null;
-});
+};
 
 export default DashboardApp;

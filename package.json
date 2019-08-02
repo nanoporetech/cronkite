@@ -41,6 +41,8 @@
     ]
   },
   "devDependencies": {
+    "jsdom-worker-fix": "0.1.8",
+    "node-fetch": "2.6.0",
     "node-sass": "4.12.0"
   }
 }
