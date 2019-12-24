@@ -20,12 +20,12 @@
       "@value": {
         "fn:jmespath": "length(data.resultList.result[])"
       },
-      "listen": "bos:beraad"
+      "listen": "hello:world:event"
     }
   ],
   "streams": [
     {
-      "@channel": "bos:beraad",
+      "@channel": "hello:world:event",
       "element": "epi-poll-datastream",
       "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
       "@poll-frequency": 25000,
