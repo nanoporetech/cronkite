@@ -1,0 +1,53 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-airbnb",
+    "tslint-plugin-prettier",
+    "tslint-config-prettier",
+    "tslint-ionic-rules"
+  ],
+  "linterOptions": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "exclude": [
+      "node_modules/**",
+      "**/*.json",
+      "src/workers/**/*.ts"
+    ]
+  },
+  "rules": {
+    "import-name": [
+      false
+    ],
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "no-console": [
+      true,
+      "log"
+    ],
+    "object-literal-sort-keys": [
+      true
+    ],
+    "ordered-imports": [
+      false
+    ],
+    "prettier": [
+      true
+    ],
+    "semicolon": [
+      false
+    ],
+    "strict-comparisons": [
+      true,
+      {
+        "allow-object-equal-comparison": true,
+        "allow-string-order-comparison": false
+      }
+    ]
+  }
+}

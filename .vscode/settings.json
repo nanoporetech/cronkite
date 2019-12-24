@@ -1,8 +1,61 @@
 {
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
   "[javascriptreact]": {
-        "editor.autoIndent": true,
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-    },
-    "workbench.colorCustomizations": {}
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "cSpell.words": [
+    "Metricoins",
+    "Workflow",
+    "analytics",
+    "arma",
+    "browserslist",
+    "downshift",
+    "draggable",
+    "exome",
+    "fastq",
+    "gridion",
+    "human",
+    "inputqueue",
+    "keyframes",
+    "metagenomics",
+    "metrichor",
+    "minit",
+    "noopener",
+    "noreferrer",
+    "polyfill",
+    "roboto",
+    "shortcut",
+    "styl",
+    "stylelint",
+    "typedoc",
+    "unmount",
+    "webfonts",
+    "workflows",
+    "remify"
+  ],
+  "editor.formatOnSave": true,
+  "eslint.enable": false,
+  "gitlab.instanceUrl": "https://git.oxfordnanolabs.local",
+  "stencilTools.component.alphabetizeImports": true,
+  "stencilTools.component.defaultImports": [
+    "",
+    "h",
+    "Prop"
+  ],
+  "stencilTools.quotes": "single",
+  "stencilTools.style.extension": "scss",
+  "tslint.ignoreDefinitionFiles": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}"
 }

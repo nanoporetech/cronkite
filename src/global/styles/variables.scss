@@ -1,0 +1,15 @@
+$border-radius: remify(10);
+
+// Breakpoints
+$tablet-break-point: remify(960);
+$mobile-break-point: remify(500);
+
+// System overview breakpoints
+$five-position-card-breakpoint-tablet: remify(1660);
+$five-position-card-breakpoint-mobile: remify(1140);
+$many-position-card-breakpoint-tablet: remify(1910);
+$many-position-card-breakpoint-mobile: remify(1300);
+
+// Sidebar Widths
+$sidebar-full-width: remify(320);
+$sidebar-collapsed-width: remify(60);

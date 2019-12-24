@@ -1,0 +1,57 @@
+// Primary colours
+$color-blue: #0084a9;
+$color-light-blue: #90c6e7;
+$color-dark-grey: #455556;
+$color-pale-grey: #b5aea7;
+$color-green: #17bb75;
+$color-red: #ef4135;
+
+// Background colours
+$color-celsius: #f0efed;
+$color-off-white: #f9f9fb;
+$color-dark-blue--faded: #005c75;
+
+// Border and messaging colours
+$color-light-grey: #e4e6e8;
+$color-medium-grey: #68767e;
+$color-orange: #f57e20;
+$color-pale-yellow: #ede797;
+$color-purple: #a53f97;
+$color-yellow: #f5cc49;
+$color-blue--faded: #f2f7f9;
+$color-red--faded: #fee8de;
+$color-green--faded: #edf5f2;
+$color-yellow--faded: #fefcf2;
+$color-orange--faded: #feedd8;
+
+// Rollover colours
+$color-dark-blue: #0c4d5f;
+$color-red-darker: #be2a20;
+$color-green--darker: #0b814f;
+
+// App specific colours, names taken from htmlcsscolor.com
+$color-arsenic: #32434e;
+$color-black-pearl: #0a2730;
+$color-san-juan: #455560;
+$color-aluminium: #869298;
+$color-zumthor: #ccd5d8;
+$color-amber: #fbbd0a;
+
+$color-sandy-beach: #ffd6b1;
+$color-your-pink: #fbc7bc;
+$color-link-water: #c9d1d6;
+$color-white-ice: #d0f1e3;
+$color-onahau: #cde7ee;
+$color-china-ivory: #fef2cc;
+
+@function color-hover($c) {
+  @return lighten($c, 5%);
+}
+
+@function color-focus($c) {
+  @return darken($c, 1%);
+}
+
+@function color-active($c) {
+  @return darken($c, 5%);
+}

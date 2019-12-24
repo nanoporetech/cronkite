@@ -47,6 +47,6 @@
             "@poll-frequency": 25000,
             "@type": "telemetry",
             "@credentials": "omit"
-        },
+        }
     ]
 }
