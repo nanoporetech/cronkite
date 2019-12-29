@@ -1,0 +1,15 @@
+epi-stats-box {
+  display: flex;
+  background-color: var(--epi-color-medium-contrast, #eee);
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+  & epi-headlinevalue {
+    display: flex;
+
+    & .headline {
+      padding: 0;
+    }
+  }
+}

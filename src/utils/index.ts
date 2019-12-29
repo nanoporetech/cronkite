@@ -83,6 +83,11 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
     case 'fn:sum':
       result = (await transformValue(val, data))[0] || [];
       return result.reduce((a: number, b: number) => a + b, 0);
+    case 'fn:divide':
+      let [dividend, divisor] = val;
+      dividend = (await transformValue(dividend, data))[0] || 0;
+      divisor = (await transformValue(divisor, data))[0] || 0;
+      return dividend / divisor;
     case 'fn:formatNumber':
       [arg, precision, unit] = val;
       result = (await transformValue(arg, data))[0] || 0.0;
@@ -95,7 +100,7 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
       formattedNumber = typeof formattedNumber === 'string' ? formattedNumber : formattedNumber[0];
       const hasOne = (/\d+/g.exec(formattedNumber) || [])[0] === '1';
       return `${formattedNumber}${hasOne ? '' : 's'}`;
-    case 'fn:tofixed':
+    case 'fn:toFixed':
       [arg, precision] = val;
       result = (await transformValue(arg, data))[0] || 0.0;
       return Number.parseFloat(result).toFixed(precision);
@@ -180,7 +185,7 @@ export const processValue = async (data: any, value: any) => {
   if (typeof value === 'string') return value;
   const [result] = await transformValue(value, data);
   if (Array.isArray(result)) {
-    return JSON.stringify(validateArray(result));
+    return validateArray(result);
   }
   if (typeof result === 'number') {
     return result.toLocaleString();

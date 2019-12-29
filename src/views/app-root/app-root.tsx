@@ -1,5 +1,6 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 @Component({
+  styleUrl: 'app-root.scss',
   tag: 'app-root',
 })
 export class AppRoot {

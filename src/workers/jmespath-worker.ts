@@ -96,6 +96,20 @@ export const jmespath = greenlet((path, json) => {
       return match && match[1];
     };
   }
+
+  const typesAsString = {
+    0: 'NUMBER',
+    1: 'ANY',
+    2: 'STRING',
+    3: 'ARRAY',
+    4: 'OBJECT',
+    5: 'BOOLEAN',
+    6: 'EXPREF',
+    7: 'NULL',
+    8: 'ARRAY_NUMBER',
+    9: 'ARRAY_STRING',
+  }
+
   var TYPE_NUMBER = 0;
   var TYPE_ANY = 1;
   var TYPE_STRING = 2;
@@ -1196,11 +1210,11 @@ export const jmespath = greenlet((path, json) => {
           }
         }
         if (!typeMatched) {
-          throw new Error("TypeError: " + name + "() " +
-            "expected argument " + (i + 1) +
-            " to be type " + currentSpec +
-            " but received type " + actualType +
-            " instead.");
+          throw new Error(`
+          TypeError: ${name}()
+            expected argument ${ (i + 1)} to be type ${currentSpec}(${
+            typesAsString[currentSpec]}) but received type ${actualType}(${
+            actualType && typesAsString[actualType] || 'UNDEFINED'}) instead.`);
         }
       }
     }

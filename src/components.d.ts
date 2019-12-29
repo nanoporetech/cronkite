@@ -7,22 +7,59 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  EpiReportDataTypes,
+} from './types';
 
 export namespace Components {
   interface AppRoot {
     'report': string;
   }
+  interface EpiErrorMessage {
+    'message': string;
+  }
   interface EpiEventStream {
     'config': any;
+  }
+  interface EpiInstanceDatastream {
+    'channel': string;
+    'credentials': RequestCredentials;
+    'flavour': string;
+    'idWorkflowInstance': string | number;
+    'mode': RequestMode;
+    'pollFrequency': number;
+    'type': string;
+  }
+  interface EpiPollDatastream {
+    'addFilter': (fnKey: string, filterFn: () => boolean) => Promise<void>;
+    'channel': string;
+    'corsProxy': string;
+    'credentials': RequestCredentials;
+    'listFilters': () => Promise<{}>;
+    'mode': RequestMode;
+    'pollFrequency': number;
+    'responseHandler': EpiReportDataStream.IDatastreamResponseHandler;
+    'type': string;
+    'url': string | null;
   }
   interface EpiReport {
     'config'?: any;
     'loadConfig': (newConfig: any) => Promise<void>;
     'showConfig': boolean;
   }
+  interface EpiReportComponents {}
   interface EpiReportPanel {
     'panelConfig': any;
+  }
+  interface EpiReportSelector {
+    'heading': string;
+    'selectList': ISelectListMember[];
+    'selector': any;
+  }
+  interface EpiReportTitle {}
+  interface EpiReportVersion {}
+  interface EpiStatsBox {
+    'statsList': EpiReportDataTypes.IStatsBoxListItem[];
   }
 }
 
@@ -35,10 +72,28 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLEpiErrorMessageElement extends Components.EpiErrorMessage, HTMLStencilElement {}
+  var HTMLEpiErrorMessageElement: {
+    prototype: HTMLEpiErrorMessageElement;
+    new (): HTMLEpiErrorMessageElement;
+  };
+
   interface HTMLEpiEventStreamElement extends Components.EpiEventStream, HTMLStencilElement {}
   var HTMLEpiEventStreamElement: {
     prototype: HTMLEpiEventStreamElement;
     new (): HTMLEpiEventStreamElement;
+  };
+
+  interface HTMLEpiInstanceDatastreamElement extends Components.EpiInstanceDatastream, HTMLStencilElement {}
+  var HTMLEpiInstanceDatastreamElement: {
+    prototype: HTMLEpiInstanceDatastreamElement;
+    new (): HTMLEpiInstanceDatastreamElement;
+  };
+
+  interface HTMLEpiPollDatastreamElement extends Components.EpiPollDatastream, HTMLStencilElement {}
+  var HTMLEpiPollDatastreamElement: {
+    prototype: HTMLEpiPollDatastreamElement;
+    new (): HTMLEpiPollDatastreamElement;
   };
 
   interface HTMLEpiReportElement extends Components.EpiReport, HTMLStencilElement {}
@@ -47,16 +102,54 @@ declare global {
     new (): HTMLEpiReportElement;
   };
 
+  interface HTMLEpiReportComponentsElement extends Components.EpiReportComponents, HTMLStencilElement {}
+  var HTMLEpiReportComponentsElement: {
+    prototype: HTMLEpiReportComponentsElement;
+    new (): HTMLEpiReportComponentsElement;
+  };
+
   interface HTMLEpiReportPanelElement extends Components.EpiReportPanel, HTMLStencilElement {}
   var HTMLEpiReportPanelElement: {
     prototype: HTMLEpiReportPanelElement;
     new (): HTMLEpiReportPanelElement;
   };
+
+  interface HTMLEpiReportSelectorElement extends Components.EpiReportSelector, HTMLStencilElement {}
+  var HTMLEpiReportSelectorElement: {
+    prototype: HTMLEpiReportSelectorElement;
+    new (): HTMLEpiReportSelectorElement;
+  };
+
+  interface HTMLEpiReportTitleElement extends Components.EpiReportTitle, HTMLStencilElement {}
+  var HTMLEpiReportTitleElement: {
+    prototype: HTMLEpiReportTitleElement;
+    new (): HTMLEpiReportTitleElement;
+  };
+
+  interface HTMLEpiReportVersionElement extends Components.EpiReportVersion, HTMLStencilElement {}
+  var HTMLEpiReportVersionElement: {
+    prototype: HTMLEpiReportVersionElement;
+    new (): HTMLEpiReportVersionElement;
+  };
+
+  interface HTMLEpiStatsBoxElement extends Components.EpiStatsBox, HTMLStencilElement {}
+  var HTMLEpiStatsBoxElement: {
+    prototype: HTMLEpiStatsBoxElement;
+    new (): HTMLEpiStatsBoxElement;
+  };
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'epi-error-message': HTMLEpiErrorMessageElement;
     'epi-event-stream': HTMLEpiEventStreamElement;
+    'epi-instance-datastream': HTMLEpiInstanceDatastreamElement;
+    'epi-poll-datastream': HTMLEpiPollDatastreamElement;
     'epi-report': HTMLEpiReportElement;
+    'epi-report-components': HTMLEpiReportComponentsElement;
     'epi-report-panel': HTMLEpiReportPanelElement;
+    'epi-report-selector': HTMLEpiReportSelectorElement;
+    'epi-report-title': HTMLEpiReportTitleElement;
+    'epi-report-version': HTMLEpiReportVersionElement;
+    'epi-stats-box': HTMLEpiStatsBoxElement;
   }
 }
 
@@ -64,22 +157,63 @@ declare namespace LocalJSX {
   interface AppRoot {
     'report'?: string;
   }
+  interface EpiErrorMessage {
+    'message'?: string;
+  }
   interface EpiEventStream {
     'config'?: any;
+  }
+  interface EpiInstanceDatastream {
+    'channel'?: string;
+    'credentials'?: RequestCredentials;
+    'flavour': string;
+    'idWorkflowInstance': string | number;
+    'mode'?: RequestMode;
+    'pollFrequency'?: number;
+    'type'?: string;
+  }
+  interface EpiPollDatastream {
+    'channel'?: string;
+    'corsProxy'?: string;
+    'credentials'?: RequestCredentials;
+    'mode'?: RequestMode;
+    'pollFrequency'?: number;
+    'responseHandler'?: EpiReportDataStream.IDatastreamResponseHandler;
+    'type'?: string;
+    'url'?: string | null;
   }
   interface EpiReport {
     'config'?: any;
     'showConfig'?: boolean;
   }
+  interface EpiReportComponents {}
   interface EpiReportPanel {
     'panelConfig'?: any;
+  }
+  interface EpiReportSelector {
+    'heading'?: string;
+    'selectList'?: ISelectListMember[];
+    'selector'?: any;
+  }
+  interface EpiReportTitle {}
+  interface EpiReportVersion {}
+  interface EpiStatsBox {
+    'statsList'?: EpiReportDataTypes.IStatsBoxListItem[];
   }
 
   interface IntrinsicElements {
     'app-root': AppRoot;
+    'epi-error-message': EpiErrorMessage;
     'epi-event-stream': EpiEventStream;
+    'epi-instance-datastream': EpiInstanceDatastream;
+    'epi-poll-datastream': EpiPollDatastream;
     'epi-report': EpiReport;
+    'epi-report-components': EpiReportComponents;
     'epi-report-panel': EpiReportPanel;
+    'epi-report-selector': EpiReportSelector;
+    'epi-report-title': EpiReportTitle;
+    'epi-report-version': EpiReportVersion;
+    'epi-stats-box': EpiStatsBox;
   }
 }
 
@@ -90,9 +224,17 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+      'epi-error-message': LocalJSX.EpiErrorMessage & JSXBase.HTMLAttributes<HTMLEpiErrorMessageElement>;
       'epi-event-stream': LocalJSX.EpiEventStream & JSXBase.HTMLAttributes<HTMLEpiEventStreamElement>;
+      'epi-instance-datastream': LocalJSX.EpiInstanceDatastream & JSXBase.HTMLAttributes<HTMLEpiInstanceDatastreamElement>;
+      'epi-poll-datastream': LocalJSX.EpiPollDatastream & JSXBase.HTMLAttributes<HTMLEpiPollDatastreamElement>;
       'epi-report': LocalJSX.EpiReport & JSXBase.HTMLAttributes<HTMLEpiReportElement>;
+      'epi-report-components': LocalJSX.EpiReportComponents & JSXBase.HTMLAttributes<HTMLEpiReportComponentsElement>;
       'epi-report-panel': LocalJSX.EpiReportPanel & JSXBase.HTMLAttributes<HTMLEpiReportPanelElement>;
+      'epi-report-selector': LocalJSX.EpiReportSelector & JSXBase.HTMLAttributes<HTMLEpiReportSelectorElement>;
+      'epi-report-title': LocalJSX.EpiReportTitle & JSXBase.HTMLAttributes<HTMLEpiReportTitleElement>;
+      'epi-report-version': LocalJSX.EpiReportVersion & JSXBase.HTMLAttributes<HTMLEpiReportVersionElement>;
+      'epi-stats-box': LocalJSX.EpiStatsBox & JSXBase.HTMLAttributes<HTMLEpiStatsBoxElement>;
     }
   }
 }

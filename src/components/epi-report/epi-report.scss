@@ -1,5 +1,5 @@
 epi-report {
-  display: grid;
-  grid-auto-flow: row;
-  grid-gap: 0.5rem;
+  height: inherit;
+  display: block;
+  overflow: auto;
 }

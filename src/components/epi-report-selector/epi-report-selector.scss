@@ -1,0 +1,106 @@
+epi-report-selector {
+  & ion-checkbox {
+    --checkmark-color: #fff;
+
+    margin: 0 0.5rem;
+  }
+
+  & ion-item {
+    --min-height: 2.5rem;
+  }
+
+  & ion-progress-bar {
+    height: 1.5rem;
+    // display: block;
+  }
+
+  & span {
+    margin: 0 1rem;
+
+    &.counts {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    &.percent {
+      color: var(--epi-color-medium);
+      font-size: 100%;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    &.label {
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 7.5rem;
+      display: inline-block;
+      text-align: right;
+    }
+  }
+
+  &.thing-selector {
+    & table {
+      width: 96%;
+      margin: 20px auto;
+      margin-right: 4%;
+      table-layout: auto;
+      text-align: right;
+
+      &.fixed {
+        table-layout: fixed;
+      }
+
+      &,
+      & td,
+      & th {
+        border-collapse: collapse;
+        text-align: right;
+      }
+
+      & tr {
+        height: 1.5rem;
+      }
+
+      & th,
+      & .select-label {
+        font-weight: 800;
+        font-size: smaller;
+        color: var(--epi-color-medium);
+      }
+
+      & th,
+      & td {
+        padding: 0;
+        // border: solid 1px;
+        text-align: right;
+        // margin: 1rem 0;
+
+        &:nth-child(3) {
+          width: 5rem;
+        }
+
+        &:nth-child(4) {
+          width: 4rem;
+        }
+
+        &:nth-child(1) {
+          width: 12rem;
+        }
+      }
+
+      & th:nth-child(4) {
+        text-align: center;
+      }
+
+      & td:nth-child(4) {
+        color: var(--epi-color-medium);
+        font-size: 100%;
+        font-family: monospace;
+      }
+    }
+  }
+
+  & .select-all-things {
+    --ion-safe-area-left: 0;
+  }
+}

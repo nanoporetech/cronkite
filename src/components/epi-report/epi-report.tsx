@@ -1,4 +1,7 @@
+// tslint:disable-next-line: no-import-side-effect
+import '@ionic/core';
 import { Component, Host, h, Method, Prop } from '@stencil/core';
+
 import uuidv4 from 'uuid/v4';
 
 const DEFAULT_LAYOUT = {
@@ -9,7 +12,7 @@ const DEFAULT_LAYOUT = {
 };
 
 @Component({
-  styleUrl: 'epi-report.scss',
+  styleUrls: ['epi-report.scss', '../../global/styles/theme.scss'],
   tag: 'epi-report',
 })
 export class EpiReport {
@@ -24,16 +27,22 @@ export class EpiReport {
   render() {
     if (!this.config) return;
     return (
-      <Host
-        style={{
-          gridTemplateColumns: `repeat(${4}, auto)`,
-        }}
-      >
-        {this.config.components.map((compDef: any) => {
-          const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
-          const uuid = componentDefinition.layout.i || uuidv4();
-          return <epi-report-panel key={uuid} id={uuid} panelConfig={componentDefinition} />;
-        })}
+      <Host>
+        <epi-report-components>
+          {(this.config.components || []).map((compDef: any) => {
+            const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
+            const uuid = componentDefinition.layout.i || uuidv4();
+            return (
+              <epi-report-panel
+                slot={componentDefinition.layout.position}
+                key={uuid}
+                id={uuid}
+                panelConfig={componentDefinition}
+              />
+            );
+          })}
+        </epi-report-components>
+
         {this.config.streams.map((streamConfig: any, streamIndex: number) => (
           <epi-event-stream
             key={`${streamConfig.element || 'stream'}-${streamIndex}`}

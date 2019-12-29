@@ -1,6 +1,5 @@
 import { Component, h, Host, Prop, State } from '@stencil/core';
-// tslint:disable-next-line: no-import-side-effect
-import 'epi2me-ui-datastream/dist';
+
 @Component({
   styleUrl: 'epi-event-stream.scss',
   tag: 'epi-event-stream',

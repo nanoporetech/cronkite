@@ -1,0 +1,143 @@
+{
+  "id": "pychopper:report",
+  "components": [
+    {
+      "element": "epi-report-title",
+      "@innerHTML": "PYCHOPPER CLASSIFICATION",
+      "layout": {
+        "position": "header"
+      }
+    },
+    {
+      "@statsList": [
+        [
+          {
+            "label": "Version",
+            "value": "2"
+          },
+          {
+            "label": "Type",
+            "value": "pychopper"
+          }
+        ]
+      ],
+      "element": "epi-stats-box",
+      "listen": "pychopper:datastream",
+      "layout": {
+        "width": "2"
+      }
+    },
+    {
+      "@statsList": {
+        "fn:map": [
+          {
+            "label": "TOTAL ANALYSED",
+            "value": {
+              "fn:jmespath": "sum(data.data.reads[*]._stats.count)"
+            }
+          },
+          {
+            "label": "SELECTED READS",
+            "value": "????"
+          },
+          {
+            "label": "AVG SEQUENCE LENGTH",
+            "caseSensitive": [
+              true
+            ],
+            "value": {
+              "fn:formatNumber": [
+                {
+                  "fn:divide": [
+                    {
+                      "fn:jmespath": "sum(data.data.reads[?exit_status=='Classified']._stats.seqlen)"
+                    },
+                    {
+                      "fn:jmespath": "sum(data.data.reads[?exit_status=='Classified']._stats.count)"
+                    }
+                  ]
+                },
+                0,
+                "base"
+              ]
+            }
+          },
+          {
+            "label": "AVG TRANSCRIPT LENGTH",
+            "caseSensitive": [
+              true
+            ],
+            "value": {
+              "fn:formatNumber": [
+                {
+                  "fn:divide": [
+                    {
+                      "fn:jmespath": "sum(data.data.transcripts[*]._stats.tlen)"
+                    },
+                    {
+                      "fn:jmespath": "sum(data.data.transcripts[*]._stats.count)"
+                    }
+                  ]
+                },
+                0,
+                "base"
+              ]
+            }
+          }
+        ]
+      },
+      "layout": {
+        "width": "2"
+      },
+      "element": "epi-stats-box",
+      "listen": "pychopper:datastream"
+    },
+    {
+      "element": "epi-report-selector",
+      "@heading": [
+        "SELECT BARCODE"
+      ],
+      "@selectList": {
+        "fn:jmespath": "data.data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
+      },
+      "@selector": [
+        "barcode"
+      ],
+      "listen": "pychopper:datastream"
+    },
+    {
+      "@label-x": "SEQUENCE LENGTH (BASES)",
+      "@label-y": "READ COUNT",
+      "@units-y": "",
+      "@units-x": "bp",
+      "@tooltip-format-x": "",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "barcodes[].payload[? exit_status == 'Workflow successful'][].accuracy.hist[].{x: @[0], y: @[1]}"
+      },
+      "element": "epi-coverageplot",
+      "listen": "pychopper:select:barcodes"
+    },
+    {
+      "element": "epi-report-version",
+      "@innerHTML": {
+        "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(data.version)])"
+      },
+      "layout": {
+        "position": "footer"
+      },
+      "listen": "pychopper:datastream"
+    }
+  ],
+  "streams": [
+    {
+      "@channel": "pychopper:datastream",
+      "element": "epi-poll-datastream",
+      "@url": "http://localhost:1234/Pychopper/164229_pychopper.json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit"
+    }
+  ]
+}
