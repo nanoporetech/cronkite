@@ -137,7 +137,21 @@
       "element": "epi-poll-datastream",
       "@url": "http://localhost:1234/Pychopper/164229_pychopper.json",
       "@poll-frequency": 25000,
-      "@credentials": "omit"
+      "@credentials": "omit",
+      "@channels": [
+        {
+          "channel": "pychopper:datastream:reads",
+          "shape": {
+            "fn:jmespath": "data.reads"
+          }
+        },
+        {
+          "channel": "pychopper:datastream:transcripts",
+          "shape": {
+            "fn:jmespath": "data.transcripts"
+          }
+        }
+      ]
     }
   ]
 }

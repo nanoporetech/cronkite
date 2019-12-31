@@ -34,6 +34,7 @@
     "@stencil/core": "^1.8.2",
     "@stencil/sass": "1.1.1",
     "@types/jest": "24.0.24",
+    "@types/lodash": "4.14.149",
     "@types/puppeteer": "1.20.3",
     "@types/uuid": "3.4.6",
     "husky": "3.1.0",
@@ -78,6 +79,7 @@
     "epi2me-ui-donut": "2019.6.26-2513484",
     "epi2me-ui-headlinevalue": "2019.11.30-2989080",
     "greenlet": "1.1.0",
+    "lodash": "4.17.15",
     "number-scale": "0.0.9",
     "superstruct": "0.8.3",
     "uuid": "3.3.3"

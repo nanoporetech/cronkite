@@ -8,6 +8,11 @@ export interface IMetadata {
   value: any;
 }
 
+export interface IChannelShape {
+  channel: string;
+  shape: any;
+}
+
 export interface IMetadataObj {
   [key: string]: any;
 }
@@ -16,6 +21,7 @@ export type IDatastreamEventDispatcher = (eventName: string, node: HTMLElement, 
 
 export interface IStreamConfig {
   channel: string;
+  channels: IChannelShape[];
   dispatch: IDatastreamEventDispatcher;
   filters: ((datum: any) => boolean)[];
   type: string;

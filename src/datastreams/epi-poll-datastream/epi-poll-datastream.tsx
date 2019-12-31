@@ -1,5 +1,7 @@
 import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
 import * as EpiReportDataStream from '../interfaces';
+import { processValue } from '../../utils';
+// import at from 'lodash/at';
 
 @Component({
   tag: 'epi-poll-datastream',
@@ -34,19 +36,35 @@ export class EpiPollDatastream {
     data: any,
     streamState: EpiReportDataStream.IStreamConfig,
   ) => {
-    const { channel, dispatch, filters } = streamState;
+    const { channel, channels, dispatch, filters } = streamState;
     let filteredData = data;
-    if (filters.length) {
+    if (filters.length && Array.isArray(filteredData)) {
       filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
         filters.map(filter => filter(datum)).every(i => i),
       );
     }
+
     dispatch(channel, this.hostEl, {
       data: filteredData,
     });
+
+    // const channelData = await Promise.all(channels.map(c => processValue(data, c.shape)));
+    channels.forEach(async c => {
+      filteredData = await processValue(data, c.shape);
+      // filteredData = at(data, c.shape)[0];
+
+      if (filters.length && Array.isArray(filteredData)) {
+        filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
+          filters.map(filter => filter(datum)).every(i => i),
+        );
+      }
+      dispatch(c.channel, this.hostEl, filteredData);
+    });
   };
+
   @Prop() type = 'data';
   @Prop() url: string | null = null;
+  @Prop() channels: EpiReportDataStream.IChannelShape[] = [];
 
   @Method() async listFilters(): Promise<{}> {
     return this.filters;
@@ -80,6 +98,7 @@ export class EpiPollDatastream {
     if (!data) return;
     this.responseHandler(data, {
       channel: this.channel,
+      channels: this.channels,
       dispatch: this.dispatch,
       filters: Object.values(this.filters),
       type: this.type,
