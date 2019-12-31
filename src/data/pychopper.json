@@ -31,7 +31,7 @@
           },
           "listen": "pychopper:datastream",
           "layout": {
-            "width": "2"
+            "width": 2
           }
         },
         {
@@ -42,7 +42,7 @@
           },
           "listen": "pychopper:datastream:reads",
           "layout": {
-            "width": "2"
+            "width": 2
           }
         },
         {
@@ -69,7 +69,7 @@
           },
           "listen": "pychopper:datastream:reads",
           "layout": {
-            "width": "2"
+            "width": 2
           }
         },
         {
@@ -96,13 +96,13 @@
           },
           "listen": "pychopper:datastream:transcripts",
           "layout": {
-            "width": "2"
+            "width": 2
           }
         }
       ],
       "element": "epi-stats-box",
       "layout": {
-        "width": "2"
+        "width": 2
       }
     },
     {
@@ -118,25 +118,37 @@
       ],
       "listen": "pychopper:datastream",
       "layout": {
-        "width": "2"
+        "width": 2
       }
     },
     {
-      "@label-x": "SEQUENCE LENGTH (BASES)",
-      "@label-y": "READ COUNT",
-      "@units-y": "",
-      "@units-x": "bp",
-      "@tooltip-format-x": "x => ''",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
-      },
-      "element": "epi-coverageplot",
-      "listen": "pychopper:datastream:reads",
+      "element": "div",
+      "components": [
+        {
+          "element": "h5",
+          "@innerHTML": "SEQUENCE LENGTH",
+          "layout": {
+            "position": "header"
+          }
+        },
+        {
+          "@label-x": "SEQUENCE LENGTH (BASES)",
+          "@label-y": "READ COUNT",
+          "@units-y": "",
+          "@units-x": "bp",
+          "@tooltip-format-x": "x => ''",
+          "@tooltip-format-y": "value => `${value} reads`",
+          "@label-x-left": "",
+          "@label-x-right": "",
+          "@data": {
+            "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
+          },
+          "element": "epi-coverageplot",
+          "listen": "pychopper:datastream:reads"
+        }
+      ],
       "layout": {
-        "width": "2"
+        "width": 2
       }
     },
     {
@@ -152,25 +164,37 @@
       ],
       "listen": "pychopper:datastream",
       "layout": {
-        "width": "2"
+        "width": 2
       }
     },
     {
-      "@label-x": "TRANSCRIPT LENGTH (BIN SIZE 100)",
-      "@label-y": "READ COUNT",
-      "@units-y": "",
-      "@units-x": "bp",
-      "@tooltip-format-x": "x => ''",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
-      },
-      "element": "epi-coverageplot",
-      "listen": "pychopper:datastream:transcripts",
+      "element": "div",
+      "components": [
+        {
+          "element": "h5",
+          "@innerHTML": "TRANSCRIPT LENGTH",
+          "layout": {
+            "position": "header"
+          }
+        },
+        {
+          "@label-x": "TRANSCRIPT LENGTH (BIN SIZE 100)",
+          "@label-y": "READ COUNT",
+          "@units-y": "",
+          "@units-x": "bp",
+          "@tooltip-format-x": "x => ''",
+          "@tooltip-format-y": "value => `${value} reads`",
+          "@label-x-left": "",
+          "@label-x-right": "",
+          "@data": {
+            "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
+          },
+          "element": "epi-coverageplot",
+          "listen": "pychopper:datastream:transcripts"
+        }
+      ],
       "layout": {
-        "width": "2"
+        "width": 2
       }
     },
     {
