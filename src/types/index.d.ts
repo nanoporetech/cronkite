@@ -4,6 +4,10 @@ declare namespace DataTypes {
     value: string;
     caseSensitive?: boolean;
   }
+  interface IFunnelListItem {
+    label: string;
+    count: number;
+  }
 }
 
 export { DataTypes as EpiReportDataTypes };

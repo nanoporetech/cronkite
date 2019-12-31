@@ -21,6 +21,9 @@ export namespace Components {
   interface EpiEventStream {
     'config': any;
   }
+  interface EpiFunnel {
+    'statsList': EpiReportDataTypes.IFunnelListItem[];
+  }
   interface EpiInstanceDatastream {
     'channel': string;
     'credentials': RequestCredentials;
@@ -85,6 +88,12 @@ declare global {
     new (): HTMLEpiEventStreamElement;
   };
 
+  interface HTMLEpiFunnelElement extends Components.EpiFunnel, HTMLStencilElement {}
+  var HTMLEpiFunnelElement: {
+    prototype: HTMLEpiFunnelElement;
+    new (): HTMLEpiFunnelElement;
+  };
+
   interface HTMLEpiInstanceDatastreamElement extends Components.EpiInstanceDatastream, HTMLStencilElement {}
   var HTMLEpiInstanceDatastreamElement: {
     prototype: HTMLEpiInstanceDatastreamElement;
@@ -142,6 +151,7 @@ declare global {
     'app-root': HTMLAppRootElement;
     'epi-error-message': HTMLEpiErrorMessageElement;
     'epi-event-stream': HTMLEpiEventStreamElement;
+    'epi-funnel': HTMLEpiFunnelElement;
     'epi-instance-datastream': HTMLEpiInstanceDatastreamElement;
     'epi-poll-datastream': HTMLEpiPollDatastreamElement;
     'epi-report': HTMLEpiReportElement;
@@ -163,6 +173,9 @@ declare namespace LocalJSX {
   }
   interface EpiEventStream {
     'config'?: any;
+  }
+  interface EpiFunnel {
+    'statsList'?: EpiReportDataTypes.IFunnelListItem[];
   }
   interface EpiInstanceDatastream {
     'channel'?: string;
@@ -207,6 +220,7 @@ declare namespace LocalJSX {
     'app-root': AppRoot;
     'epi-error-message': EpiErrorMessage;
     'epi-event-stream': EpiEventStream;
+    'epi-funnel': EpiFunnel;
     'epi-instance-datastream': EpiInstanceDatastream;
     'epi-poll-datastream': EpiPollDatastream;
     'epi-report': EpiReport;
@@ -228,6 +242,7 @@ declare module "@stencil/core" {
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'epi-error-message': LocalJSX.EpiErrorMessage & JSXBase.HTMLAttributes<HTMLEpiErrorMessageElement>;
       'epi-event-stream': LocalJSX.EpiEventStream & JSXBase.HTMLAttributes<HTMLEpiEventStreamElement>;
+      'epi-funnel': LocalJSX.EpiFunnel & JSXBase.HTMLAttributes<HTMLEpiFunnelElement>;
       'epi-instance-datastream': LocalJSX.EpiInstanceDatastream & JSXBase.HTMLAttributes<HTMLEpiInstanceDatastreamElement>;
       'epi-poll-datastream': LocalJSX.EpiPollDatastream & JSXBase.HTMLAttributes<HTMLEpiPollDatastreamElement>;
       'epi-report': LocalJSX.EpiReport & JSXBase.HTMLAttributes<HTMLEpiReportElement>;
