@@ -6,7 +6,7 @@ import * as EpiReportDataStream from '../interfaces';
 })
 export class EpiPollDatastream {
   private eTag = 'STARTER - ETAG';
-  private timeoutHandle: any;
+  private intervalID: any;
   private cachedResponse: EpiReportDataStream.IMetadataObj | null = null;
   private filters = {};
   private dispatch: EpiReportDataStream.IDatastreamEventDispatcher = async (
@@ -118,23 +118,23 @@ export class EpiPollDatastream {
       await this.fetchData();
       this.eTag = eTag;
     }
-
-    // TODO: CHANGE THIS TO SETINTERVAL!
-    this.timeoutHandle = setTimeout(() => this.pollData(), this.pollFrequency);
   };
 
-  async initDataStream() {
-    if (this.url) this.pollData();
+  initDataStream() {
+    if (this.url) {
+      this.intervalID = setInterval(this.pollData, this.pollFrequency);
+      this.pollData();
+    }
   }
 
   componentWillUpdate() {
-    clearTimeout(this.timeoutHandle);
+    clearInterval(this.intervalID);
     this.initDataStream();
   }
 
   componentDidUnload() {
     this.filters = {};
-    clearTimeout(this.timeoutHandle);
+    clearInterval(this.intervalID);
   }
 
   componentDidLoad() {
