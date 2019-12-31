@@ -9,6 +9,19 @@
       }
     },
     {
+      "element": "epi-funnel",
+      "listen": "pychopper:datastream:reads",
+      "@statsList": {
+        "fn:jmespath": "[].{label: @.exit_status , count: @._stats.count}"
+      },
+      "style": {
+        "alignSelf": "center"
+      },
+      "layout": {
+        "width": 2
+      }
+    },
+    {
       "components": [
         {
           "element": "epi-headlinevalue",

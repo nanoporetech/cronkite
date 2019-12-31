@@ -1,0 +1,66 @@
+epi-funnel {
+  & ion-progress-bar {
+    height: 2rem;
+    // display: block;
+  }
+
+  .label {
+    text-transform: uppercase;
+  }
+
+  & table {
+    width: 96%;
+    margin-right: 4%;
+    table-layout: auto;
+    text-align: right;
+
+    &.fixed {
+      table-layout: fixed;
+    }
+
+    &,
+    & td,
+    & th {
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    & th,
+    & .select-label {
+      font-weight: 800;
+      font-size: smaller;
+      color: var(--epi-color-medium);
+    }
+
+    & th,
+    & td {
+      padding: 0.5rem 0;
+      // border: solid 1px;
+      text-align: right;
+      // margin: 1rem 0;
+      white-space: nowrap;
+      color: var(--epi-color-dark-tint);
+      font-size: 16pt;
+
+      &:nth-child(2) {
+        width: 7rem;
+        padding-right: 0.5rem;
+      }
+
+      &:nth-child(3) {
+        width: 4rem;
+      }
+
+      &:nth-child(4) {
+        width: 10rem;
+      }
+    }
+
+    & td:nth-child(3) {
+      color: var(--epi-color-medium-tint);
+      font-size: 100%;
+      font-family: monospace;
+      text-align: left;
+    }
+  }
+}
