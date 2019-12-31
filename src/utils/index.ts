@@ -48,17 +48,16 @@ export const validateArray = (arrayIn: any) => {
   }
   try {
     Histogram(arrayIn);
-    return arrayIn.reduce(
-      (mergedCoordinates, { x, y }) => {
-        const previousCoordinate = mergedCoordinates.slice(-1)[0];
-        if (previousCoordinate.x === x) {
-          previousCoordinate.y = previousCoordinate.y + y;
-          return [...mergedCoordinates.slice(0, -1), previousCoordinate];
-        }
-        return [...mergedCoordinates, { x, y }];
-      },
-      [{ x: arrayIn[0].x, y: 0 }],
-    );
+    const arrayOut = Object.entries(
+      arrayIn.reduce((mergedCoordinates, { x, y }) => {
+        if (y === 0) return mergedCoordinates;
+        const xDefined = mergedCoordinates[x];
+        mergedCoordinates[x] = xDefined ? mergedCoordinates[x] + y : y;
+        return mergedCoordinates;
+      }, {}),
+    ).map(coords => ({ x: +coords[0], y: coords[1] }));
+
+    return arrayOut;
   } catch (ignore) {
     // ignore
   }
