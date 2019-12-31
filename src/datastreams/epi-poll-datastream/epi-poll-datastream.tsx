@@ -1,7 +1,6 @@
 import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
 import * as EpiReportDataStream from '../interfaces';
 import { processValue } from '../../utils';
-// import at from 'lodash/at';
 
 @Component({
   tag: 'epi-poll-datastream',
@@ -48,11 +47,8 @@ export class EpiPollDatastream {
       data: filteredData,
     });
 
-    // const channelData = await Promise.all(channels.map(c => processValue(data, c.shape)));
     channels.forEach(async c => {
       filteredData = await processValue(data, c.shape);
-      // filteredData = at(data, c.shape)[0];
-
       if (filters.length && Array.isArray(filteredData)) {
         filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
           filters.map(filter => filter(datum)).every(i => i),
