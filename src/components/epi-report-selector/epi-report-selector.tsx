@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
+import uniqBy from 'lodash/uniqBy';
 
 // {SummarySelectorComp(
 //   'barcode',
@@ -35,7 +36,10 @@ export class EpiReportSelector {
 
   @Watch('selectList')
   async updateSelectList() {
-    const newReference: ISelectListMember[] = [...this.selectList];
+    const newReference: ISelectListMember[] = uniqBy(this.selectList, 'select').map(s => {
+      s.label = s.label.replace(/(.{5}).+(.{5})/g, '$1...$2');
+      return s;
+    });
     if (this.reference === undefined || newReference.length > this.reference.length) {
       this.reference = newReference;
       this.referenceTotal = newReference.reduce(
