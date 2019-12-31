@@ -3,8 +3,8 @@ import * as EpiReportDataStream from '../../interfaces';
 const normaliseBarcode = (barcode: string): string => {
   return barcode
     .toLowerCase()
-    .replace('bc', 'barcode')
-    .replace('na', 'none');
+    .replace('bc', 'bc')
+    .replace('na', 'no barcode');
 };
 
 export const transformAndEmitQCData = (node: HTMLElement): EpiReportDataStream.IDatastreamResponseHandler => async (
