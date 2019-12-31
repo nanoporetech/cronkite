@@ -1,8 +1,12 @@
 // tslint:disable: no-import-side-effect
 import { Component, Host, h, Prop, State } from '@stencil/core';
+import uuidv4 from 'uuid/v4';
 import 'epi2me-ui-headlinevalue/dist';
+import 'epi2me-ui-coverageplot/dist';
 
 import { mapAttributesToProps } from '../../utils';
+
+const DEFAULT_LAYOUT = {};
 
 function eventAsJSON(event: Event | CustomEvent) {
   const obj = {};
@@ -43,17 +47,6 @@ export class EpiReportPanel {
     let { detail } = event;
     detail = detail || eventAsJSON(event);
     await this.updateCustomElProps(this.customElAttrs, detail);
-    // // console.info('detail', detail)
-    // try {
-    //   const newProps = await mapAttributesToProps(this.customElAttrs, detail);
-    //   console.info('newProps', newProps);
-    //   // if (parent) {
-    //   //   newProps = { ...newProps, width: parent.clientWidth * 0.6, height: parent.clientHeight * 0.6 }
-    //   // }
-    //   this.customElProps = newProps;
-    // } catch (error) {
-    //   this.errorMessage = error.message;
-    // }
   };
 
   async componentWillLoad() {
@@ -82,6 +75,7 @@ export class EpiReportPanel {
 
     const ReportPanel = this.panelEl;
     const colSpan = (this.panelConfig.layout && this.panelConfig.layout.width) || 4;
+    const hasComponents = this.panelConfig.components && this.panelConfig.components.length;
     return (
       <Host
         class={`component-panel ${this.panelConfig.hidden ? 'panel-hidden' : ''}`}
@@ -93,7 +87,24 @@ export class EpiReportPanel {
         {this.errorMessage ? (
           <epi-error-message message={this.errorMessage} />
         ) : (
-          <ReportPanel {...this.customElProps} />
+          <ReportPanel {...this.customElProps}>
+            {hasComponents ? (
+              <epi-report-components>
+                {(this.panelConfig.components || []).map((compDef: any) => {
+                  const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
+                  const uuid = componentDefinition.layout.i || uuidv4();
+                  return (
+                    <epi-report-panel
+                      slot={componentDefinition.layout.position}
+                      key={uuid}
+                      id={uuid}
+                      panelConfig={componentDefinition}
+                    />
+                  );
+                })}
+              </epi-report-components>
+            ) : null}
+          </ReportPanel>
         )}
       </Host>
     );

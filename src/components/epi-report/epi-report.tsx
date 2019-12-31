@@ -4,12 +4,7 @@ import { Component, Host, h, Method, Prop } from '@stencil/core';
 
 import uuidv4 from 'uuid/v4';
 
-const DEFAULT_LAYOUT = {
-  h: 2,
-  w: 4,
-  x: 4,
-  y: 4,
-};
+const DEFAULT_LAYOUT = {};
 
 @Component({
   styleUrls: ['epi-report.scss', '../../global/styles/theme.scss'],
