@@ -181,7 +181,8 @@ export const jmespath = greenlet((path, json) => {
   function isAlpha(ch: string) {
     return (ch >= "a" && ch <= "z") ||
       (ch >= "A" && ch <= "Z") ||
-      ch === "_";
+      ch === "_" ||
+      ch === "$";
   }
 
   function isNum(ch: string) {
@@ -192,7 +193,8 @@ export const jmespath = greenlet((path, json) => {
     return (ch >= "a" && ch <= "z") ||
       (ch >= "A" && ch <= "Z") ||
       (ch >= "0" && ch <= "9") ||
-      ch === "_";
+      ch === "_" ||
+      ch === "$";
   }
 
   class Lexer {
