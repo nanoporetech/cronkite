@@ -59,7 +59,7 @@ export class EpiReportPanel {
       window.addEventListener(listen, this.eventHandler);
       this.listeners.push({ listen, handle: this.eventHandler });
     } else {
-      // await this.updateCustomElProps(attributes, {});
+      await this.updateCustomElProps(attributes, {}); // For components not attached to event streams
     }
   }
 
@@ -75,6 +75,7 @@ export class EpiReportPanel {
     const ReportPanel = this.panelEl;
     const colSpan = (this.panelConfig.layout && this.panelConfig.layout.width) || 4;
     const hasComponents = this.panelConfig.components && this.panelConfig.components.length;
+
     return (
       <Host
         class={`component-panel ${this.panelConfig.hidden ? 'panel-hidden' : ''}`}
