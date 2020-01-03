@@ -21,6 +21,8 @@ export class EpiPollDatastream {
       detail: payload,
     });
     console.debug(eventName, payload);
+    // TODO: HACK TO ENSURE EVENTS FIRE AFTER COMPONENTS ARE RENDERED
+    // setTimeout(sourceNode.dispatchEvent, 100, event);
     sourceNode.dispatchEvent(event);
   };
 
@@ -68,7 +70,7 @@ export class EpiPollDatastream {
 
   @Method() async addFilter(fnKey: string, filterFn: () => boolean) {
     this.filters[fnKey] = filterFn;
-    this.broadcast(this.cachedResponse);
+    await this.broadcast(this.cachedResponse);
   }
 
   requestHandler = async (method: string): Promise<Response> => {
@@ -90,9 +92,9 @@ export class EpiPollDatastream {
     return status >= 200 && status < 400;
   };
 
-  broadcast(data: any) {
+  async broadcast(data: any) {
     if (!data) return;
-    this.responseHandler(data, {
+    await this.responseHandler(data, {
       channel: this.channel,
       channels: this.channels,
       dispatch: this.dispatch,
@@ -115,7 +117,7 @@ export class EpiPollDatastream {
     // }
     const newData: EpiReportDataStream.IMetadataObj = await response.json();
     this.cachedResponse = newData;
-    this.broadcast(newData);
+    await this.broadcast(newData);
   };
 
   pollData = async () => {
@@ -132,19 +134,22 @@ export class EpiPollDatastream {
     if (eTag !== this.eTag) {
       await this.fetchData();
       this.eTag = eTag;
+    } else {
+      // TODO: Should the cached data be rebroadcast on every poll???
+      // await this.broadcast(this.cachedResponse);
     }
   };
 
-  initDataStream() {
+  async initDataStream() {
     if (this.url) {
       this.intervalID = setInterval(this.pollData, this.pollFrequency);
-      this.pollData();
+      await this.pollData();
     }
   }
 
-  componentWillUpdate() {
+  async componentWillUpdate() {
     clearInterval(this.intervalID);
-    this.initDataStream();
+    await this.initDataStream();
   }
 
   componentDidUnload() {
@@ -152,9 +157,9 @@ export class EpiPollDatastream {
     clearInterval(this.intervalID);
   }
 
-  componentDidLoad() {
+  async componentDidLoad() {
     if (!this.url) return;
-    this.initDataStream();
+    await this.initDataStream();
   }
 
   render() {
