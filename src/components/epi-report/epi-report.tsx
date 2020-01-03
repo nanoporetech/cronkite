@@ -1,6 +1,7 @@
 // tslint:disable-next-line: no-import-side-effect
 import '@ionic/core';
-import { Component, Host, h, Method, Prop } from '@stencil/core';
+import { Component, Host, h, Listen, Method, Prop, State } from '@stencil/core';
+import debounce from 'lodash/debounce';
 
 import uuidv4 from 'uuid/v4';
 
@@ -14,9 +15,29 @@ export class EpiReport {
   @Prop({ mutable: true }) config?: any;
   @Prop() showConfig = false;
 
+  @State() reportReady = false;
+
   @Method()
   async loadConfig(newConfig: any): Promise<void> {
     this.config = newConfig;
+  }
+
+  @Listen('componentsLoaded')
+  async reportReadyHandler() {
+    this.setReportReady();
+  }
+
+  setReportReady = debounce(() => {
+    this.reportReady = true;
+  }, 100);
+
+  componentDidLoad() {
+    setTimeout(() => {
+      // fallback to ensure streams get written
+      if (!this.reportReady) {
+        this.reportReady = true;
+      }
+    }, 1000);
   }
 
   render() {
@@ -37,13 +58,15 @@ export class EpiReport {
             );
           })}
         </epi-report-components>
-
-        {this.config.streams.map((streamConfig: any, streamIndex: number) => (
-          <epi-event-stream
-            key={`${streamConfig.element || 'stream'}-${streamIndex}`}
-            config={streamConfig}
-          ></epi-event-stream>
-        ))}
+        {(this.reportReady &&
+          this.config.streams &&
+          this.config.streams.map((streamConfig: any, streamIndex: number) => (
+            <epi-event-stream
+              key={`${streamConfig.element || 'stream'}-${streamIndex}`}
+              config={streamConfig}
+            ></epi-event-stream>
+          ))) ||
+          null}
         {(this.showConfig && <pre>{this.config ? JSON.stringify(this.config, null, 2) : 'No config provided'}</pre>) ||
           null}
       </Host>

@@ -60,7 +60,9 @@ export namespace Components {
     'selectList': ISelectListMember[];
     'selector': any;
   }
-  interface EpiReportTitle {}
+  interface EpiReportTitle {
+    'reportTitle': string;
+  }
   interface EpiReportVersion {}
   interface EpiStatsBox {
     'statsList': EpiReportDataTypes.IStatsBoxListItem[];
@@ -201,7 +203,9 @@ declare namespace LocalJSX {
     'config'?: any;
     'showConfig'?: boolean;
   }
-  interface EpiReportComponents {}
+  interface EpiReportComponents {
+    'onComponentsLoaded'?: (event: CustomEvent<void>) => void;
+  }
   interface EpiReportPanel {
     'panelConfig'?: any;
   }
@@ -210,7 +214,9 @@ declare namespace LocalJSX {
     'selectList'?: ISelectListMember[];
     'selector'?: any;
   }
-  interface EpiReportTitle {}
+  interface EpiReportTitle {
+    'reportTitle'?: string;
+  }
   interface EpiReportVersion {}
   interface EpiStatsBox {
     'statsList'?: EpiReportDataTypes.IStatsBoxListItem[];
