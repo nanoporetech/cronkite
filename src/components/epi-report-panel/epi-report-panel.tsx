@@ -88,6 +88,7 @@ export class EpiReportPanel {
           <epi-error-message message={this.errorMessage} />
         ) : (
           <ReportPanel {...this.customElProps}>
+            {(this.panelConfig.heading && <h5>{this.panelConfig.heading}</h5>) || null}
             {hasComponents ? (
               <epi-report-components>
                 {(this.panelConfig.components || []).map((compDef: any) => {

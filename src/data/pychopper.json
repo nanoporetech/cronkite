@@ -3,7 +3,9 @@
   "components": [
     {
       "element": "epi-report-title",
-      "@innerHTML": "PYCHOPPER CLASSIFICATION",
+      "@reportTitle": [
+        "PYCHOPPER CLASSIFICATION"
+      ],
       "layout": {
         "position": "header"
       }
@@ -107,9 +109,7 @@
     },
     {
       "element": "epi-report-selector",
-      "@heading": [
-        "SELECT BARCODE"
-      ],
+      "heading": "SELECT BARCODE",
       "@selectList": {
         "fn:jmespath": "data.data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
       },
@@ -122,40 +122,27 @@
       }
     },
     {
-      "element": "div",
-      "components": [
-        {
-          "element": "h5",
-          "@innerHTML": "SEQUENCE LENGTH",
-          "layout": {
-            "position": "header"
-          }
-        },
-        {
-          "@label-x": "SEQUENCE LENGTH (BASES)",
-          "@label-y": "READ COUNT",
-          "@units-y": "",
-          "@units-x": "bp",
-          "@tooltip-format-x": "x => ''",
-          "@tooltip-format-y": "value => `${value} reads`",
-          "@label-x-left": "",
-          "@label-x-right": "",
-          "@data": {
-            "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
-          },
-          "element": "epi-coverageplot",
-          "listen": "pychopper:datastream:reads"
-        }
-      ],
+      "heading": "SEQUENCE LENGTH",
+      "@label-x": "SEQUENCE LENGTH (BASES)",
+      "@label-y": "READ COUNT",
+      "@units-y": "",
+      "@units-x": "bp",
+      "@tooltip-format-x": "x => ''",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
+      },
+      "element": "epi-coverageplot",
+      "listen": "pychopper:datastream:reads",
       "layout": {
         "width": 2
       }
     },
     {
       "element": "epi-report-selector",
-      "@heading": [
-        "SELECT RUNID"
-      ],
+      "heading": "SELECT RUNID",
       "@selectList": {
         "fn:jmespath": "data.data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
       },
@@ -168,31 +155,20 @@
       }
     },
     {
-      "element": "div",
-      "components": [
-        {
-          "element": "h5",
-          "@innerHTML": "TRANSCRIPT LENGTH",
-          "layout": {
-            "position": "header"
-          }
-        },
-        {
-          "@label-x": "TRANSCRIPT LENGTH (BIN SIZE 100)",
-          "@label-y": "READ COUNT",
-          "@units-y": "",
-          "@units-x": "bp",
-          "@tooltip-format-x": "x => ''",
-          "@tooltip-format-y": "value => `${value} reads`",
-          "@label-x-left": "",
-          "@label-x-right": "",
-          "@data": {
-            "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
-          },
-          "element": "epi-coverageplot",
-          "listen": "pychopper:datastream:transcripts"
-        }
-      ],
+      "heading": "TRANSCRIPT LENGTH",
+      "@label-x": "TRANSCRIPT LENGTH (BIN SIZE 100)",
+      "@label-y": "READ COUNT",
+      "@units-y": "",
+      "@units-x": "bp",
+      "@tooltip-format-x": "x => ''",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
+      },
+      "element": "epi-coverageplot",
+      "listen": "pychopper:datastream:transcripts",
       "layout": {
         "width": 2
       }
