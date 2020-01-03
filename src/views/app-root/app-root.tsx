@@ -26,7 +26,7 @@ export class AppRoot {
   render() {
     return (
       <Host>
-        <epi-report ref={init => (this.reportEl = init)} show-config></epi-report>
+        <epi-report ref={init => (this.reportEl = init)}></epi-report>
       </Host>
     );
   }
