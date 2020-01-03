@@ -1,15 +1,12 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 
 @Component({
   styleUrl: 'epi-report-title.scss',
   tag: 'epi-report-title',
 })
 export class EpiReportTitle {
+  @Prop() reportTitle = '';
   render() {
-    return (
-      <Host>
-        <slot></slot>
-      </Host>
-    );
+    return <Host>{(this.reportTitle && this.reportTitle) || null}</Host>;
   }
 }
