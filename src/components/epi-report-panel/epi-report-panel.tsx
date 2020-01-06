@@ -35,10 +35,10 @@ export class EpiReportPanel {
   async updateCustomElProps(attributes: any, dataIn: any) {
     try {
       const newProps = await mapAttributesToProps(attributes, dataIn);
-      console.info(`updateCustomElProps::<${this.panelConfig.element}>`, newProps);
+      console.debug(`updateCustomElProps::<${this.panelConfig.element}>`, newProps);
       this.customElProps = newProps;
     } catch (error) {
-      console.info(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
+      console.debug(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
       this.errorMessage = error;
     }
   }
