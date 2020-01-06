@@ -64,6 +64,12 @@ export namespace Components {
     'reportTitle': string;
   }
   interface EpiReportVersion {}
+  interface EpiSocketioDatastream {
+    'channels': EpiReportDataStream.IChannelShape[];
+    'responseHandler': EpiReportDataStream.IDatastreamSocketResponseHandler;
+    'type': string;
+    'url': string | null;
+  }
   interface EpiStatsBox {
     'statsList': EpiReportDataTypes.IStatsBoxListItem[];
   }
@@ -144,6 +150,12 @@ declare global {
     new (): HTMLEpiReportVersionElement;
   };
 
+  interface HTMLEpiSocketioDatastreamElement extends Components.EpiSocketioDatastream, HTMLStencilElement {}
+  var HTMLEpiSocketioDatastreamElement: {
+    prototype: HTMLEpiSocketioDatastreamElement;
+    new (): HTMLEpiSocketioDatastreamElement;
+  };
+
   interface HTMLEpiStatsBoxElement extends Components.EpiStatsBox, HTMLStencilElement {}
   var HTMLEpiStatsBoxElement: {
     prototype: HTMLEpiStatsBoxElement;
@@ -162,6 +174,7 @@ declare global {
     'epi-report-selector': HTMLEpiReportSelectorElement;
     'epi-report-title': HTMLEpiReportTitleElement;
     'epi-report-version': HTMLEpiReportVersionElement;
+    'epi-socketio-datastream': HTMLEpiSocketioDatastreamElement;
     'epi-stats-box': HTMLEpiStatsBoxElement;
   }
 }
@@ -218,6 +231,12 @@ declare namespace LocalJSX {
     'reportTitle'?: string;
   }
   interface EpiReportVersion {}
+  interface EpiSocketioDatastream {
+    'channels'?: EpiReportDataStream.IChannelShape[];
+    'responseHandler'?: EpiReportDataStream.IDatastreamSocketResponseHandler;
+    'type'?: string;
+    'url'?: string | null;
+  }
   interface EpiStatsBox {
     'statsList'?: EpiReportDataTypes.IStatsBoxListItem[];
   }
@@ -235,6 +254,7 @@ declare namespace LocalJSX {
     'epi-report-selector': EpiReportSelector;
     'epi-report-title': EpiReportTitle;
     'epi-report-version': EpiReportVersion;
+    'epi-socketio-datastream': EpiSocketioDatastream;
     'epi-stats-box': EpiStatsBox;
   }
 }
@@ -257,6 +277,7 @@ declare module "@stencil/core" {
       'epi-report-selector': LocalJSX.EpiReportSelector & JSXBase.HTMLAttributes<HTMLEpiReportSelectorElement>;
       'epi-report-title': LocalJSX.EpiReportTitle & JSXBase.HTMLAttributes<HTMLEpiReportTitleElement>;
       'epi-report-version': LocalJSX.EpiReportVersion & JSXBase.HTMLAttributes<HTMLEpiReportVersionElement>;
+      'epi-socketio-datastream': LocalJSX.EpiSocketioDatastream & JSXBase.HTMLAttributes<HTMLEpiSocketioDatastreamElement>;
       'epi-stats-box': LocalJSX.EpiStatsBox & JSXBase.HTMLAttributes<HTMLEpiStatsBoxElement>;
     }
   }
