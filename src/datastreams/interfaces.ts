@@ -10,6 +10,7 @@ export interface IMetadata {
 
 export interface IChannelShape {
   channel: string;
+  listen?: string | string[];
   shape: any;
 }
 
@@ -20,11 +21,18 @@ export interface IMetadataObj {
 export type IDatastreamEventDispatcher = (eventName: string, node: HTMLElement, payload: IMetadataObj) => Promise<void>;
 
 export interface IStreamConfig {
-  channel: string;
   channels: IChannelShape[];
   dispatch: IDatastreamEventDispatcher;
   filters: ((datum: any) => boolean)[];
   type: string;
 }
 
+export interface ISocketConfig {
+  channel: string;
+  dispatch: IDatastreamEventDispatcher;
+  filters: ((datum: any) => boolean)[];
+  shape: any;
+}
+
 export type IDatastreamResponseHandler = (data: IMetadataObj, streamState: IStreamConfig) => Promise<void>;
+export type IDatastreamSocketResponseHandler = (data: IMetadataObj, streamState: ISocketConfig) => Promise<void>;

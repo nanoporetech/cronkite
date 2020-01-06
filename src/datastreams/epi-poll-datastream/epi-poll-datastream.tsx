@@ -37,17 +37,8 @@ export class EpiPollDatastream {
     data: any,
     streamState: EpiReportDataStream.IStreamConfig,
   ) => {
-    const { channel, channels, dispatch, filters } = streamState;
-    let filteredData = data;
-    if (filters.length && Array.isArray(filteredData)) {
-      filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
-        filters.map(filter => filter(datum)).every(i => i),
-      );
-    }
-
-    dispatch(channel, this.hostEl, {
-      data: filteredData,
-    });
+    const { channels, dispatch, filters } = streamState;
+    let filteredData;
 
     channels.forEach(async c => {
       filteredData = await processValue(data, c.shape);
@@ -95,7 +86,6 @@ export class EpiPollDatastream {
   async broadcast(data: any) {
     if (!data) return;
     await this.responseHandler(data, {
-      channel: this.channel,
       channels: this.channels,
       dispatch: this.dispatch,
       filters: Object.values(this.filters),

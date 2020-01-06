@@ -29,7 +29,7 @@
           "element": "epi-headlinevalue",
           "@label": "TOTAL ANALYSED",
           "@value": {
-            "fn:jmespath": "sum(data.data.reads[*]._stats.count)"
+            "fn:jmespath": "sum(data.reads[*]._stats.count)"
           },
           "listen": "pychopper:datastream",
           "layout": {
@@ -111,7 +111,7 @@
       "element": "epi-report-selector",
       "heading": "SELECT BARCODE",
       "@selectList": {
-        "fn:jmespath": "data.data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
       },
       "@selector": [
         "barcode"
@@ -144,7 +144,7 @@
       "element": "epi-report-selector",
       "heading": "SELECT RUNID",
       "@selectList": {
-        "fn:jmespath": "data.data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
       },
       "@selector": [
         "runid"
@@ -176,7 +176,7 @@
     {
       "element": "epi-report-version",
       "@innerHTML": {
-        "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(data.version)])"
+        "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(version)])"
       },
       "layout": {
         "position": "footer"
@@ -186,12 +186,17 @@
   ],
   "streams": [
     {
-      "@channel": "pychopper:datastream",
       "element": "epi-poll-datastream",
       "@url": "http://localhost:1234/Pychopper/164229_pychopper.json",
       "@poll-frequency": 25000,
       "@credentials": "omit",
       "@channels": [
+        {
+          "channel": "pychopper:datastream",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        },
         {
           "channel": "pychopper:datastream:reads",
           "shape": {
