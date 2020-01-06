@@ -15,21 +15,57 @@
       "listen": "mousemove"
     },
     {
-      "element": "epi-headlinevalue",
-      "@label": "Custom events (user datastreams)",
-      "@value": {
-        "fn:jmespath": "length(data.resultList.result[])"
+      "element": "div",
+      "style": {
+        "backgroundColor": "#222"
       },
-      "listen": "hello:world:event"
+      "components": [
+        {
+          "element": "h1",
+          "@innerHTML": "EUROPE PMC SEARCH RESULTS",
+          "layout": {
+            "position": "header"
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@value": {
+            "fn:jmespath": "request.queryString"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:event"
+        },
+        {
+          "element": "ol",
+          "@innerHTML": {
+            "fn:jmespath": "join(``, [].join(``,['<li><a href=\\'',@.id,'\\'>',@.title,'</a>']))"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:results"
+        }
+      ]
     }
   ],
   "streams": [
     {
-      "@channel": "hello:world:event",
       "element": "epi-poll-datastream",
       "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
       "@poll-frequency": 25000,
-      "@credentials": "omit"
+      "@credentials": "omit",
+      "@channels": [
+        {
+          "channel": "hello:world:event",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        },
+        {
+          "channel": "hello:world:results",
+          "shape": {
+            "fn:jmespath": "resultList.result"
+          }
+        }
+      ]
     }
   ]
 }
