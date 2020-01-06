@@ -24,15 +24,15 @@ export const config: Config = {
   outputTargets: [
     {
       baseUrl: '/',
+      copy: [
+        {
+          dest: './examples',
+          src: '../examples',
+        },
+      ],
       // comment the following line to disable service workers in production
       serviceWorker: null,
       type: 'www',
-      copy: [
-        {
-          src: './data',
-          dest: './data'
-        }
-      ]
     },
     {
       type: 'dist',

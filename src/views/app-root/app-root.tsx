@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core';
+
 @Component({
   styleUrl: 'app-root.scss',
   tag: 'app-root',
@@ -11,14 +12,14 @@ export class AppRoot {
 
   async componentDidLoad() {
     if (!this.reportEl) return;
-    const response = await fetch(`../../data/${this.report}.json`);
+    const response = await fetch(`../../../examples/reports/${this.report}.json`);
     const reportConfig = await response.json();
     this.reportEl.config = reportConfig;
   }
 
   async componentWillUpdate() {
     if (!this.reportEl) return;
-    const response = await fetch(`../../data/${this.report}.json`);
+    const response = await fetch(`../../../examples/reports/${this.report}.json`);
     const reportConfig = await response.json();
     this.reportEl.config = reportConfig;
   }
