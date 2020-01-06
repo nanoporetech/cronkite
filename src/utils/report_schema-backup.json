@@ -27,10 +27,7 @@
     "functions": {
       "oneOf": [
         {
-          "type": [
-            "array",
-            "string"
-          ]
+          "type": "string"
         },
         {
           "type": "object",
@@ -188,27 +185,78 @@
             "$id": "#/properties/components/items/properties/layout",
             "type": "object",
             "title": "The Layout Schema",
+            "required": [
+              "w",
+              "h",
+              "x",
+              "y",
+              "i",
+              "moved",
+              "static"
+            ],
             "properties": {
-              "width": {
-                "$id": "#/properties/components/items/properties/layout/properties/width",
+              "w": {
+                "$id": "#/properties/components/items/properties/layout/properties/w",
                 "type": "integer",
                 "title": "The Width Schema",
-                "default": 4,
+                "default": 0,
                 "examples": [
                   4
                 ]
               },
-              "position": {
-                "$id": "#/properties/components/items/properties/layout/properties/position",
-                "type": "string",
-                "title": "The Position Schema",
-                "enum": [
-                  "header",
-                  "footer"
-                ],
+              "h": {
+                "$id": "#/properties/components/items/properties/layout/properties/h",
+                "type": "integer",
+                "title": "The Height Schema",
+                "default": 0,
                 "examples": [
-                  "header",
-                  "footer"
+                  2
+                ]
+              },
+              "x": {
+                "$id": "#/properties/components/items/properties/layout/properties/x",
+                "type": "integer",
+                "title": "The X position Schema",
+                "default": 0,
+                "examples": [
+                  0
+                ]
+              },
+              "y": {
+                "$id": "#/properties/components/items/properties/layout/properties/y",
+                "type": "integer",
+                "title": "The Y position Schema",
+                "default": 0,
+                "examples": [
+                  0
+                ]
+              },
+              "i": {
+                "$id": "#/properties/components/items/properties/layout/properties/i",
+                "type": "string",
+                "title": "The Identity Schema",
+                "default": "",
+                "examples": [
+                  "6231ec98-fad4-4c84-89b2-003b393dc589"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "moved": {
+                "$id": "#/properties/components/items/properties/layout/properties/moved",
+                "type": "boolean",
+                "title": "The Moved Schema",
+                "default": false,
+                "examples": [
+                  false
+                ]
+              },
+              "static": {
+                "$id": "#/properties/components/items/properties/layout/properties/static",
+                "type": "boolean",
+                "title": "The Static Schema",
+                "default": false,
+                "examples": [
+                  false
                 ]
               }
             }
