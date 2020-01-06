@@ -1,7 +1,9 @@
 // tslint:disable-next-line: no-import-side-effect
 import '@ionic/core';
-import { Component, Host, h, Listen, Method, Prop, State } from '@stencil/core';
+import { Component, Host, h, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import debounce from 'lodash/debounce';
+import Ajv from 'ajv';
+import reportSchema from '../../utils/report_schema.json';
 
 import uuidv4 from 'uuid/v4';
 
@@ -12,14 +14,27 @@ const DEFAULT_LAYOUT = {};
   tag: 'epi-report',
 })
 export class EpiReport {
+  private ajv = new Ajv().addSchema(reportSchema, 'report-schema');
+
   @Prop({ mutable: true }) config?: any;
+
+  @Watch('config')
+  validateConfig(newConfig: any): boolean {
+    this.validConfig = this.ajv.validate('report-schema', newConfig) as boolean;
+    return this.validConfig;
+  }
+
   @Prop() showConfig = false;
 
   @State() reportReady = false;
 
+  validConfig = false;
+
   @Method()
   async loadConfig(newConfig: any): Promise<void> {
-    this.config = newConfig;
+    if (this.validateConfig(newConfig)) {
+      this.config = newConfig;
+    }
   }
 
   @Listen('componentsLoaded')
@@ -35,7 +50,7 @@ export class EpiReport {
     setTimeout(() => {
       // fallback to ensure streams get written
       if (!this.reportReady) {
-        this.reportReady = true;
+        this.setReportReady();
       }
     }, 1000);
   }
@@ -43,33 +58,37 @@ export class EpiReport {
   render() {
     if (!this.config) return;
     return (
-      <Host>
-        <epi-report-components>
-          {(this.config.components || []).map((compDef: any) => {
-            const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
-            const uuid = componentDefinition.layout.i || uuidv4();
-            return (
-              <epi-report-panel
-                slot={componentDefinition.layout.position}
-                key={uuid}
-                id={uuid}
-                panelConfig={componentDefinition}
-              />
-            );
-          })}
-        </epi-report-components>
-        {(this.reportReady &&
-          this.config.streams &&
-          this.config.streams.map((streamConfig: any, streamIndex: number) => (
-            <epi-event-stream
-              key={`${streamConfig.element || 'stream'}-${streamIndex}`}
-              config={streamConfig}
-            ></epi-event-stream>
-          ))) ||
-          null}
-        {(this.showConfig && <pre>{this.config ? JSON.stringify(this.config, null, 2) : 'No config provided'}</pre>) ||
-          null}
-      </Host>
+      (this.validConfig && (
+        <Host>
+          <epi-report-components>
+            {(this.config.components || []).map((compDef: any) => {
+              const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
+              const uuid = componentDefinition.layout.i || uuidv4();
+              return (
+                <epi-report-panel
+                  slot={componentDefinition.layout.position}
+                  key={uuid}
+                  id={uuid}
+                  panelConfig={componentDefinition}
+                />
+              );
+            })}
+          </epi-report-components>
+          {(this.reportReady &&
+            this.config.streams &&
+            this.config.streams.map((streamConfig: any, streamIndex: number) => (
+              <epi-event-stream
+                key={`${streamConfig.element || 'stream'}-${streamIndex}`}
+                config={streamConfig}
+              ></epi-event-stream>
+            ))) ||
+            null}
+          {(this.showConfig && (
+            <pre>{this.config ? JSON.stringify(this.config, null, 2) : 'No config provided'}</pre>
+          )) ||
+            null}
+        </Host>
+      )) || <pre>{JSON.stringify(this.ajv.errors, null, 2)}</pre>
     );
   }
 }
