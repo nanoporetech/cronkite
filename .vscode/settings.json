@@ -49,12 +49,14 @@
   "gitlab.instanceUrl": "https://git.oxfordnanolabs.local",
   "stencilTools.component.alphabetizeImports": true,
   "stencilTools.component.defaultImports": [
-    "",
+    "Component",
+    "Host",
     "h",
     "Prop"
   ],
   "stencilTools.quotes": "single",
   "stencilTools.style.extension": "scss",
+  "stencilTools.test.extension": "spec.ts",
   "tslint.ignoreDefinitionFiles": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}"
