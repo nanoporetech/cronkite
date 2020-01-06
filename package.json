@@ -36,6 +36,7 @@
     "@types/jest": "24.0.24",
     "@types/lodash": "4.14.149",
     "@types/puppeteer": "1.20.3",
+    "@types/socket.io-client": "1.4.32",
     "@types/uuid": "3.4.6",
     "husky": "3.1.0",
     "jest": "24.9.0",
@@ -73,6 +74,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
+    "ajv": "6.10.2",
     "epi2me-ui-checkmark": "2019.5.30-2453041",
     "epi2me-ui-coverageplot": "2019.7.22-2581832",
     "epi2me-ui-datastream": "2019.7.30-2601313",
@@ -81,6 +83,7 @@
     "greenlet": "1.1.0",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
+    "socket.io-client": "2.3.0",
     "superstruct": "0.8.3",
     "uuid": "3.3.3"
   }
