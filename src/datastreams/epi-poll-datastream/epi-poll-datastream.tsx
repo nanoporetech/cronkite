@@ -42,7 +42,8 @@ export class EpiPollDatastream {
 
     channels.forEach(async c => {
       filteredData = await processValue(data, c.shape);
-      if (filters.length && Array.isArray(filteredData)) {
+      const canFilter = c.filtered !== undefined ? c.filtered : true;
+      if (canFilter && filters.length && Array.isArray(filteredData)) {
         filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
           filters.map(filter => filter(datum)).every(i => i),
         );
@@ -54,6 +55,7 @@ export class EpiPollDatastream {
   @Prop() type = 'data';
   @Prop() url: string | null = null;
   @Prop() channels: EpiReportDataStream.IChannelShape[] = [];
+  @Prop() acceptsFilters = false;
 
   @Method() async listFilters(): Promise<{}> {
     return this.filters;
@@ -157,7 +159,7 @@ export class EpiPollDatastream {
       <Host
         aria-hidden={'true'}
         class={{
-          'epi-filtered-datastream': true,
+          'epi-filtered-datastream': this.acceptsFilters,
           [`epi-${this.type}-eventstream`]: true,
         }}
       />

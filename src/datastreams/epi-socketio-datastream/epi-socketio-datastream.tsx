@@ -31,19 +31,17 @@ export class EpiSocketioDatastream {
 
   @Element() hostEl!: HTMLElement;
 
-  // @Prop() channel = 'epi2me:stream';
-  // @Prop() credentials: RequestCredentials = 'include';
-  // @Prop() mode: RequestMode = 'cors';
-  // @Prop() pollFrequency = 15000;
-  // @Prop() corsProxy = '';
   @Prop() responseHandler: EpiReportDataStream.IDatastreamSocketResponseHandler = async (
     data: any,
     streamConfig: EpiReportDataStream.ISocketConfig,
   ) => {
-    const { channel, dispatch, filters, shape } = streamConfig;
+    const { channel, dispatch, filters, shape, filtered } = streamConfig;
 
     let filteredData = await processValue(data, shape);
-    if (filters.length && Array.isArray(filteredData)) {
+
+    const canFilter = filtered !== undefined ? filtered : true;
+
+    if (canFilter && filters.length && Array.isArray(filteredData)) {
       filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
         filters.map(filter => filter(datum)).every(i => i),
       );
@@ -54,6 +52,7 @@ export class EpiSocketioDatastream {
   @Prop() type = 'data';
   @Prop() url: string | null = null;
   @Prop() channels: EpiReportDataStream.IChannelShape[] = [];
+  @Prop() acceptsFilters = true;
 
   async broadcast(data: any, channel: string, shape: any) {
     if (!data) return;
@@ -130,7 +129,7 @@ export class EpiSocketioDatastream {
       <Host
         aria-hidden={'true'}
         class={{
-          'epi-filtered-datastream': true,
+          'epi-filtered-datastream': this.acceptsFilters,
           [`epi-${this.type}-eventstream`]: true,
         }}
       />

@@ -190,6 +190,7 @@
       "@url": "http://localhost:3333/examples/data/pychopper.json",
       "@poll-frequency": 25000,
       "@credentials": "omit",
+      "@acceptsFilters": true,
       "@channels": [
         {
           "channel": "pychopper:datastream",

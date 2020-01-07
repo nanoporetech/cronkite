@@ -34,6 +34,7 @@ export namespace Components {
     'type': string;
   }
   interface EpiPollDatastream {
+    'acceptsFilters': boolean;
     'addFilter': (fnKey: string, filterFn: () => boolean) => Promise<void>;
     'channel': string;
     'channels': EpiReportDataStream.IChannelShape[];
@@ -65,6 +66,7 @@ export namespace Components {
   }
   interface EpiReportVersion {}
   interface EpiSocketioDatastream {
+    'acceptsFilters': boolean;
     'channels': EpiReportDataStream.IChannelShape[];
     'responseHandler': EpiReportDataStream.IDatastreamSocketResponseHandler;
     'type': string;
@@ -202,6 +204,7 @@ declare namespace LocalJSX {
     'type'?: string;
   }
   interface EpiPollDatastream {
+    'acceptsFilters'?: boolean;
     'channel'?: string;
     'channels'?: EpiReportDataStream.IChannelShape[];
     'corsProxy'?: string;
@@ -232,6 +235,7 @@ declare namespace LocalJSX {
   }
   interface EpiReportVersion {}
   interface EpiSocketioDatastream {
+    'acceptsFilters'?: boolean;
     'channels'?: EpiReportDataStream.IChannelShape[];
     'responseHandler'?: EpiReportDataStream.IDatastreamSocketResponseHandler;
     'type'?: string;

@@ -11,6 +11,9 @@ export default {
         channel: {
           type: 'string',
         },
+        filtered: {
+          type: 'boolean',
+        },
         listen: {
           type: 'string',
         },
