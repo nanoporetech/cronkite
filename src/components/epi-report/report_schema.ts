@@ -3,11 +3,15 @@
 export default {
   definitions: {
     channel: {
+      $id: '#/definitions/channel',
       type: 'object',
       additionalProperties: false,
       required: ['channel', 'shape'],
       properties: {
         channel: {
+          type: 'string',
+        },
+        listen: {
           type: 'string',
         },
         shape: {
@@ -286,6 +290,23 @@ export default {
               },
               '@poll-frequency': {
                 $ref: '#/definitions/datastream/properties/@poll-frequency',
+              },
+            },
+          },
+          {
+            type: 'object',
+            required: ['element', '@url'],
+            properties: {
+              element: {
+                type: 'string',
+                title: 'Generic Socket.io datastream',
+                const: 'epi-socketio-datastream',
+              },
+              '@url': {
+                $ref: '#/definitions/datastream/properties/@url',
+              },
+              '@channels': {
+                $ref: '#/definitions/datastream/properties/@channels',
               },
             },
           },

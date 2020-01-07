@@ -1,0 +1,37 @@
+{
+  "id": "socketio:demo",
+  "components": [
+    {
+      "element": "p",
+      "@innerHTML": "Type something in the <a href='https://socket.io/demos/chat/' target='_blank'>socket.io chat room</a> to view changes.",
+      "layout": {
+        "position": "header"
+      }
+    },
+    {
+      "element": "epi-headlinevalue",
+      "@label": {
+        "fn:jmespath": "username"
+      },
+      "@value": {
+        "fn:jmespath": "message"
+      },
+      "listen": "socketio:newmessage"
+    }
+  ],
+  "streams": [
+    {
+      "element": "epi-socketio-datastream",
+      "@url": "https://socket-io-chat.now.sh/",
+      "@channels": [
+        {
+          "channel": "socketio:newmessage",
+          "listen": "new message",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        }
+      ]
+    }
+  ]
+}
