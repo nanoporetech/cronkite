@@ -3,7 +3,7 @@ import '@ionic/core';
 import { Component, Host, h, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import debounce from 'lodash/debounce';
 import Ajv from 'ajv';
-import reportSchema from '../../utils/report_schema.json';
+import reportSchema from './report_schema';
 
 import uuidv4 from 'uuid/v4';
 
@@ -14,13 +14,16 @@ const DEFAULT_LAYOUT = {};
   tag: 'epi-report',
 })
 export class EpiReport {
-  private ajv = new Ajv().addSchema(reportSchema, 'report-schema');
+  private ajv = new Ajv();
 
   @Prop({ mutable: true }) config?: any;
 
   @Watch('config')
-  validateConfig(newConfig: any): boolean {
-    this.validConfig = this.ajv.validate('report-schema', newConfig) as boolean;
+  async validateConfig(newConfig: any): Promise<boolean> {
+    this.validConfig = this.ajv.validate(reportSchema, newConfig) as boolean;
+    if (this.validConfig) {
+      this.reportReady = false;
+    }
     return this.validConfig;
   }
 
@@ -32,7 +35,7 @@ export class EpiReport {
 
   @Method()
   async loadConfig(newConfig: any): Promise<void> {
-    if (this.validateConfig(newConfig)) {
+    if (await this.validateConfig(newConfig)) {
       this.config = newConfig;
     }
   }
