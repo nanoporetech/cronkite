@@ -269,11 +269,18 @@ export default {
     components: {
       $id: '#/properties/components',
       $ref: '#/definitions/componentArray',
+      default: [
+        {
+          element: 'h1',
+          '@innerHTML': 'Hello world!',
+        },
+      ],
     },
     streams: {
       $id: '#/properties/streams',
       type: 'array',
       title: 'Dashboard data streams',
+      default: [],
       items: {
         oneOf: [
           {

@@ -59,5 +59,15 @@
   "stencilTools.test.extension": "spec.ts",
   "tslint.ignoreDefinitionFiles": false,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}"
+  "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}",
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/examples/reports/*.json",
+        "/www/examples/reports/*.json",
+        "/**/*.cronkite.json"
+      ],
+      "url": "./cronkite.schema.json"
+    }
+  ]
 }
