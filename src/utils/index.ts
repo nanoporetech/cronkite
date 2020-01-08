@@ -158,24 +158,6 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
   return { [func]: val };
 };
 
-export const loadDashboardLayout = async (dashboardId: string, demoType: string): Promise<any> => {
-  let dashboardLayout = {};
-
-  if (dashboardId) {
-    try {
-      dashboardLayout = JSON.parse(localStorage.getItem(dashboardId) || '{}');
-      // console.info('Loading from local storage')
-    } catch (ignore) {
-      // ignore
-    }
-  } else {
-    const demoLayout = await import(`../data/${demoType}.json`);
-    dashboardLayout = demoLayout.default;
-    // console.info('Loading from demo layout')
-  }
-  return dashboardLayout;
-};
-
 export const saveDashboardLayout = (dashboardId: string, layout: any) => {
   localStorage.setItem(dashboardId, typeof layout === 'string' ? layout : JSON.stringify(layout));
 };

@@ -1,6 +1,6 @@
-import { applyFunction, loadDashboardLayout, mapAttributesToProps, saveDashboardLayout, validateArray } from './index';
+import { applyFunction, mapAttributesToProps, saveDashboardLayout, validateArray } from './index';
 
-import helloWorld from '../data/hello-world.json';
+import helloWorld from '../../examples/reports/hello-world.json';
 
 const MOCK_PAYLOAD = {
   data: [
@@ -69,23 +69,6 @@ describe('Dashboard utils', () => {
     localStorage.clear();
     saveDashboardLayout('foo:bar', JSON.stringify({ dummy: 'test value' }));
     expect(localStorage.getItem('foo:bar')).toBe('{"dummy":"test value"}');
-  });
-
-  it('loads layouts from localStorage', async () => {
-    // Load when there's nothing but ID given
-    let loadFromId = await loadDashboardLayout('foo:bar', null);
-    expect(loadFromId).toBe(null);
-    saveDashboardLayout('foo:bar', { dummy: 'test value' });
-
-    // Load when ID given and in localStorage
-    loadFromId = await loadDashboardLayout('foo:bar', null);
-    expect(loadFromId).toStrictEqual({ dummy: 'test value' });
-
-    // Load from fallback when ID is falsey
-    loadFromId = await loadDashboardLayout(null, 'helloWorld');
-    expect(loadFromId).toStrictEqual(helloWorld);
-
-    localStorage.clear();
   });
 
   it('maps HTML attributes to React props', async () => {
