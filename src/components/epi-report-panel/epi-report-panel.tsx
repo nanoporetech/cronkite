@@ -1,8 +1,6 @@
 // tslint:disable: no-import-side-effect
 import { Component, h, Host, Prop, State } from '@stencil/core';
 import uuidv4 from 'uuid/v4';
-import 'epi2me-ui-headlinevalue/dist';
-import 'epi2me-ui-coverageplot/dist';
 
 import { mapAttributesToProps } from '../../utils';
 

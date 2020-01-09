@@ -3,7 +3,7 @@ import '@ionic/core';
 import { Component, Host, h, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import debounce from 'lodash/debounce';
 import Ajv from 'ajv';
-import reportSchema from './report_schema';
+import reportSchema from '../../global/cronkite.schema.json';
 
 import uuidv4 from 'uuid/v4';
 
