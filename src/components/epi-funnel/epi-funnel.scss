@@ -1,7 +1,6 @@
 epi-funnel {
   & ion-progress-bar {
     height: 2rem;
-    // display: block;
   }
 
   .label {
@@ -35,9 +34,7 @@ epi-funnel {
     & th,
     & td {
       padding: 0.5rem 0;
-      // border: solid 1px;
       text-align: right;
-      // margin: 1rem 0;
       white-space: nowrap;
       color: var(--epi-color-dark-tint);
       font-size: 16pt;

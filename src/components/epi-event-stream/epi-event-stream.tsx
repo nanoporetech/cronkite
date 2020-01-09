@@ -1,7 +1,6 @@
 import { Component, h, Host, Prop, State } from '@stencil/core';
 
 @Component({
-  styleUrl: 'epi-event-stream.scss',
   tag: 'epi-event-stream',
 })
 export class EpiEventStream {
@@ -12,7 +11,9 @@ export class EpiEventStream {
   streamEl?: string;
 
   async componentWillLoad() {
+    if (!this.config) return;
     const { element, ...attributes } = this.config;
+    if (!element) return;
     this.streamEl = element;
     this.customElProps = Object.assign(
       {},
@@ -27,7 +28,7 @@ export class EpiEventStream {
 
     const EventSource = this.streamEl;
     return (
-      <Host>
+      <Host aria-hidden={'true'}>
         <EventSource {...this.customElProps} />
       </Host>
     );

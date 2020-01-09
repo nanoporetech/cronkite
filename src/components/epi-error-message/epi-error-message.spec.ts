@@ -2,7 +2,7 @@ import { SpecPage, newSpecPage } from '@stencil/core/dist/testing';
 import { EpiErrorMessage } from './epi-error-message';
 
 describe('epi-error-message', () => {
-  let rootInst: EpiErrorMessage;
+  // let rootInst: EpiErrorMessage;
   let rootEl: HTMLEpiErrorMessageElement;
   let page: SpecPage;
 
@@ -11,7 +11,7 @@ describe('epi-error-message', () => {
       components: [EpiErrorMessage],
       html: '<epi-error-message></epi-error-message>',
     });
-    rootInst = page.rootInstance;
+    // rootInst = page.rootInstance;
     rootEl = page.root as HTMLEpiErrorMessageElement;
   });
 
@@ -21,9 +21,16 @@ describe('epi-error-message', () => {
     });
   });
 
-  // describe('rendering', () => {
-  //   it('renders correctly', async () => {
-  //     await page.waitForChanges();
-  //   });
-  // });
+  describe('rendering', () => {
+    it('renders correctly', async () => {
+      expect(rootEl).toEqualLightHtml(`<epi-error-message>
+        Yikes! An error occurred
+      </epi-error-message>`);
+      rootEl.message = 'Nobody said it was easy';
+      await page.waitForChanges();
+      expect(rootEl).toEqualLightHtml(`<epi-error-message>
+      Nobody said it was easy
+    </epi-error-message>`);
+    });
+  });
 });

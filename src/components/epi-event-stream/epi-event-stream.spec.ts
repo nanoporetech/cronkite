@@ -21,9 +21,26 @@ describe('epi-event-stream', () => {
     });
   });
 
-  // describe('rendering', () => {
-  //   it('renders correctly', async () => {
-  //     await page.waitForChanges();
-  //   });
-  // });
+  describe('rendering', () => {
+    it(`Won't render if config containing an 'element' key is provided`, async () => {
+      expect(rootEl).toEqualLightHtml('<epi-event-stream></epi-event-stream>');
+      expect(rootInst.customElProps).toBeUndefined();
+      rootEl.config = {};
+      await rootInst.componentWillLoad();
+      await page.waitForChanges();
+      expect(rootEl).toEqualLightHtml('<epi-event-stream></epi-event-stream>');
+    });
+
+    it('renders with correct config', async () => {
+      expect(rootEl).toEqualLightHtml('<epi-event-stream></epi-event-stream>');
+      expect(rootInst.customElProps).toBeUndefined();
+      const datastreamTagName = 'my-test-datastream';
+      rootEl.config = { element: datastreamTagName, '@foo': 'bar', other: 'baz' };
+      await rootInst.componentWillLoad();
+      await page.waitForChanges();
+      expect(rootEl).toEqualLightHtml(`<epi-event-stream aria-hidden="true">
+        <${datastreamTagName} foo="bar"></${datastreamTagName}>
+      </epi-event-stream>`);
+    });
+  });
 });

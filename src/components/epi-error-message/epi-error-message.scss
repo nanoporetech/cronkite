@@ -1,5 +1,5 @@
 epi-error-message {
-  color: tomato;
+  color: var(--epi-color-danger-rgb, var(--ion-color-danger-rgb, tomato));
   padding: 1rem 0;
   font-family: monospace;
   display: flex;

@@ -1,7 +1,5 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, Watch } from '@stencil/core';
 import { EpiReportDataTypes } from '../../types';
-// import { groupBy, sumBy, sortBy } from 'lodash';
-// import sortBy from 'lodash/sumBy';
 
 @Component({
   styleUrl: 'epi-funnel.scss',
@@ -9,6 +7,13 @@ import { EpiReportDataTypes } from '../../types';
 })
 export class EpiFunnel {
   @Prop() statsList: EpiReportDataTypes.IFunnelListItem[] = [];
+  @Watch('statsList')
+  statsListValidator(newStatsList: any[]) {
+    const isValid = newStatsList.length === 0 || newStatsList.every(member => !!member.label && !!member.count);
+    if (!isValid) {
+      throw new Error('Error: @Prop() statsList - property does not contain valid members');
+    }
+  }
 
   render() {
     if (!Array.isArray(this.statsList) || !this.statsList.length) return null;
