@@ -67,7 +67,7 @@ export class EpiReport {
     if (!this.config) return;
     return (
       (this.validConfig && (
-        <Host>
+        <Host id={this.config.id}>
           <epi-report-components>
             {(this.config.components || []).map((compDef: any) => {
               const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
