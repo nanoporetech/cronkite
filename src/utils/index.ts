@@ -78,15 +78,22 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
   let arg;
   let precision: number;
   let unit;
+  let dividend;
+  let divisor;
   switch (func) {
     case 'fn:sum':
       result = (await transformValue(val, data))[0] || [];
       return result.reduce((a: number, b: number) => a + b, 0);
     case 'fn:divide':
-      let [dividend, divisor] = val;
-      dividend = (await transformValue(dividend, data))[0] || 0;
-      divisor = (await transformValue(divisor, data))[0] || 0;
+      [dividend, divisor] = val;
+      dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
+      divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
       return dividend / divisor;
+    case 'fn:mod':
+      [dividend, divisor] = val;
+      dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
+      divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
+      return dividend % divisor;
     case 'fn:formatNumber':
       [arg, precision, unit] = val;
       result = (await transformValue(arg, data))[0] || 0.0;

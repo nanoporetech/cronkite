@@ -12,7 +12,31 @@
       "@value": {
         "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
       },
-      "listen": "mousemove"
+      "listen": "mousemove",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "epi-checkmark",
+      "@message": {
+        "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
+      },
+      "@fail": {
+        "fn:jmespath": "clientX>`500`"
+      },
+      "@size": {
+        "fn:divide": [
+          {
+            "fn:jmespath": "clientY"
+          },
+          4
+        ]
+      },
+      "listen": "mousemove",
+      "layout": {
+        "width": 2
+      }
     },
     {
       "element": "div",

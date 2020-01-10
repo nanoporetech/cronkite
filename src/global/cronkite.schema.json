@@ -237,7 +237,6 @@
               "maxItems": 2,
               "items": [
                 {
-                  "type": "object",
                   "title": "dividend",
                   "oneOf": [
                     {
@@ -249,7 +248,35 @@
                   ]
                 },
                 {
-                  "type": "object",
+                  "title": "divisor",
+                  "oneOf": [
+                    {
+                      "$ref": "#/definitions/componentProps"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              ]
+            },
+            "fn:mod": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "title": "dividend",
+                  "oneOf": [
+                    {
+                      "$ref": "#/definitions/componentProps"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                },
+                {
                   "title": "divisor",
                   "oneOf": [
                     {
