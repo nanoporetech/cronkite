@@ -44,7 +44,7 @@ pages:
   image: docker-registry.oxfordnanolabs.local:5000/ont-base-node:8
   script:
     - npm i
-    - npm run start
+    - npm run build:app
     - mv www public
   artifacts:
     paths:

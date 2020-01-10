@@ -16,6 +16,7 @@
   "scripts": {
     "build": "stencil build",
     "build:docs": "npm run build --docs",
+    "build:app": "npm run build --dev",
     "clean": "rm -rf dist www .stencil",
     "fix-css": "npm run lint-css --fix",
     "fix-ts": "npm run tslint:app --fix",
