@@ -49,6 +49,7 @@ export class EpiReportPanel {
   };
 
   async componentWillLoad() {
+    if (!this.panelConfig) return;
     const { element, listen, hidden, ...attributes } = this.panelConfig;
     this.panelEl = element;
     this.customElAttrs = attributes;

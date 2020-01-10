@@ -8,10 +8,10 @@ import * as EpiReportDataStream from '../interfaces';
 export class EpiInstanceDatastream {
   @Element() hostEl!: HTMLElement;
 
-  @Prop() type = 'telemetry';
+  @Prop() type = 'default';
   @Prop() flavour!: string;
   @Prop() idWorkflowInstance!: string | number;
-  @Prop() channel = 'instance:telemetry';
+  @Prop() channel = 'instance:default';
   @Prop() credentials: RequestCredentials = 'include';
   @Prop() mode: RequestMode = 'cors';
   @Prop() pollFrequency = 15000;
@@ -40,7 +40,7 @@ export class EpiInstanceDatastream {
   }
 
   render() {
-    if (!this.type && !this.flavour && !this.idWorkflowInstance) return null;
+    if (!this.type || !this.flavour || !this.idWorkflowInstance) return null;
     const url = `https://${location.host}/workflow_instance/${this.idWorkflowInstance}/${this.flavour}.json`;
 
     return (

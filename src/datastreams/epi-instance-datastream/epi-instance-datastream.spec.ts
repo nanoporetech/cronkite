@@ -1,6 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { EpiInstanceDatastream } from './epi-instance-datastream';
-import { EpiReportDataSource } from '../interfaces'
 
 it('should render my component', async () => {
   const page = await newSpecPage({
