@@ -45,11 +45,15 @@ export class EpiInstanceDatastream {
 
     return (
       <epi-poll-datastream
-        channel={this.channel}
         credentials={this.credentials}
         responseHandler={this.getPayloadResponseHandler()}
         type={this.type}
         url={url}
+        channels={[
+          {
+            channel: this.channel,
+          },
+        ]}
       />
     );
   }

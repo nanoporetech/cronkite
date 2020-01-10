@@ -36,7 +36,6 @@ export namespace Components {
   interface EpiPollDatastream {
     'acceptsFilters': boolean;
     'addFilter': (fnKey: string, filterFn: () => boolean) => Promise<void>;
-    'channel': string;
     'channels': EpiReportDataStream.IChannelShape[];
     'corsProxy': string;
     'credentials': RequestCredentials;
@@ -205,7 +204,6 @@ declare namespace LocalJSX {
   }
   interface EpiPollDatastream {
     'acceptsFilters'?: boolean;
-    'channel'?: string;
     'channels'?: EpiReportDataStream.IChannelShape[];
     'corsProxy'?: string;
     'credentials'?: RequestCredentials;

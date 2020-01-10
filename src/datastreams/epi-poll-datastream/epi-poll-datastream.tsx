@@ -2,6 +2,17 @@ import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
 import * as EpiReportDataStream from '../interfaces';
 import { processValue } from '../../utils';
 
+const DEFAULT_SHAPE = {
+  'fn:jmespath': '@',
+};
+const DEFAULT_CHANNEL = 'cronkite:stream';
+const DEFAULT_CHANNELS: EpiReportDataStream.IChannelShape[] = [
+  {
+    channel: DEFAULT_CHANNEL,
+    shape: DEFAULT_SHAPE,
+  },
+];
+
 @Component({
   tag: 'epi-poll-datastream',
 })
@@ -15,7 +26,7 @@ export class EpiPollDatastream {
     sourceNode: HTMLElement,
     payload,
   ) => {
-    const event = new CustomEvent(eventName, {
+    const event = new CustomEvent(eventName || DEFAULT_CHANNEL, {
       bubbles: true,
       composed: true,
       detail: payload,
@@ -28,7 +39,10 @@ export class EpiPollDatastream {
 
   @Element() hostEl!: HTMLElement;
 
-  @Prop() channel = 'epi2me:stream';
+  @Prop() type = 'data';
+  @Prop() url: string | null = null;
+  @Prop() channels: EpiReportDataStream.IChannelShape[] = DEFAULT_CHANNELS;
+  @Prop() acceptsFilters = false;
   @Prop() credentials: RequestCredentials = 'include';
   @Prop() mode: RequestMode = 'cors';
   @Prop() pollFrequency = 15000;
@@ -41,7 +55,7 @@ export class EpiPollDatastream {
     let filteredData;
 
     channels.forEach(async c => {
-      filteredData = await processValue(data, c.shape);
+      filteredData = await processValue(data, c.shape || DEFAULT_SHAPE);
       const canFilter = c.filtered !== undefined ? c.filtered : true;
       if (canFilter && filters.length && Array.isArray(filteredData)) {
         filteredData = filteredData.filter((datum: EpiReportDataStream.IMetadataObj) =>
@@ -51,11 +65,6 @@ export class EpiPollDatastream {
       dispatch(c.channel, this.hostEl, filteredData);
     });
   };
-
-  @Prop() type = 'data';
-  @Prop() url: string | null = null;
-  @Prop() channels: EpiReportDataStream.IChannelShape[] = [];
-  @Prop() acceptsFilters = false;
 
   @Method() async listFilters(): Promise<{}> {
     return this.filters;

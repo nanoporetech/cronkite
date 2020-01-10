@@ -10,7 +10,8 @@
       ],
       "properties": {
         "channel": {
-          "type": "string"
+          "type": "string",
+          "default": "cronkite:stream"
         },
         "filtered": {
           "type": "boolean"
@@ -19,7 +20,10 @@
           "type": "string"
         },
         "shape": {
-          "$ref": "#/definitions/componentProps"
+          "$ref": "#/definitions/componentProps",
+          "default": {
+            "fn:jmespath": "@"
+          }
         }
       }
     },
@@ -140,6 +144,32 @@
           "default": 15000,
           "examples": [
             1000000000
+          ]
+        },
+        "@acceptsFilters": {
+          "$id": "#/definitions/datastream/properties/@acceptsFilters",
+          "type": "boolean",
+          "title": "The @acceptsFilters Schema",
+          "default": false,
+          "examples": [
+            true,
+            false
+          ]
+        },
+        "@credentials": {
+          "$id": "#/definitions/datastream/properties/@credentials",
+          "type": "string",
+          "title": "The @credentials Schema",
+          "default": "include",
+          "enum": [
+            "include",
+            "omit",
+            "same-origin"
+          ],
+          "examples": [
+            "include",
+            "omit",
+            "same-origin"
           ]
         },
         "@url": {
@@ -404,6 +434,7 @@
               "element",
               "@url"
             ],
+            "additionalProperties": false,
             "properties": {
               "element": {
                 "type": "string",
@@ -418,6 +449,12 @@
               },
               "@poll-frequency": {
                 "$ref": "#/definitions/datastream/properties/@poll-frequency"
+              },
+              "@credentials": {
+                "$ref": "#/definitions/datastream/properties/@credentials"
+              },
+              "@acceptsFilters": {
+                "$ref": "#/definitions/datastream/properties/@acceptsFilters"
               }
             }
           },
