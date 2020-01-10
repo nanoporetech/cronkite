@@ -4,21 +4,20 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
+    "jsx": "react",
+    "jsxFactory": "h",
     "lib": [
       "dom",
       "es2017"
     ],
-    "moduleResolution": "node",
     "module": "esnext",
-    "target": "es2017",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "jsx": "react",
-    "jsxFactory": "h",
+    "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "plugins": [
       {
         "alwaysShowRuleFailuresAsWarnings": false,
@@ -36,18 +35,19 @@
     "strict": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
+    "target": "es2017",
     "typeRoots": [
       "./node_modules/@types",
       "./src/types"
     ]
   },
-  "include": [
-    "src"
-  ],
   "exclude": [
     "node_modules",
     "dist",
     "typedoc",
     "www"
+  ],
+  "include": [
+    "src"
   ]
 }
