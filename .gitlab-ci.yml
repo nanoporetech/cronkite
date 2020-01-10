@@ -25,7 +25,7 @@ unit-test:
   stage: test
   image: docker-registry.oxfordnanolabs.local:5000/node-chrome
   script:
-    - npm ci
+    - npm i
     - npm run test
 
 npm-publish-internal:
@@ -43,7 +43,7 @@ pages:
   stage: pages
   image: docker-registry.oxfordnanolabs.local:5000/ont-base-node:8
   script:
-    - npm ci
+    - npm i
     - npm run start
     - mv www public
   artifacts:
