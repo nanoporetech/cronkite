@@ -145,6 +145,7 @@ You have already been introduced to your first payload transform `fn:jmespath` w
     "fn:count": // Calculate the length of a `any[]` (JMESPath spec see `length` function)
     "fn:formatNumber": // Format a number with locale and units
     "fn:divide": // Divide two numbers and return the result
+    "fn:mod": // Modulus two numbers and return the result
     "fn:jmespath": // Fish out values from Event payloads
     "fn:map": // Create a new object of key:value pairs
     "fn:mode": // Calculate the mode of a `number[]`
@@ -288,329 +289,118 @@ The `<epi-report-selector>` component is a cronkite specific component that gene
 
 > ### What's going on
 >
-> `element` specifies must be set to `Selector` to use this component. In the example above the value of the `@selectList` attribute is set to a list of unique barcodes pulled out of event payload using JMESPath. The event listened to is `qctelemetry:basecalling1d:1`. Once the user makes a selection, a filter predicate will be forwarded to all data streams which will filter the cached responses based on the `@selector` value.
+> `element` specifies must be set to `"epi-report-selector"` to use this component. In the example above the value of the `@selectList` attribute is set to a list of barcodes pulled out of event payload using JMESPath. A unique list of whatever is returned will be created by the component. The event listened to is `qctelemetry:basecalling1d:1`. Once the user makes a selection, a filter predicate (a closure containing the current selection) will be forwarded to all data streams which are configured to filter responses based on the `@selector` value. The `@acceptsFilters` prop is used to configure this for the datastream
 
 <hr/>
 
 ## PUTTING IT ALL TOGETHER
 
-Here's an full example of a basic QC report with layout defined including:
+Here's an full example of a [hello-world](./examples/reports/hello-world.json) report with layout defined including:
 
-1. Native DOM event listeners
-2. Workflow instance data stream for aggregated telemetry
-3. Polling data stream for workflow instance data (could be any URL)
-4. JMESPath MAGIC!! ✨🌈🦄✨
+1. Static values
+2. Components responding to DOM events
+3. Conditional styling of components
+4. Cronkite builtin functions
+5. Polling datastream
+6. JMESPath MAGIC!! ✨🌈🦄✨
 
 
 ```javascript
 {
-  "id": "dashboard:workflow:instance:163492",
+  "id": "hello:world",
   "components": [
     {
       "element": "epi-headlinevalue",
-      "@label": "NativeDOMevents",
+      "@label": "User defined values",
+      "@value": "Hello World!"
+    },
+    {
+      "element": "epi-headlinevalue",
+      "@label": "Native DOM events",
       "@value": {
-        "fn:jmespath": "[@.clientX,@.clientY]"
+        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
       },
       "listen": "mousemove",
       "layout": {
-        "w": 4,
-        "h": 2,
-        "x": 0,
-        "y": 0,
-        "i": "6231ec98-fad4-4c84-89b2-003b393dc589",
-        "moved": false,
-        "static": false
+        "width": 2
       }
     },
     {
-      "@label": "Instance ID",
-      "@value": {
-        "fn:jmespath": "data.id_workflow_instance"
+      "element": "epi-checkmark",
+      "@message": {
+        "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
       },
-      "element": "epi-headlinevalue",
-      "listen": "instance:data",
-      "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 0,
-        "y": 2,
-        "i": "db20beef-8e92-4959-8e22-cf41b43ee44f",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Workflow state",
-      "@value": {
-        "fn:jmespath": "data.state"
+      "@fail": {
+        "fn:jmespath": "clientX>`500`"
       },
-      "element": "epi-headlinevalue",
-      "listen": "instance:data",
+      "@size": {
+        "fn:divide": [
+          {
+            "fn:jmespath": "clientY"
+          },
+          4
+        ]
+      },
+      "listen": "mousemove",
       "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 2,
-        "y": 2,
-        "i": "c261ac02-e2c8-4459-a279-1d111ff81069",
-        "moved": false,
-        "static": false
+        "width": 2
       }
     },
     {
-      "@selectList": {
-        "fn:uniq": {
-          "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].run_id"
+      "element": "div",
+      "style": {
+        "backgroundColor": "#222"
+      },
+      "components": [
+        {
+          "element": "h1",
+          "@innerHTML": "EUROPE PMC SEARCH RESULTS",
+          "layout": {
+            "position": "header"
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@value": {
+            "fn:jmespath": "request.queryString"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:event"
+        },
+        {
+          "element": "ol",
+          "@innerHTML": {
+            "fn:jmespath": "join(``, [].join(``,['<li><a href=\\'',@.id,'\\'>',@.title,'</a>']))"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:results"
         }
-      },
-      "@selector": "run_id",
-      "element": "Selector",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 2,
-        "h": 2,
-        "x": 0,
-        "y": 3,
-        "i": "7c561107-ae27-44fa-84ae-2f90df60b410",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Average Sequence length",
-      "@value": {
-        "fn:tofixed": [
-          {
-            "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
-          },
-          0
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 1,
-        "h": 1,
-        "x": 2,
-        "y": 3,
-        "i": "92b0b9b3-5fb4-40c6-b0dc-732df2290fb2",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "AVERAGE QUALITY SCORE",
-      "@value": {
-        "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 1,
-        "h": 1,
-        "x": 3,
-        "y": 4,
-        "i": "4a0cb4fe-57ce-488b-81e8-783f664fd30d",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "TOTAL YIELD",
-      "@case-sensitive": "true",
-      "@value": {
-        "fn:formatNumber": [
-          {
-            "fn:jmespath": "sum(data[? @.exit_status == 'Workflow successful'].seqlen.total)"
-          },
-          2,
-          "base"
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 1,
-        "h": 1,
-        "x": 3,
-        "y": 3,
-        "i": "da0c14bd-52e4-4de0-b6ae-30bbeb760fc2",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "READS ANALYSED",
-      "@value": {
-        "fn:jmespath": "sum(data[? @.exit_status == 'Workflow successful'].count)"
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 1,
-        "h": 1,
-        "x": 2,
-        "y": 4,
-        "i": "10b063a1-a08a-4bcd-9e79-ecdec73a495b",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Mode",
-      "@value": {
-        "fn:mode": [
-          {
-            "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].mean_qscore.avg"
-          },
-          2
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 0,
-        "y": 5,
-        "i": "8f534c78-0855-4b98-9e6b-8fbbb48ad3f9",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Average",
-      "@value": {
-        "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].mean_qscore.avg)"
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 2,
-        "y": 5,
-        "i": "52b31750-bba6-490f-aa3e-c2b1775d6708",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label-x": "Quality score",
-      "@label-y": "Read Count",
-      "@units-y": "",
-      "@units-x": "",
-      "@tooltip-format-x": "value => `${value}`",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "sort_by(data[? @.exit_status == 'Workflow successful'].mean_qscore.hist[].{x: @[0], y: @[1]}, &x)"
-      },
-      "element": "epi-coverageplot",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 4,
-        "h": 4,
-        "x": 0,
-        "y": 6,
-        "i": "232ce690-6c7d-4294-ab58-88149036efdd",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Sequence Length Mode",
-      "@case-sensitive": "true",
-      "@value": {
-        "fn:formatNumber": [
-          {
-            "fn:mode": [
-              {
-                "fn:jmespath": "data[? @.exit_status == 'Workflow successful'].seqlen.avg"
-              },
-              2
-            ]
-          },
-          0,
-          "base"
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 2,
-        "y": 10,
-        "i": "dc966885-1373-49e0-9079-85381d160276",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label": "Sequence Length Average",
-      "@value": {
-        "fn:tofixed": [
-          {
-            "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
-          },
-          0
-        ]
-      },
-      "element": "epi-headlinevalue",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 2,
-        "h": 1,
-        "x": 0,
-        "y": 10,
-        "i": "85ff20bd-a2dc-4723-b71a-6f937d091330",
-        "moved": false,
-        "static": false
-      }
-    },
-    {
-      "@label-x": "Sequence Length (bases)",
-      "@label-y": "Read Count",
-      "@units-y": "",
-      "@units-x": "",
-      "@tooltip-format-x": "value => `${value} bases`",
-      "@tooltip-format-y": "value => `${value} reads`",
-      "@label-x-left": "",
-      "@label-x-right": "",
-      "@data": {
-        "fn:jmespath": "sort_by(data[? @.exit_status == 'Workflow successful'].seqlen.hist[].{x: @[0], y: @[1]}, &x)"
-      },
-      "element": "epi-coverageplot",
-      "listen": "qctelemetry:basecalling1d:1",
-      "layout": {
-        "w": 4,
-        "h": 4,
-        "x": 0,
-        "y": 11,
-        "i": "e2325eee-a028-4ff6-8e2d-15b050d78c31",
-        "moved": false,
-        "static": false
-      }
+      ]
     }
   ],
   "streams": [
     {
-      "@channel": "instance:data",
       "element": "epi-poll-datastream",
-      "@url": "https://epi2me-dev.nanoporetech.com/workflow_instance/163492.json",
-      "@poll-frequency": 1000000000
-    },
-    {
-      "@channel": "qctelemetry",
-      "element": "epi-workflow-instance-datastream",
-      "@id-workflow-instance": "163492",
-      "@flavour": "basecalling_1d_barcode-v1",
+      "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
       "@poll-frequency": 25000,
-      "@type": "telemetry"
+      "@credentials": "omit",
+      "@channels": [
+        {
+          "channel": "hello:world:event",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        },
+        {
+          "channel": "hello:world:results",
+          "shape": {
+            "fn:jmespath": "resultList.result"
+          }
+        }
+      ]
     }
   ]
 }
+
 ```
 
