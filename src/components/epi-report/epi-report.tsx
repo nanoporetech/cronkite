@@ -1,5 +1,10 @@
-// tslint:disable-next-line: no-import-side-effect
+// tslint:disable: no-import-side-effect
 import '@ionic/core';
+import 'epi2me-ui-checkmark/dist';
+import 'epi2me-ui-donut/dist';
+import 'epi2me-ui-headlinevalue/dist';
+import 'epi2me-ui-coverageplot/dist';
+
 import { Component, Host, h, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import debounce from 'lodash/debounce';
 import Ajv from 'ajv';
