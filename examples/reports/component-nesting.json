@@ -175,7 +175,7 @@
   "streams": [
     {
       "element": "epi-poll-datastream",
-      "@url": "http://localhost:3333/examples/data/pychopper.json",
+      "@url": "http://localhost:3333/cronkite/examples/data/pychopper.json",
       "@poll-frequency": 25000,
       "@credentials": "omit",
       "@acceptsFilters": true,

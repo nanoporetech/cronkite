@@ -9,6 +9,17 @@
       }
     },
     {
+      "element": "iframe",
+      "@src": "https://socket-io-chat.now.sh/",
+      "@name": "myiFrame",
+      "@scrolling": "no",
+      "@frameborder": "1",
+      "@marginheight": "0px",
+      "@marginwidth": "0px",
+      "@height": "400px",
+      "@width": "900px"
+    },
+    {
       "element": "epi-headlinevalue",
       "@label": {
         "fn:jmespath": "username"
