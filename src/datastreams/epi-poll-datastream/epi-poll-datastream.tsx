@@ -20,6 +20,7 @@ export class EpiPollDatastream {
   private eTag = 'STARTER - ETAG';
   private intervalID: any;
   private cachedResponse: EpiReportDataStream.IMetadataObj | null = null;
+  private cachedBroadcasts = {};
   private filters = {};
   private dispatch: EpiReportDataStream.IDatastreamEventDispatcher = async (
     eventName: string,
@@ -52,7 +53,7 @@ export class EpiPollDatastream {
     streamState: EpiReportDataStream.IStreamConfig,
   ) => {
     const { channels, dispatch, filters } = streamState;
-    let filteredData;
+    let filteredData: any;
 
     channels.forEach(async c => {
       filteredData = await processValue(data, c.shape || DEFAULT_SHAPE);
@@ -62,7 +63,12 @@ export class EpiPollDatastream {
           filters.map(filter => filter(datum)).every(i => i),
         );
       }
-      dispatch(c.channel, this.hostEl, filteredData);
+      const dispatchFn = (_channel: string, _hostEl: HTMLElement, _filteredData: any) => async () => {
+        console.debug(`%cEPI-POLL-DATASTREAM::dispatch::${_channel}`, 'color: violet');
+        dispatch(_channel, _hostEl, _filteredData);
+      };
+      this.cachedBroadcasts[c.channel] = dispatchFn(c.channel, this.hostEl, filteredData);
+      this.cachedBroadcasts[c.channel]();
     });
   };
 
@@ -73,6 +79,10 @@ export class EpiPollDatastream {
   @Method() async addFilter(fnKey: string, filterFn: () => boolean) {
     this.filters[fnKey] = filterFn;
     await this.broadcast(this.cachedResponse);
+  }
+
+  @Method() async resendBroadcast() {
+    Object.values(this.cachedBroadcasts).forEach((dispatcherFn: any) => dispatcherFn());
   }
 
   requestHandler = async (method: string): Promise<Response> => {

@@ -1,0 +1,41 @@
+import { Component, Element, Host, h, Prop, State, Method } from '@stencil/core';
+import { EpiReportJSONTypes } from '../../types/report-json';
+
+@Component({
+  styleUrl: 'cronk-datastreams.scss',
+  tag: 'cronk-datastreams',
+})
+export class CronkDatastreams {
+  @Element() el!: HTMLElement;
+
+  @Prop() streams?: EpiReportJSONTypes.Stream[];
+  @Prop() streamsID?: string;
+
+  @State() pageComponentsReady = false;
+
+  @Method()
+  async reload() {
+    document.querySelectorAll('.cronk-datastream').forEach((datastreamEl: any) => datastreamEl.resendBroadcast());
+  }
+
+  @Method()
+  async getState() {
+    return { streams: this.streams, pageComponentsReady: this.pageComponentsReady };
+  }
+
+  render() {
+    const hasStreams = this.streams !== undefined && this.streams.length > 0;
+    const canRenderStreams = hasStreams;
+
+    return (
+      <Host>
+        {(canRenderStreams &&
+          this.streams &&
+          this.streams.map((streamConfig: any, streamIndex: number) => (
+            <epi-event-stream key={`${this.streamsID}-${streamIndex}`} config={streamConfig}></epi-event-stream>
+          ))) ||
+          null}
+      </Host>
+    );
+  }
+}

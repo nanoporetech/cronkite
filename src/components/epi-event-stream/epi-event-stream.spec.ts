@@ -39,7 +39,7 @@ describe('epi-event-stream', () => {
       await rootInst.componentWillLoad();
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<epi-event-stream aria-hidden="true">
-        <${datastreamTagName} foo="bar"></${datastreamTagName}>
+        <${datastreamTagName} class="cronk-datastream" foo="bar"></${datastreamTagName}>
       </epi-event-stream>`);
     });
   });

@@ -1,0 +1,10 @@
+cronk-datastreams {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+
+  & .components-content {
+    display: grid;
+    grid-gap: 0.5rem;
+  }
+}

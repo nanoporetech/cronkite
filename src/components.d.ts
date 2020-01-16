@@ -8,12 +8,27 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  EpiReportJSONTypes,
+} from './types/report-json';
+import {
   EpiReportDataTypes,
 } from './types';
 
 export namespace Components {
   interface AppRoot {
     'report': string;
+  }
+  interface CronkDatastreams {
+    'getState': () => Promise<{ streams: EpiReportJSONTypes.Stream[] | undefined; pageComponentsReady: boolean; }>;
+    'reload': () => Promise<void>;
+    'streams'?: EpiReportJSONTypes.Stream[];
+    'streamsID'?: string;
+  }
+  interface CronkPage {
+    'loadConfig': (newConfig: any) => Promise<void>;
+    'pageConfig'?: EpiReportJSONTypes.ReportDefinition | undefined;
+    'showConfig': boolean;
+    'validateConfig': (configIn: any) => Promise<boolean>;
   }
   interface EpiErrorMessage {
     'message': string;
@@ -42,14 +57,10 @@ export namespace Components {
     'listFilters': () => Promise<{}>;
     'mode': RequestMode;
     'pollFrequency': number;
+    'resendBroadcast': () => Promise<void>;
     'responseHandler': EpiReportDataStream.IDatastreamResponseHandler;
     'type': string;
     'url': string | null;
-  }
-  interface EpiReport {
-    'config'?: any;
-    'loadConfig': (newConfig: any) => Promise<void>;
-    'showConfig': boolean;
   }
   interface EpiReportComponents {}
   interface EpiReportPanel {
@@ -67,6 +78,7 @@ export namespace Components {
   interface EpiSocketioDatastream {
     'acceptsFilters': boolean;
     'channels': EpiReportDataStream.IChannelShape[];
+    'resendBroadcast': () => Promise<void>;
     'responseHandler': EpiReportDataStream.IDatastreamSocketResponseHandler;
     'type': string;
     'url': string | null;
@@ -83,6 +95,18 @@ declare global {
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
+  };
+
+  interface HTMLCronkDatastreamsElement extends Components.CronkDatastreams, HTMLStencilElement {}
+  var HTMLCronkDatastreamsElement: {
+    prototype: HTMLCronkDatastreamsElement;
+    new (): HTMLCronkDatastreamsElement;
+  };
+
+  interface HTMLCronkPageElement extends Components.CronkPage, HTMLStencilElement {}
+  var HTMLCronkPageElement: {
+    prototype: HTMLCronkPageElement;
+    new (): HTMLCronkPageElement;
   };
 
   interface HTMLEpiErrorMessageElement extends Components.EpiErrorMessage, HTMLStencilElement {}
@@ -113,12 +137,6 @@ declare global {
   var HTMLEpiPollDatastreamElement: {
     prototype: HTMLEpiPollDatastreamElement;
     new (): HTMLEpiPollDatastreamElement;
-  };
-
-  interface HTMLEpiReportElement extends Components.EpiReport, HTMLStencilElement {}
-  var HTMLEpiReportElement: {
-    prototype: HTMLEpiReportElement;
-    new (): HTMLEpiReportElement;
   };
 
   interface HTMLEpiReportComponentsElement extends Components.EpiReportComponents, HTMLStencilElement {}
@@ -164,12 +182,13 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'cronk-datastreams': HTMLCronkDatastreamsElement;
+    'cronk-page': HTMLCronkPageElement;
     'epi-error-message': HTMLEpiErrorMessageElement;
     'epi-event-stream': HTMLEpiEventStreamElement;
     'epi-funnel': HTMLEpiFunnelElement;
     'epi-instance-datastream': HTMLEpiInstanceDatastreamElement;
     'epi-poll-datastream': HTMLEpiPollDatastreamElement;
-    'epi-report': HTMLEpiReportElement;
     'epi-report-components': HTMLEpiReportComponentsElement;
     'epi-report-panel': HTMLEpiReportPanelElement;
     'epi-report-selector': HTMLEpiReportSelectorElement;
@@ -183,6 +202,15 @@ declare global {
 declare namespace LocalJSX {
   interface AppRoot {
     'report'?: string;
+  }
+  interface CronkDatastreams {
+    'streams'?: EpiReportJSONTypes.Stream[];
+    'streamsID'?: string;
+  }
+  interface CronkPage {
+    'onCronkPageReady'?: (event: CustomEvent<void>) => void;
+    'pageConfig'?: EpiReportJSONTypes.ReportDefinition | undefined;
+    'showConfig'?: boolean;
   }
   interface EpiErrorMessage {
     'message'?: string;
@@ -213,10 +241,6 @@ declare namespace LocalJSX {
     'type'?: string;
     'url'?: string | null;
   }
-  interface EpiReport {
-    'config'?: any;
-    'showConfig'?: boolean;
-  }
   interface EpiReportComponents {
     'onComponentsLoaded'?: (event: CustomEvent<void>) => void;
   }
@@ -245,12 +269,13 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'app-root': AppRoot;
+    'cronk-datastreams': CronkDatastreams;
+    'cronk-page': CronkPage;
     'epi-error-message': EpiErrorMessage;
     'epi-event-stream': EpiEventStream;
     'epi-funnel': EpiFunnel;
     'epi-instance-datastream': EpiInstanceDatastream;
     'epi-poll-datastream': EpiPollDatastream;
-    'epi-report': EpiReport;
     'epi-report-components': EpiReportComponents;
     'epi-report-panel': EpiReportPanel;
     'epi-report-selector': EpiReportSelector;
@@ -268,12 +293,13 @@ declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+      'cronk-datastreams': LocalJSX.CronkDatastreams & JSXBase.HTMLAttributes<HTMLCronkDatastreamsElement>;
+      'cronk-page': LocalJSX.CronkPage & JSXBase.HTMLAttributes<HTMLCronkPageElement>;
       'epi-error-message': LocalJSX.EpiErrorMessage & JSXBase.HTMLAttributes<HTMLEpiErrorMessageElement>;
       'epi-event-stream': LocalJSX.EpiEventStream & JSXBase.HTMLAttributes<HTMLEpiEventStreamElement>;
       'epi-funnel': LocalJSX.EpiFunnel & JSXBase.HTMLAttributes<HTMLEpiFunnelElement>;
       'epi-instance-datastream': LocalJSX.EpiInstanceDatastream & JSXBase.HTMLAttributes<HTMLEpiInstanceDatastreamElement>;
       'epi-poll-datastream': LocalJSX.EpiPollDatastream & JSXBase.HTMLAttributes<HTMLEpiPollDatastreamElement>;
-      'epi-report': LocalJSX.EpiReport & JSXBase.HTMLAttributes<HTMLEpiReportElement>;
       'epi-report-components': LocalJSX.EpiReportComponents & JSXBase.HTMLAttributes<HTMLEpiReportComponentsElement>;
       'epi-report-panel': LocalJSX.EpiReportPanel & JSXBase.HTMLAttributes<HTMLEpiReportPanelElement>;
       'epi-report-selector': LocalJSX.EpiReportSelector & JSXBase.HTMLAttributes<HTMLEpiReportSelectorElement>;

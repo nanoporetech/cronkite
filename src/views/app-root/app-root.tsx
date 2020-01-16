@@ -8,26 +8,26 @@ export class AppRoot {
   @Element() el!: HTMLAppRootElement;
   @Prop() report = 'hello-world';
 
-  reportEl?: HTMLEpiReportElement;
+  cronkPageEl?: HTMLCronkPageElement;
 
   async componentDidLoad() {
-    if (!this.reportEl) return;
+    if (!this.cronkPageEl) return;
     const response = await fetch(`../../../examples/reports/${this.report}.json`);
     const reportConfig = await response.json();
-    this.reportEl.config = reportConfig;
+    this.cronkPageEl.pageConfig = reportConfig;
   }
 
   async componentWillUpdate() {
-    if (!this.reportEl) return;
+    if (!this.cronkPageEl) return;
     const response = await fetch(`../../../examples/reports/${this.report}.json`);
     const reportConfig = await response.json();
-    this.reportEl.config = reportConfig;
+    this.cronkPageEl.pageConfig = reportConfig;
   }
 
   render() {
     return (
       <Host>
-        <epi-report ref={init => (this.reportEl = init)}></epi-report>
+        <cronk-page ref={init => (this.cronkPageEl = init)}></cronk-page>
       </Host>
     );
   }

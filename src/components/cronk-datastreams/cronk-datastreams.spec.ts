@@ -1,23 +1,23 @@
 import { SpecPage, newSpecPage } from '@stencil/core/dist/testing';
-import { EpiReport } from './epi-report';
+import { CronkDatastreams } from './cronk-datastreams';
 
-describe('epi-report', () => {
-  let rootInst: EpiReport;
-  let rootEl: HTMLEpiReportElement;
+describe('cronk-datastreams', () => {
+  let rootInst: CronkDatastreams;
+  let rootEl: HTMLCronkDatastreamsElement;
   let page: SpecPage;
 
   beforeEach(async () => {
     page = await newSpecPage({
-      components: [EpiReport],
-      html: '<epi-report></epi-report>',
+      components: [CronkDatastreams],
+      html: '<cronk-datastreams></cronk-datastreams>',
     });
     rootInst = page.rootInstance;
-    rootEl = page.root as HTMLEpiReportElement;
+    rootEl = page.root as HTMLCronkDatastreamsElement;
   });
 
   describe('sanity', () => {
     it('builds', () => {
-      expect(new EpiReport()).toBeTruthy();
+      expect(new CronkDatastreams()).toBeTruthy();
     });
   });
 

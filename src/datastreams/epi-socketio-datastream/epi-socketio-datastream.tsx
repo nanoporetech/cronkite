@@ -1,6 +1,6 @@
 // tslint:disable: object-shorthand-properties-first
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
 import io from 'socket.io-client';
 
 import * as EpiReportDataStream from '../interfaces';
@@ -13,6 +13,7 @@ export class EpiSocketioDatastream {
   private _socket?: SocketIOClient.Socket;
   // private cachedResponse: EpiReportDataStream.IMetadataObj | null = null;
   private filters = {};
+  private cachedResponse = {};
   private dispatch: EpiReportDataStream.IDatastreamEventDispatcher = async (
     eventName: string,
     sourceNode: HTMLElement,
@@ -46,13 +47,18 @@ export class EpiSocketioDatastream {
         filters.map(filter => filter(datum)).every(i => i),
       );
     }
-    dispatch(channel, this.hostEl, filteredData);
+    this.cachedResponse[channel] = async () => dispatch(channel, this.hostEl, filteredData);
+    this.cachedResponse[channel]();
   };
 
   @Prop() type = 'data';
   @Prop() url: string | null = null;
   @Prop() channels: EpiReportDataStream.IChannelShape[] = [];
   @Prop() acceptsFilters = true;
+
+  @Method() async resendBroadcast() {
+    Object.values(this.cachedResponse).forEach((dispatcherFn: any) => dispatcherFn());
+  }
 
   async broadcast(data: any, channel: string, shape: any) {
     if (!data) return;

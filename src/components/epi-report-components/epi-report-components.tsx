@@ -8,6 +8,7 @@ export class EpiReportComponents {
   @Event() componentsLoaded!: EventEmitter<void>;
 
   componentDidLoad() {
+    console.debug('%cEPI-REPORT-COMPONENTS :: componentDidLoad', 'color: goldenrod');
     this.componentsLoaded.emit();
   }
 

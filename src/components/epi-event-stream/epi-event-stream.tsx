@@ -29,7 +29,7 @@ export class EpiEventStream {
     const EventSource = this.streamEl;
     return (
       <Host aria-hidden={'true'}>
-        <EventSource {...this.customElProps} />
+        <EventSource class="cronk-datastream" {...this.customElProps} />
       </Host>
     );
   }

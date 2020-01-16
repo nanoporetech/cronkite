@@ -1,0 +1,95 @@
+{
+  "id": "hello:world",
+  "components": [
+    {
+      "element": "epi-headlinevalue",
+      "@label": "User defined values",
+      "@value": "Hello World!"
+    },
+    {
+      "element": "epi-headlinevalue",
+      "@label": "Native DOM events",
+      "@value": {
+        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_strinlientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+      },
+      "listen": "mousemove",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "epi-checkmark",
+      "@message": {
+        "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
+      },
+      "@fail": {
+        "fn:jmespath": "clientX>`500`"
+      },
+      "@size": {
+        "fn:divide": [
+          {
+            "fn:jmespath": "clientY"
+          },
+          4
+        ]
+      },
+      "listen": "mousemove",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "div",
+      "style": {
+        "backgroundColor": "#222"
+      },
+      "components": [
+        {
+          "element": "h1",
+          "@innerHTML": "EUROPE PMC SEARCH RESULTS",
+          "layout": {
+            "position": "header"
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@value": {
+            "fn:jmespath": "request.queryString"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:event"
+        },
+        {
+          "element": "ol",
+          "@innerHTML": {
+            "fn:jmespath": "doesnotExist()"
+          },
+          "@label": "Query string",
+          "listen": "hello:world:results"
+        }
+      ]
+    }
+  ],
+  "streams": [
+    {
+      "element": "epi-poll-datastream",
+      "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit",
+      "@channels": [
+        {
+          "channel": "hello:world:event",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        },
+        {
+          "channel": "hello:world:results",
+          "shape": {
+            "fn:jmespath": "resultList.result"
+          }
+        }
+      ]
+    }
+  ]
+}
