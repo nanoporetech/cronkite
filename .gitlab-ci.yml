@@ -45,7 +45,7 @@ pages:
   script:
     - npm i
     - npm run build:app
-    - for filename in ./www/cronkite/examples/reports/*.json; do echo $filename ; sed -i '' 's/localhost:3333/metrichor-reports.git.oxfordnanolabs.local/g' $filename ; done
+    - ./bin/renameHosts.sh
     - mv www public
   artifacts:
     paths:
