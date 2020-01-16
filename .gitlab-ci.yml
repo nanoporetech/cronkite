@@ -45,7 +45,7 @@ pages:
   script:
     - npm i
     - npm run build:app
-    - ./bin/renameHosts.sh
+    - sed -i'_orig' -E 's/localhost:[0-9]+/metrichor-reports.git.oxfordnanolabs.local/g' ./www/cronkite/examples/reports/*
     - mv www public
   artifacts:
     paths:

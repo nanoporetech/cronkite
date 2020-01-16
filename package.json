@@ -1,6 +1,6 @@
 {
   "name": "cronkite",
-  "version": "1.0.3-alpha",
+  "version": "1.0.4-alpha",
   "description": "Cronkite - Render JSON as web page",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,7 +16,7 @@
   "scripts": {
     "build": "stencil build",
     "build:docs": "npm run build --docs",
-    "build:app": "npm run build --dev",
+    "build:app": "npm run build --serve",
     "clean": "rm -rf dist www .stencil",
     "fix-css": "npm run lint-css --fix",
     "fix-ts": "npm run tslint:app --fix",
