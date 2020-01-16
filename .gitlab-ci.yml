@@ -7,7 +7,7 @@ stages:
 
 .package: &package_common |
   source ./PATCH_VERSION
-  curl -sL https://deb.nodesource.com/setup_10.x | bash -
+  curl -sL https://deb.nodesource.com/setup_12.x | bash -
   apt-get update
   apt-get install -y --force-yes nodejs ont-ca-certs build-essential git xvfb jq
   git config --global url.https://github.com/.insteadOf git://github.com/
@@ -45,7 +45,7 @@ pages:
   script:
     - npm i
     - npm run build:app
-    - sed -i'_orig' -E 's/localhost:[0-9]+/metrichor-reports.git.oxfordnanolabs.local/g' ./www/cronkite/examples/reports/*
+    - sed -i'_orig' -E 's/http:\/\/localhost:[0-9]+/https:\/\/metrichor-reports.git.oxfordnanolabs.local/g' ./www/cronkite/examples/reports/*
     - mv www/cronkite public
   artifacts:
     paths:
