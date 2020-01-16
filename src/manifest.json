@@ -1,7 +1,7 @@
 {
   "name": "Cronkite",
   "short_name": "Cronkite",
-  "start_url": "/",
+  "start_url": "/cronkite/",
   "display": "standalone",
   "icons": [
     {

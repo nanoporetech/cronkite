@@ -9,24 +9,6 @@ const buildTypeStyles = isDevMode ? 'src/global/styles/dev.scss' : 'src/global/s
 
 const srcIndexHtml = isDevMode ? 'src/index.dev.html' : 'src/index.html';
 
-const copyAssets = isDevMode
-  ? [
-      {
-        dest: './examples',
-        src: '../examples',
-      },
-    ]
-  : [
-      {
-        dest: './cronkite/examples',
-        src: '../examples',
-      },
-      {
-        dest: './cronkite/assets',
-        src: '../assets',
-      },
-    ];
-
 export const config: Config = {
   commonjs: {
     include: /node_modules|(..\/.+)/,
@@ -41,8 +23,13 @@ export const config: Config = {
   namespace: 'cronkite',
   outputTargets: [
     {
-      baseUrl: '/cronkite/',
-      copy: copyAssets,
+      baseUrl: '/cronkite',
+      copy: [
+        {
+          dest: './examples',
+          src: '../examples',
+        },
+      ],
       // comment the following line to disable service workers in production
       serviceWorker: null,
       type: 'www',

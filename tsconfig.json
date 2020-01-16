@@ -18,6 +18,12 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "baseUrl": "src",
+    "paths": {
+      "cronkite/examples/*": [
+        "src/examples/*"
+      ]
+    },
     "plugins": [
       {
         "alwaysShowRuleFailuresAsWarnings": false,
