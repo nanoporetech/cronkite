@@ -1,4 +1,4 @@
-import * as EpiReportDataStream from '../../interfaces';
+import * as CronkDataStream from '../../interfaces';
 
 const normaliseBarcode = (barcode: string): string => {
   return barcode
@@ -7,11 +7,11 @@ const normaliseBarcode = (barcode: string): string => {
     .replace('na', 'no barcode');
 };
 
-export const transformAndEmitQCData = (node: HTMLElement): EpiReportDataStream.IDatastreamResponseHandler => async (
+export const transformAndEmitQCData = (node: HTMLElement): CronkDataStream.IDatastreamResponseHandler => async (
   { type, data, version, key },
   { channels, dispatch, filters },
 ) => {
-  let flattenedData = data.map((datum: EpiReportDataStream.IMetadataObj) => {
+  let flattenedData = data.map((datum: CronkDataStream.IMetadataObj) => {
     return Object.assign(
       datum,
       ...datum.key.map((datumKey: string, i: number) => {
@@ -24,13 +24,13 @@ export const transformAndEmitQCData = (node: HTMLElement): EpiReportDataStream.I
   });
 
   if (filters.length) {
-    flattenedData = flattenedData.filter((datum: EpiReportDataStream.IMetadataObj) =>
+    flattenedData = flattenedData.filter((datum: CronkDataStream.IMetadataObj) =>
       filters.map(filter => filter(datum)).every(i => i),
     );
   }
 
   let barcodes = flattenedData.reduce(
-    (groupedBarcodes: EpiReportDataStream.IMetadataObj, datum: EpiReportDataStream.IMetadataObj) => {
+    (groupedBarcodes: CronkDataStream.IMetadataObj, datum: CronkDataStream.IMetadataObj) => {
       const { barcode } = datum;
       return {
         ...groupedBarcodes,
@@ -58,22 +58,22 @@ export const transformAndEmitQCData = (node: HTMLElement): EpiReportDataStream.I
 
 export const transformAndEmitSimpleAlignerData = (
   node: HTMLElement,
-): EpiReportDataStream.IDatastreamResponseHandler => async (
+): CronkDataStream.IDatastreamResponseHandler => async (
   { type, data, version, key },
   { channels, dispatch, filters },
 ) => {
-  let flattenedData = data.map((datum: EpiReportDataStream.IMetadataObj) => {
+  let flattenedData = data.map((datum: CronkDataStream.IMetadataObj) => {
     return Object.assign(datum, ...datum.key.map((datumKey: string, i: number) => ({ [key[i]]: datumKey })));
   });
 
   if (filters.length) {
-    flattenedData = flattenedData.filter((datum: EpiReportDataStream.IMetadataObj) =>
+    flattenedData = flattenedData.filter((datum: CronkDataStream.IMetadataObj) =>
       filters.map(filter => filter(datum)).every(i => i),
     );
   }
 
   let barcodes = flattenedData.reduce(
-    (groupedBarcodes: EpiReportDataStream.IMetadataObj, datum: EpiReportDataStream.IMetadataObj) => {
+    (groupedBarcodes: CronkDataStream.IMetadataObj, datum: CronkDataStream.IMetadataObj) => {
       const { barcode } = datum;
       return {
         ...groupedBarcodes,
@@ -99,16 +99,16 @@ export const transformAndEmitSimpleAlignerData = (
   barcodes = null;
 };
 
-export const transformFlatten = (node: HTMLElement): EpiReportDataStream.IDatastreamResponseHandler => async (
+export const transformFlatten = (node: HTMLElement): CronkDataStream.IDatastreamResponseHandler => async (
   { type, data, version, key },
   { channels, dispatch, filters },
 ) => {
-  let flattenedData = data.map((datum: EpiReportDataStream.IMetadataObj) => {
+  let flattenedData = data.map((datum: CronkDataStream.IMetadataObj) => {
     return Object.assign(datum, ...datum.key.map((datumKey: string, i: number) => ({ [key[i]]: datumKey })));
   });
 
   if (filters.length) {
-    flattenedData = flattenedData.filter((datum: EpiReportDataStream.IMetadataObj) =>
+    flattenedData = flattenedData.filter((datum: CronkDataStream.IMetadataObj) =>
       filters.map(filter => filter(datum)).every(i => i),
     );
   }

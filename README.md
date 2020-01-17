@@ -12,6 +12,9 @@ Conkite is web component for rendering UI interfaces (`dashboards`) that have be
 4. Event payload transforms
 5. Mappings between payload transforms and tag attributes/props
 
+## DEMO
+
+https://metrichor-reports.git.oxfordnanolabs.local/cronkite/
 
 ## COMPONENTS
 
@@ -163,17 +166,17 @@ You have already been introduced to your first payload transform `fn:jmespath` w
 Streams are a special type of component in that they __*do not*__ render any UI elements. They do however, emit events (usually `CustomEvent` types) with corresponding payloads that can be consumed by `components` via `listen` as described above.
 
 There are (at the time of writing) three configurable data stream components available in Cronkite:
-  1. `epi-poll-datastream`
+  1. `cronk-poll-datastream`
   2. `epi-workflow-instance-datastream`
-  3. `epi-socketio-datastream` - very much a prototype
+  3. `cronk-socketio-datastream` - very much a prototype
 
-### 1. `epi-poll-datastream`
+### 1. `cronk-poll-datastream`
 
-The `epi-poll-datastream` stream will abstract URL polling (via the fetch API) to any CORS enabled URL that returns an `application/json` response.
+The `cronk-poll-datastream` stream will abstract URL polling (via the fetch API) to any CORS enabled URL that returns an `application/json` response.
 
 #### Parameterisation of the request
 
-- `element` (required - `"epi-poll-datastream"`)
+- `element` (required - `"cronk-poll-datastream"`)
 - `@url` (required - CORS enabled remote resource returning JSON)
 - `@channels` (optional - If a successful response is returned and no channels
     are defined then cronkite will emit the payload on a default stream called
@@ -198,7 +201,7 @@ The `epi-poll-datastream` stream will abstract URL polling (via the fetch API) t
             "channel": "my:todos"
           }
         ],
-        "element": "epi-poll-datastream",
+        "element": "cronk-poll-datastream",
         "@url": "https://jsonplaceholder.typicode.com/todos",
         "@poll-frequency": 25000
     }
@@ -207,13 +210,13 @@ The `epi-poll-datastream` stream will abstract URL polling (via the fetch API) t
 
 > ### What's going on
 >
-> `element` specifies a web component `epi-poll-datastream` that (in this case) abstracts the W3C fetch API. The component polls a URL provided by the user at regular intervals for JSON data. Successful responses are emitted as the payload to a `CustomEvent` object. The default event name is `cronkite:stream` although the user can specify a custom event name using the `@channels` attribute. In the example above, the url `https://jsonplaceholder.typicode.com/todos` will be polled every 25 seconds and the most recent successful response cached. On successful data fetch, the JSON response will be emitted as a `CustomEvent` with the event name set to `my:todos`.
+> `element` specifies a web component `cronk-poll-datastream` that (in this case) abstracts the W3C fetch API. The component polls a URL provided by the user at regular intervals for JSON data. Successful responses are emitted as the payload to a `CustomEvent` object. The default event name is `cronkite:stream` although the user can specify a custom event name using the `@channels` attribute. In the example above, the url `https://jsonplaceholder.typicode.com/todos` will be polled every 25 seconds and the most recent successful response cached. On successful data fetch, the JSON response will be emitted as a `CustomEvent` with the event name set to `my:todos`.
 
 <hr/>
 
 ### 2. `epi-workflow-instance-datastream`
 
-This datastream inherits from the `epi-poll-datastream` and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found ain the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
+This datastream inherits from the `cronk-poll-datastream` and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found ain the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
 
 #### Parameterisation of the request
 
@@ -257,11 +260,11 @@ This datastream inherits from the `epi-poll-datastream` and inherits all `@` att
 
 Each component in the `components` block of the JSON specifies a single HTML tag in the `element` field. This will be rendered as a DOM element to which event handlers will be attached and attributes set. Apart from the standard set of HTML 5 tags a growing number of `Custom Elements` (web components) are being provided to help visualize more complex data. At the time of writing these include:
 
-- `<epi-funnel>`
-- `<epi-report-title>`
-- `<epi-report-version>`
-- `<epi-stats-box>`
-- `<epi-report-selector>`
+- `<cronk-funnel>`
+- `<cronk-title>`
+- `<cronk-version>`
+- `<cronk-statsbox>`
+- `<cronk-selector>`
 - `<epi-headlinevalue>`
 - `<epi-coverageplot>`
 - `<epi-donutsummary>`
@@ -271,13 +274,13 @@ Each component in the `components` block of the JSON specifies a single HTML tag
 
 For information about the attributes available to set by the user see the [Storybook playground](https://metrichor-ui.git.oxfordnanolabs.local/component-storybook/?path=/story/epi2me-checkmark--default-configurable) where you can read documentation on the components and live-edit the values of attributes.
 
-### The `<epi-report-selector>` component
+### The `<cronk-selector>` component
 
-The `<epi-report-selector>` component is a cronkite specific component that generates filter functions and attaches them to datastreams that are configures to accept filters with the `@acceptsFilters` prop. The `<epi-report-selector>` component currently has the following configuration as illustrated in the full example below:
+The `<cronk-selector>` component is a cronkite specific component that generates filter functions and attaches them to datastreams that are configures to accept filters with the `@acceptsFilters` prop. The `<cronk-selector>` component currently has the following configuration as illustrated in the full example below:
 
 ```javascript
 {
-  "element": "epi-report-selector",
+  "element": "cronk-selector",
   "heading": "SELECT RUNID",
   "@selectList": {
     "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
@@ -289,7 +292,7 @@ The `<epi-report-selector>` component is a cronkite specific component that gene
 
 > ### What's going on
 >
-> `element` specifies must be set to `"epi-report-selector"` to use this component. In the example above the value of the `@selectList` attribute is set to a list of barcodes pulled out of event payload using JMESPath. A unique list of whatever is returned will be created by the component. The event listened to is `qctelemetry:basecalling1d:1`. Once the user makes a selection, a filter predicate (a closure containing the current selection) will be forwarded to all data streams which are configured to filter responses based on the `@selector` value. The `@acceptsFilters` prop is used to configure this for the datastream
+> `element` specifies must be set to `"cronk-selector"` to use this component. In the example above the value of the `@selectList` attribute is set to a list of barcodes pulled out of event payload using JMESPath. A unique list of whatever is returned will be created by the component. The event listened to is `qctelemetry:basecalling1d:1`. Once the user makes a selection, a filter predicate (a closure containing the current selection) will be forwarded to all data streams which are configured to filter responses based on the `@selector` value. The `@acceptsFilters` prop is used to configure this for the datastream
 
 <hr/>
 
@@ -380,7 +383,7 @@ Here's an full example of a [hello-world](./examples/reports/hello-world.json) r
   ],
   "streams": [
     {
-      "element": "epi-poll-datastream",
+      "element": "cronk-poll-datastream",
       "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
       "@poll-frequency": 25000,
       "@credentials": "omit",
@@ -404,3 +407,6 @@ Here's an full example of a [hello-world](./examples/reports/hello-world.json) r
 
 ```
 
+## DOCUMENTATION
+
+https://metrichor-reports.git.oxfordnanolabs.local/cronkite/docs/components/cronk-page

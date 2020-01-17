@@ -47,6 +47,9 @@ pages:
     - npm run build:app
     - sed -i'_orig' -E 's/http:\/\/localhost:[0-9]+/https:\/\/metrichor-reports.git.oxfordnanolabs.local/g' ./www/cronkite/examples/reports/*
     - mv www/cronkite public
+    - npm run build:docs
+    - mkdir -p public/docs
+    - cp -rf src/components src/datastreams public/docs/.
   artifacts:
     paths:
       - public

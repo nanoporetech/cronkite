@@ -398,7 +398,7 @@
         [],
         [
           {
-            "element": "epi-poll-datastream",
+            "element": "cronk-poll-datastream",
             "@url": "https://example.com/exampl.json",
             "@channels": [
               {
@@ -412,7 +412,7 @@
         ],
         [
           {
-            "element": "epi-socketio-datastream",
+            "element": "cronk-socketio-datastream",
             "@url": "https://socket-io-chat.now.sh/",
             "@channels": [
               {
@@ -439,7 +439,7 @@
               "element": {
                 "type": "string",
                 "title": "Generic polling datastream",
-                "const": "epi-poll-datastream"
+                "const": "cronk-poll-datastream"
               },
               "@url": {
                 "$ref": "#/definitions/datastream/properties/@url"
@@ -468,7 +468,7 @@
               "element": {
                 "type": "string",
                 "title": "Generic Socket.io datastream",
-                "const": "epi-socketio-datastream"
+                "const": "cronk-socketio-datastream"
               },
               "@url": {
                 "$ref": "#/definitions/datastream/properties/@url"

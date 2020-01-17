@@ -62,4 +62,4 @@ declare namespace ReportJSONTypes {
   }
 }
 
-export { ReportJSONTypes as EpiReportJSONTypes };
+export { ReportJSONTypes as CronkJSONTypes };

@@ -32,7 +32,7 @@
   ],
   "streams": [
     {
-      "element": "epi-socketio-datastream",
+      "element": "cronk-socketio-datastream",
       "@url": "https://socket-io-chat.now.sh/",
       "@channels": [
         {

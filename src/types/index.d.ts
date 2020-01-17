@@ -10,4 +10,4 @@ declare namespace DataTypes {
   }
 }
 
-export { DataTypes as EpiReportDataTypes };
+export { DataTypes as CronkDataTypes };

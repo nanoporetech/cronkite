@@ -8,10 +8,10 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  EpiReportJSONTypes,
+  CronkJSONTypes,
 } from './types/report-json';
 import {
-  EpiReportDataTypes,
+  CronkDataTypes,
 } from './types';
 
 export namespace Components {
@@ -19,26 +19,64 @@ export namespace Components {
     'report': string;
   }
   interface CronkDatastreams {
-    'getState': () => Promise<{ streams: EpiReportJSONTypes.Stream[] | undefined; pageComponentsReady: boolean; }>;
+    'getState': () => Promise<{ streams: CronkJSONTypes.Stream[] | undefined; pageComponentsReady: boolean; }>;
     'reload': () => Promise<void>;
-    'streams'?: EpiReportJSONTypes.Stream[];
+    'streams'?: CronkJSONTypes.Stream[];
     'streamsID'?: string;
+  }
+  interface CronkErrormessage {
+    'message': string;
+  }
+  interface CronkEventStream {
+    'config': any;
+  }
+  interface CronkFunnel {
+    'statsList': CronkDataTypes.IFunnelListItem[];
   }
   interface CronkPage {
     'loadConfig': (newConfig: any) => Promise<void>;
-    'pageConfig'?: EpiReportJSONTypes.ReportDefinition | undefined;
+    'pageConfig'?: CronkJSONTypes.ReportDefinition | undefined;
     'showConfig': boolean;
     'validateConfig': (configIn: any) => Promise<boolean>;
   }
-  interface EpiErrorMessage {
-    'message': string;
+  interface CronkPageComponents {}
+  interface CronkPagePanel {
+    'panelConfig': any;
   }
-  interface EpiEventStream {
-    'config': any;
+  interface CronkPollDatastream {
+    'acceptsFilters': boolean;
+    'addFilter': (fnKey: string, filterFn: () => boolean) => Promise<void>;
+    'channels': CronkDataStream.IChannelShape[];
+    'corsProxy': string;
+    'credentials': RequestCredentials;
+    'listFilters': () => Promise<{}>;
+    'mode': RequestMode;
+    'pollFrequency': number;
+    'resendBroadcast': () => Promise<void>;
+    'responseHandler': CronkDataStream.IDatastreamResponseHandler;
+    'type': string;
+    'url': string | null;
   }
-  interface EpiFunnel {
-    'statsList': EpiReportDataTypes.IFunnelListItem[];
+  interface CronkSelector {
+    'heading': string;
+    'selectList': ISelectListMember[];
+    'selector': any;
   }
+  interface CronkSocketioDatastream {
+    'acceptsFilters': boolean;
+    'channels': CronkDataStream.IChannelShape[];
+    'resendBroadcast': () => Promise<void>;
+    'responseHandler': CronkDataStream.IDatastreamSocketResponseHandler;
+    'type': string;
+    'url': string | null;
+  }
+  interface CronkStatsbox {
+    'statsList': CronkDataTypes.IStatsBoxListItem[];
+  }
+  interface CronkTitle {
+    'reportTitle': string;
+  }
+  interface CronkVersion {}
   interface EpiInstanceDatastream {
     'channel': string;
     'credentials': RequestCredentials;
@@ -47,44 +85,6 @@ export namespace Components {
     'mode': RequestMode;
     'pollFrequency': number;
     'type': string;
-  }
-  interface EpiPollDatastream {
-    'acceptsFilters': boolean;
-    'addFilter': (fnKey: string, filterFn: () => boolean) => Promise<void>;
-    'channels': EpiReportDataStream.IChannelShape[];
-    'corsProxy': string;
-    'credentials': RequestCredentials;
-    'listFilters': () => Promise<{}>;
-    'mode': RequestMode;
-    'pollFrequency': number;
-    'resendBroadcast': () => Promise<void>;
-    'responseHandler': EpiReportDataStream.IDatastreamResponseHandler;
-    'type': string;
-    'url': string | null;
-  }
-  interface EpiReportComponents {}
-  interface EpiReportPanel {
-    'panelConfig': any;
-  }
-  interface EpiReportSelector {
-    'heading': string;
-    'selectList': ISelectListMember[];
-    'selector': any;
-  }
-  interface EpiReportTitle {
-    'reportTitle': string;
-  }
-  interface EpiReportVersion {}
-  interface EpiSocketioDatastream {
-    'acceptsFilters': boolean;
-    'channels': EpiReportDataStream.IChannelShape[];
-    'resendBroadcast': () => Promise<void>;
-    'responseHandler': EpiReportDataStream.IDatastreamSocketResponseHandler;
-    'type': string;
-    'url': string | null;
-  }
-  interface EpiStatsBox {
-    'statsList': EpiReportDataTypes.IStatsBoxListItem[];
   }
 }
 
@@ -103,28 +103,76 @@ declare global {
     new (): HTMLCronkDatastreamsElement;
   };
 
+  interface HTMLCronkErrormessageElement extends Components.CronkErrormessage, HTMLStencilElement {}
+  var HTMLCronkErrormessageElement: {
+    prototype: HTMLCronkErrormessageElement;
+    new (): HTMLCronkErrormessageElement;
+  };
+
+  interface HTMLCronkEventStreamElement extends Components.CronkEventStream, HTMLStencilElement {}
+  var HTMLCronkEventStreamElement: {
+    prototype: HTMLCronkEventStreamElement;
+    new (): HTMLCronkEventStreamElement;
+  };
+
+  interface HTMLCronkFunnelElement extends Components.CronkFunnel, HTMLStencilElement {}
+  var HTMLCronkFunnelElement: {
+    prototype: HTMLCronkFunnelElement;
+    new (): HTMLCronkFunnelElement;
+  };
+
   interface HTMLCronkPageElement extends Components.CronkPage, HTMLStencilElement {}
   var HTMLCronkPageElement: {
     prototype: HTMLCronkPageElement;
     new (): HTMLCronkPageElement;
   };
 
-  interface HTMLEpiErrorMessageElement extends Components.EpiErrorMessage, HTMLStencilElement {}
-  var HTMLEpiErrorMessageElement: {
-    prototype: HTMLEpiErrorMessageElement;
-    new (): HTMLEpiErrorMessageElement;
+  interface HTMLCronkPageComponentsElement extends Components.CronkPageComponents, HTMLStencilElement {}
+  var HTMLCronkPageComponentsElement: {
+    prototype: HTMLCronkPageComponentsElement;
+    new (): HTMLCronkPageComponentsElement;
   };
 
-  interface HTMLEpiEventStreamElement extends Components.EpiEventStream, HTMLStencilElement {}
-  var HTMLEpiEventStreamElement: {
-    prototype: HTMLEpiEventStreamElement;
-    new (): HTMLEpiEventStreamElement;
+  interface HTMLCronkPagePanelElement extends Components.CronkPagePanel, HTMLStencilElement {}
+  var HTMLCronkPagePanelElement: {
+    prototype: HTMLCronkPagePanelElement;
+    new (): HTMLCronkPagePanelElement;
   };
 
-  interface HTMLEpiFunnelElement extends Components.EpiFunnel, HTMLStencilElement {}
-  var HTMLEpiFunnelElement: {
-    prototype: HTMLEpiFunnelElement;
-    new (): HTMLEpiFunnelElement;
+  interface HTMLCronkPollDatastreamElement extends Components.CronkPollDatastream, HTMLStencilElement {}
+  var HTMLCronkPollDatastreamElement: {
+    prototype: HTMLCronkPollDatastreamElement;
+    new (): HTMLCronkPollDatastreamElement;
+  };
+
+  interface HTMLCronkSelectorElement extends Components.CronkSelector, HTMLStencilElement {}
+  var HTMLCronkSelectorElement: {
+    prototype: HTMLCronkSelectorElement;
+    new (): HTMLCronkSelectorElement;
+  };
+
+  interface HTMLCronkSocketioDatastreamElement extends Components.CronkSocketioDatastream, HTMLStencilElement {}
+  var HTMLCronkSocketioDatastreamElement: {
+    prototype: HTMLCronkSocketioDatastreamElement;
+    new (): HTMLCronkSocketioDatastreamElement;
+  };
+
+  interface HTMLCronkStatsboxElement extends Components.CronkStatsbox, HTMLStencilElement {}
+  var HTMLCronkStatsboxElement: {
+    prototype: HTMLCronkStatsboxElement;
+    new (): HTMLCronkStatsboxElement;
+  };
+
+  interface HTMLCronkTitleElement extends Components.CronkTitle, HTMLStencilElement {}
+  var HTMLCronkTitleElement: {
+    prototype: HTMLCronkTitleElement;
+    new (): HTMLCronkTitleElement;
+  };
+
+  interface HTMLCronkVersionElement extends Components.CronkVersion, HTMLStencilElement {}
+  var HTMLCronkVersionElement: {
+    prototype: HTMLCronkVersionElement;
+    new (): HTMLCronkVersionElement;
   };
 
   interface HTMLEpiInstanceDatastreamElement extends Components.EpiInstanceDatastream, HTMLStencilElement {}
@@ -132,70 +180,22 @@ declare global {
     prototype: HTMLEpiInstanceDatastreamElement;
     new (): HTMLEpiInstanceDatastreamElement;
   };
-
-  interface HTMLEpiPollDatastreamElement extends Components.EpiPollDatastream, HTMLStencilElement {}
-  var HTMLEpiPollDatastreamElement: {
-    prototype: HTMLEpiPollDatastreamElement;
-    new (): HTMLEpiPollDatastreamElement;
-  };
-
-  interface HTMLEpiReportComponentsElement extends Components.EpiReportComponents, HTMLStencilElement {}
-  var HTMLEpiReportComponentsElement: {
-    prototype: HTMLEpiReportComponentsElement;
-    new (): HTMLEpiReportComponentsElement;
-  };
-
-  interface HTMLEpiReportPanelElement extends Components.EpiReportPanel, HTMLStencilElement {}
-  var HTMLEpiReportPanelElement: {
-    prototype: HTMLEpiReportPanelElement;
-    new (): HTMLEpiReportPanelElement;
-  };
-
-  interface HTMLEpiReportSelectorElement extends Components.EpiReportSelector, HTMLStencilElement {}
-  var HTMLEpiReportSelectorElement: {
-    prototype: HTMLEpiReportSelectorElement;
-    new (): HTMLEpiReportSelectorElement;
-  };
-
-  interface HTMLEpiReportTitleElement extends Components.EpiReportTitle, HTMLStencilElement {}
-  var HTMLEpiReportTitleElement: {
-    prototype: HTMLEpiReportTitleElement;
-    new (): HTMLEpiReportTitleElement;
-  };
-
-  interface HTMLEpiReportVersionElement extends Components.EpiReportVersion, HTMLStencilElement {}
-  var HTMLEpiReportVersionElement: {
-    prototype: HTMLEpiReportVersionElement;
-    new (): HTMLEpiReportVersionElement;
-  };
-
-  interface HTMLEpiSocketioDatastreamElement extends Components.EpiSocketioDatastream, HTMLStencilElement {}
-  var HTMLEpiSocketioDatastreamElement: {
-    prototype: HTMLEpiSocketioDatastreamElement;
-    new (): HTMLEpiSocketioDatastreamElement;
-  };
-
-  interface HTMLEpiStatsBoxElement extends Components.EpiStatsBox, HTMLStencilElement {}
-  var HTMLEpiStatsBoxElement: {
-    prototype: HTMLEpiStatsBoxElement;
-    new (): HTMLEpiStatsBoxElement;
-  };
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'cronk-datastreams': HTMLCronkDatastreamsElement;
+    'cronk-errormessage': HTMLCronkErrormessageElement;
+    'cronk-event-stream': HTMLCronkEventStreamElement;
+    'cronk-funnel': HTMLCronkFunnelElement;
     'cronk-page': HTMLCronkPageElement;
-    'epi-error-message': HTMLEpiErrorMessageElement;
-    'epi-event-stream': HTMLEpiEventStreamElement;
-    'epi-funnel': HTMLEpiFunnelElement;
+    'cronk-page-components': HTMLCronkPageComponentsElement;
+    'cronk-page-panel': HTMLCronkPagePanelElement;
+    'cronk-poll-datastream': HTMLCronkPollDatastreamElement;
+    'cronk-selector': HTMLCronkSelectorElement;
+    'cronk-socketio-datastream': HTMLCronkSocketioDatastreamElement;
+    'cronk-statsbox': HTMLCronkStatsboxElement;
+    'cronk-title': HTMLCronkTitleElement;
+    'cronk-version': HTMLCronkVersionElement;
     'epi-instance-datastream': HTMLEpiInstanceDatastreamElement;
-    'epi-poll-datastream': HTMLEpiPollDatastreamElement;
-    'epi-report-components': HTMLEpiReportComponentsElement;
-    'epi-report-panel': HTMLEpiReportPanelElement;
-    'epi-report-selector': HTMLEpiReportSelectorElement;
-    'epi-report-title': HTMLEpiReportTitleElement;
-    'epi-report-version': HTMLEpiReportVersionElement;
-    'epi-socketio-datastream': HTMLEpiSocketioDatastreamElement;
-    'epi-stats-box': HTMLEpiStatsBoxElement;
   }
 }
 
@@ -204,23 +204,59 @@ declare namespace LocalJSX {
     'report'?: string;
   }
   interface CronkDatastreams {
-    'streams'?: EpiReportJSONTypes.Stream[];
+    'streams'?: CronkJSONTypes.Stream[];
     'streamsID'?: string;
+  }
+  interface CronkErrormessage {
+    'message'?: string;
+  }
+  interface CronkEventStream {
+    'config'?: any;
+  }
+  interface CronkFunnel {
+    'statsList'?: CronkDataTypes.IFunnelListItem[];
   }
   interface CronkPage {
     'onCronkPageReady'?: (event: CustomEvent<void>) => void;
-    'pageConfig'?: EpiReportJSONTypes.ReportDefinition | undefined;
+    'pageConfig'?: CronkJSONTypes.ReportDefinition | undefined;
     'showConfig'?: boolean;
   }
-  interface EpiErrorMessage {
-    'message'?: string;
+  interface CronkPageComponents {
+    'onComponentsLoaded'?: (event: CustomEvent<void>) => void;
   }
-  interface EpiEventStream {
-    'config'?: any;
+  interface CronkPagePanel {
+    'panelConfig'?: any;
   }
-  interface EpiFunnel {
-    'statsList'?: EpiReportDataTypes.IFunnelListItem[];
+  interface CronkPollDatastream {
+    'acceptsFilters'?: boolean;
+    'channels'?: CronkDataStream.IChannelShape[];
+    'corsProxy'?: string;
+    'credentials'?: RequestCredentials;
+    'mode'?: RequestMode;
+    'pollFrequency'?: number;
+    'responseHandler'?: CronkDataStream.IDatastreamResponseHandler;
+    'type'?: string;
+    'url'?: string | null;
   }
+  interface CronkSelector {
+    'heading'?: string;
+    'selectList'?: ISelectListMember[];
+    'selector'?: any;
+  }
+  interface CronkSocketioDatastream {
+    'acceptsFilters'?: boolean;
+    'channels'?: CronkDataStream.IChannelShape[];
+    'responseHandler'?: CronkDataStream.IDatastreamSocketResponseHandler;
+    'type'?: string;
+    'url'?: string | null;
+  }
+  interface CronkStatsbox {
+    'statsList'?: CronkDataTypes.IStatsBoxListItem[];
+  }
+  interface CronkTitle {
+    'reportTitle'?: string;
+  }
+  interface CronkVersion {}
   interface EpiInstanceDatastream {
     'channel'?: string;
     'credentials'?: RequestCredentials;
@@ -230,59 +266,23 @@ declare namespace LocalJSX {
     'pollFrequency'?: number;
     'type'?: string;
   }
-  interface EpiPollDatastream {
-    'acceptsFilters'?: boolean;
-    'channels'?: EpiReportDataStream.IChannelShape[];
-    'corsProxy'?: string;
-    'credentials'?: RequestCredentials;
-    'mode'?: RequestMode;
-    'pollFrequency'?: number;
-    'responseHandler'?: EpiReportDataStream.IDatastreamResponseHandler;
-    'type'?: string;
-    'url'?: string | null;
-  }
-  interface EpiReportComponents {
-    'onComponentsLoaded'?: (event: CustomEvent<void>) => void;
-  }
-  interface EpiReportPanel {
-    'panelConfig'?: any;
-  }
-  interface EpiReportSelector {
-    'heading'?: string;
-    'selectList'?: ISelectListMember[];
-    'selector'?: any;
-  }
-  interface EpiReportTitle {
-    'reportTitle'?: string;
-  }
-  interface EpiReportVersion {}
-  interface EpiSocketioDatastream {
-    'acceptsFilters'?: boolean;
-    'channels'?: EpiReportDataStream.IChannelShape[];
-    'responseHandler'?: EpiReportDataStream.IDatastreamSocketResponseHandler;
-    'type'?: string;
-    'url'?: string | null;
-  }
-  interface EpiStatsBox {
-    'statsList'?: EpiReportDataTypes.IStatsBoxListItem[];
-  }
 
   interface IntrinsicElements {
     'app-root': AppRoot;
     'cronk-datastreams': CronkDatastreams;
+    'cronk-errormessage': CronkErrormessage;
+    'cronk-event-stream': CronkEventStream;
+    'cronk-funnel': CronkFunnel;
     'cronk-page': CronkPage;
-    'epi-error-message': EpiErrorMessage;
-    'epi-event-stream': EpiEventStream;
-    'epi-funnel': EpiFunnel;
+    'cronk-page-components': CronkPageComponents;
+    'cronk-page-panel': CronkPagePanel;
+    'cronk-poll-datastream': CronkPollDatastream;
+    'cronk-selector': CronkSelector;
+    'cronk-socketio-datastream': CronkSocketioDatastream;
+    'cronk-statsbox': CronkStatsbox;
+    'cronk-title': CronkTitle;
+    'cronk-version': CronkVersion;
     'epi-instance-datastream': EpiInstanceDatastream;
-    'epi-poll-datastream': EpiPollDatastream;
-    'epi-report-components': EpiReportComponents;
-    'epi-report-panel': EpiReportPanel;
-    'epi-report-selector': EpiReportSelector;
-    'epi-report-title': EpiReportTitle;
-    'epi-report-version': EpiReportVersion;
-    'epi-socketio-datastream': EpiSocketioDatastream;
-    'epi-stats-box': EpiStatsBox;
   }
 }
 
@@ -294,19 +294,19 @@ declare module "@stencil/core" {
     interface IntrinsicElements {
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'cronk-datastreams': LocalJSX.CronkDatastreams & JSXBase.HTMLAttributes<HTMLCronkDatastreamsElement>;
+      'cronk-errormessage': LocalJSX.CronkErrormessage & JSXBase.HTMLAttributes<HTMLCronkErrormessageElement>;
+      'cronk-event-stream': LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;
+      'cronk-funnel': LocalJSX.CronkFunnel & JSXBase.HTMLAttributes<HTMLCronkFunnelElement>;
       'cronk-page': LocalJSX.CronkPage & JSXBase.HTMLAttributes<HTMLCronkPageElement>;
-      'epi-error-message': LocalJSX.EpiErrorMessage & JSXBase.HTMLAttributes<HTMLEpiErrorMessageElement>;
-      'epi-event-stream': LocalJSX.EpiEventStream & JSXBase.HTMLAttributes<HTMLEpiEventStreamElement>;
-      'epi-funnel': LocalJSX.EpiFunnel & JSXBase.HTMLAttributes<HTMLEpiFunnelElement>;
+      'cronk-page-components': LocalJSX.CronkPageComponents & JSXBase.HTMLAttributes<HTMLCronkPageComponentsElement>;
+      'cronk-page-panel': LocalJSX.CronkPagePanel & JSXBase.HTMLAttributes<HTMLCronkPagePanelElement>;
+      'cronk-poll-datastream': LocalJSX.CronkPollDatastream & JSXBase.HTMLAttributes<HTMLCronkPollDatastreamElement>;
+      'cronk-selector': LocalJSX.CronkSelector & JSXBase.HTMLAttributes<HTMLCronkSelectorElement>;
+      'cronk-socketio-datastream': LocalJSX.CronkSocketioDatastream & JSXBase.HTMLAttributes<HTMLCronkSocketioDatastreamElement>;
+      'cronk-statsbox': LocalJSX.CronkStatsbox & JSXBase.HTMLAttributes<HTMLCronkStatsboxElement>;
+      'cronk-title': LocalJSX.CronkTitle & JSXBase.HTMLAttributes<HTMLCronkTitleElement>;
+      'cronk-version': LocalJSX.CronkVersion & JSXBase.HTMLAttributes<HTMLCronkVersionElement>;
       'epi-instance-datastream': LocalJSX.EpiInstanceDatastream & JSXBase.HTMLAttributes<HTMLEpiInstanceDatastreamElement>;
-      'epi-poll-datastream': LocalJSX.EpiPollDatastream & JSXBase.HTMLAttributes<HTMLEpiPollDatastreamElement>;
-      'epi-report-components': LocalJSX.EpiReportComponents & JSXBase.HTMLAttributes<HTMLEpiReportComponentsElement>;
-      'epi-report-panel': LocalJSX.EpiReportPanel & JSXBase.HTMLAttributes<HTMLEpiReportPanelElement>;
-      'epi-report-selector': LocalJSX.EpiReportSelector & JSXBase.HTMLAttributes<HTMLEpiReportSelectorElement>;
-      'epi-report-title': LocalJSX.EpiReportTitle & JSXBase.HTMLAttributes<HTMLEpiReportTitleElement>;
-      'epi-report-version': LocalJSX.EpiReportVersion & JSXBase.HTMLAttributes<HTMLEpiReportVersionElement>;
-      'epi-socketio-datastream': LocalJSX.EpiSocketioDatastream & JSXBase.HTMLAttributes<HTMLEpiSocketioDatastreamElement>;
-      'epi-stats-box': LocalJSX.EpiStatsBox & JSXBase.HTMLAttributes<HTMLEpiStatsBoxElement>;
     }
   }
 }

@@ -72,7 +72,7 @@
   ],
   "streams": [
     {
-      "element": "epi-poll-datastream",
+      "element": "cronk-poll-datastream",
       "@url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AUTH:%22Kulesha+E%22&format=json",
       "@poll-frequency": 25000,
       "@credentials": "omit",

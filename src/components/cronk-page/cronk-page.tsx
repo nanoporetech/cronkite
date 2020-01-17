@@ -7,7 +7,7 @@ import 'epi2me-ui-headlinevalue/dist';
 import 'epi2me-ui-coverageplot/dist';
 
 import { Component, Event, EventEmitter, h, Host, Listen, Prop, Method, State, Watch } from '@stencil/core';
-import { EpiReportJSONTypes } from '../../types/report-json';
+import { CronkJSONTypes } from '../../types/report-json';
 import Ajv from 'ajv';
 import debounce from 'lodash/debounce';
 import reportSchema from '../../global/cronkite.schema.json';
@@ -30,7 +30,7 @@ export class CronkPage {
 
   @Prop() showConfig = false;
 
-  @Prop() pageConfig?: EpiReportJSONTypes.ReportDefinition | undefined;
+  @Prop() pageConfig?: CronkJSONTypes.ReportDefinition | undefined;
   @Watch('pageConfig')
   async watchHandler(newConfig: any) {
     // async watchHandler(newConfig: any, oldConfig: any) {
@@ -119,12 +119,12 @@ export class CronkPage {
       <Host id={id} class={classes}>
         {/* RENDER COMPONENTS */}
         {(isValidConfig && (
-          <epi-report-components id={uuidv4()} slot="components">
+          <cronk-page-components id={uuidv4()} slot="components">
             {(components || []).map((compDef: any) => {
               const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
               const uuid = componentDefinition.layout.i || uuidv4();
               return (
-                <epi-report-panel
+                <cronk-page-panel
                   slot={componentDefinition.layout.position}
                   key={uuid}
                   id={uuid}
@@ -132,7 +132,7 @@ export class CronkPage {
                 />
               );
             })}
-          </epi-report-components>
+          </cronk-page-components>
         )) ||
           null}
         {/* RENDER STREAMS */}

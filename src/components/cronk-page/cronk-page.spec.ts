@@ -1,6 +1,6 @@
 // tslint:disable: object-literal-sort-keys
 import { SpecPage, newSpecPage } from '@stencil/core/dist/testing';
-// import { EpiReportJSONTypes } from '../../types/report-json';
+// import { CronkJSONTypes } from '../../types/report-json';
 import { CronkPage } from './cronk-page';
 
 describe('cronk-page', () => {

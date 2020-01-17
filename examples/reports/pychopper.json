@@ -2,7 +2,7 @@
   "id": "pychopper:report",
   "components": [
     {
-      "element": "epi-report-title",
+      "element": "cronk-title",
       "@reportTitle": [
         "PYCHOPPER CLASSIFICATION"
       ],
@@ -11,7 +11,7 @@
       }
     },
     {
-      "element": "epi-funnel",
+      "element": "cronk-funnel",
       "listen": "pychopper:datastream:reads",
       "@statsList": {
         "fn:jmespath": "[].{label: @.exit_status , count: @._stats.count}"
@@ -102,13 +102,13 @@
           }
         }
       ],
-      "element": "epi-stats-box",
+      "element": "cronk-statsbox",
       "layout": {
         "width": 2
       }
     },
     {
-      "element": "epi-report-selector",
+      "element": "cronk-selector",
       "heading": "SELECT BARCODE",
       "@selectList": {
         "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
@@ -141,7 +141,7 @@
       }
     },
     {
-      "element": "epi-report-selector",
+      "element": "cronk-selector",
       "heading": "SELECT RUNID",
       "@selectList": {
         "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
@@ -174,7 +174,7 @@
       }
     },
     {
-      "element": "epi-report-version",
+      "element": "cronk-version",
       "@innerHTML": {
         "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(version)])"
       },
@@ -186,7 +186,7 @@
   ],
   "streams": [
     {
-      "element": "epi-poll-datastream",
+      "element": "cronk-poll-datastream",
       "@url": "http://localhost:3333/cronkite/examples/data/pychopper.json",
       "@poll-frequency": 25000,
       "@credentials": "omit",

@@ -1,6 +1,6 @@
 import { Component, Element, h, Prop } from '@stencil/core';
 import ResponseHandlers from './responseHandlers';
-import * as EpiReportDataStream from '../interfaces';
+import * as CronkDataStream from '../interfaces';
 
 @Component({
   tag: 'epi-instance-datastream',
@@ -18,16 +18,16 @@ export class EpiInstanceDatastream {
 
   getResponseHandler() {
     switch (this.type) {
-      case EpiReportDataStream.EDatastreamTypes.telemetry:
+      case CronkDataStream.EDatastreamTypes.telemetry:
         return ResponseHandlers.telemetry;
-      case EpiReportDataStream.EDatastreamTypes.status:
+      case CronkDataStream.EDatastreamTypes.status:
         return ResponseHandlers.status;
       default:
         return ResponseHandlers.default;
     }
   }
 
-  getPayloadResponseHandler(): EpiReportDataStream.IDatastreamResponseHandler {
+  getPayloadResponseHandler(): CronkDataStream.IDatastreamResponseHandler {
     const handler: any = this.getResponseHandler();
     switch (this.flavour) {
       case 'basecalling_1d_barcode-v1':
@@ -44,7 +44,7 @@ export class EpiInstanceDatastream {
     const url = `https://${location.host}/workflow_instance/${this.idWorkflowInstance}/${this.flavour}.json`;
 
     return (
-      <epi-poll-datastream
+      <cronk-poll-datastream
         credentials={this.credentials}
         responseHandler={this.getPayloadResponseHandler()}
         type={this.type}

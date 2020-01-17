@@ -16,14 +16,19 @@
 
 ### Depends on
 
-- [epi-report](../../components/epi-report)
+- [cronk-page](../../components/cronk-page)
 
 ### Graph
 ```mermaid
 graph TD;
-  app-root --> epi-report
-  epi-report --> epi-report-panel
-  epi-report --> epi-event-stream
+  app-root --> cronk-page
+  cronk-page --> cronk-page-components
+  cronk-page --> cronk-page-panel
+  cronk-page --> cronk-datastreams
+  cronk-page-panel --> cronk-errormessage
+  cronk-page-panel --> cronk-page-components
+  cronk-page-panel --> cronk-page-panel
+  cronk-datastreams --> cronk-event-stream
   style app-root fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
