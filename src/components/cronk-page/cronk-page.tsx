@@ -116,12 +116,12 @@ export class CronkPage {
       <Host id={id} class={classes}>
         {/* RENDER COMPONENTS */}
         {(isValidConfig && (
-          <epi-report-components id={uuidv4()} slot="components">
+          <cronk-page-components id={uuidv4()} slot="components">
             {(components || []).map((compDef: any) => {
               const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
               const uuid = componentDefinition.layout.i || uuidv4();
               return (
-                <epi-report-panel
+                <cronk-page-panel
                   slot={componentDefinition.layout.position}
                   key={uuid}
                   id={uuid}
@@ -129,7 +129,7 @@ export class CronkPage {
                 />
               );
             })}
-          </epi-report-components>
+          </cronk-page-components>
         )) ||
           null}
         {/* RENDER STREAMS */}
