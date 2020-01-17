@@ -1,5 +1,5 @@
-import { struct } from 'superstruct';
 import numberScale from 'number-scale';
+import { struct } from 'superstruct';
 import jmespath from '../workers/jmespath-worker';
 
 // tslint:disable: object-literal-sort-keys

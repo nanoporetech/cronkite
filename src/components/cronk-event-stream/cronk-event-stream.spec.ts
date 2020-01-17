@@ -1,4 +1,4 @@
-import { SpecPage, newSpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
 import { CronkEventStream } from './cronk-event-stream';
 
 describe('cronk-event-stream', () => {

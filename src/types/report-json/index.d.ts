@@ -63,3 +63,4 @@ declare namespace ReportJSONTypes {
 }
 
 export { ReportJSONTypes as CronkJSONTypes };
+

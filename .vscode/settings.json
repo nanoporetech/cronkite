@@ -8,10 +8,16 @@
   },
   "[typescript]": {
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
     "editor.tabSize": 2
   },
   "[typescriptreact]": {
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
     "editor.tabSize": 2
   },
   "cSpell.words": [

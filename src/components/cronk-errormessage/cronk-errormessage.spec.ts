@@ -1,4 +1,4 @@
-import { SpecPage, newSpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
 import { CronkErrormessage } from './cronk-errormessage';
 
 describe('cronk-errormessage', () => {

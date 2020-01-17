@@ -1,19 +1,5 @@
-import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import uniqBy from 'lodash/uniqBy';
-
-// {SummarySelectorComp(
-//   'barcode',
-//   allBarcodes,
-//   setSelectedBarcodes,
-//   readsByBarcode,
-//   totalReads,
-//   label =>
-//     label
-//       .toUpperCase()
-//       .replace('NA', 'NO BARCODE')
-//       .replace('BC', 'BC '),
-//   (item, total) => (item.barcode !== 'NA' ? total : -Infinity),
-// )}
 
 interface ISelectListMember {
   label: string;

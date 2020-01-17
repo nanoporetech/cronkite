@@ -1,10 +1,8 @@
 // tslint:disable: object-shorthand-properties-first
-
-import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop } from '@stencil/core';
 import io from 'socket.io-client';
-
-import * as CronkDataStream from '../interfaces';
 import { processValue } from '../../utils';
+import * as CronkDataStream from '../interfaces';
 
 @Component({
   tag: 'cronk-socketio-datastream',
@@ -25,8 +23,6 @@ export class CronkSocketioDatastream {
       detail: payload,
     });
     console.debug(eventName, payload);
-    // TODO: HACK TO ENSURE EVENTS FIRE AFTER COMPONENTS ARE RENDERED
-    // setTimeout(sourceNode.dispatchEvent, 100, event);
     sourceNode.dispatchEvent(event);
   };
 

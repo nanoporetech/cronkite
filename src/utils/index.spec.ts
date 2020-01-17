@@ -1,4 +1,4 @@
-import { applyFunction, mapAttributesToProps, saveDashboardLayout, validateArray } from './index';
+import { applyFunction, mapAttributesToProps, validateArray } from './index';
 
 const MOCK_PAYLOAD = {
   data: [

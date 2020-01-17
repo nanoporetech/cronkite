@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, State, Method } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, State } from '@stencil/core';
 import { CronkJSONTypes } from '../../types/report-json';
 
 @Component({

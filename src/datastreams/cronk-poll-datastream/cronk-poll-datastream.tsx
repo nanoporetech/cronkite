@@ -1,6 +1,6 @@
-import { Component, Element, Host, h, Method, Prop } from '@stencil/core';
-import * as CronkDataStream from '../interfaces';
+import { Component, Element, h, Host, Method, Prop } from '@stencil/core';
 import { processValue } from '../../utils';
+import * as CronkDataStream from '../interfaces';
 
 const DEFAULT_SHAPE = {
   'fn:jmespath': '@',
