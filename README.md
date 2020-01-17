@@ -166,13 +166,13 @@ You have already been introduced to your first payload transform `fn:jmespath` w
 Streams are a special type of component in that they __*do not*__ render any UI elements. They do however, emit events (usually `CustomEvent` types) with corresponding payloads that can be consumed by `components` via `listen` as described above.
 
 There are (at the time of writing) three configurable data stream components available in Cronkite:
-  1. `cronk-poll-datastream`
-  2. `epi-workflow-instance-datastream`
-  3. `cronk-socketio-datastream` - very much a prototype
+  1.  [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
+  2. [epi-workflow-instance-datastream](src/components/epi-workflow-instance-datastream/readme.md)
+  3. [cronk-socketio-datastream](src/components/cronk-socketio-datastream/readme.md) - very much a prototype
 
-### 1. `cronk-poll-datastream`
+### 1. [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
 
-The `cronk-poll-datastream` stream will abstract URL polling (via the fetch API) to any CORS enabled URL that returns an `application/json` response.
+The [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) stream will abstract URL polling (via the fetch API) to any CORS enabled URL that returns an `application/json` response.
 
 #### Parameterisation of the request
 
@@ -210,13 +210,13 @@ The `cronk-poll-datastream` stream will abstract URL polling (via the fetch API)
 
 > ### What's going on
 >
-> `element` specifies a web component `cronk-poll-datastream` that (in this case) abstracts the W3C fetch API. The component polls a URL provided by the user at regular intervals for JSON data. Successful responses are emitted as the payload to a `CustomEvent` object. The default event name is `cronkite:stream` although the user can specify a custom event name using the `@channels` attribute. In the example above, the url `https://jsonplaceholder.typicode.com/todos` will be polled every 25 seconds and the most recent successful response cached. On successful data fetch, the JSON response will be emitted as a `CustomEvent` with the event name set to `my:todos`.
+> `element` specifies a web component [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) that (in this case) abstracts the W3C fetch API. The component polls a URL provided by the user at regular intervals for JSON data. Successful responses are emitted as the payload to a `CustomEvent` object. The default event name is `cronkite:stream` although the user can specify a custom event name using the `@channels` attribute. In the example above, the url `https://jsonplaceholder.typicode.com/todos` will be polled every 25 seconds and the most recent successful response cached. On successful data fetch, the JSON response will be emitted as a `CustomEvent` with the event name set to `my:todos`.
 
 <hr/>
 
 ### 2. `epi-workflow-instance-datastream`
 
-This datastream inherits from the `cronk-poll-datastream` and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found ain the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
+This datastream inherits from the [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found ain the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
 
 #### Parameterisation of the request
 
@@ -260,11 +260,11 @@ This datastream inherits from the `cronk-poll-datastream` and inherits all `@` a
 
 Each component in the `components` block of the JSON specifies a single HTML tag in the `element` field. This will be rendered as a DOM element to which event handlers will be attached and attributes set. Apart from the standard set of HTML 5 tags a growing number of `Custom Elements` (web components) are being provided to help visualize more complex data. At the time of writing these include:
 
-- `<cronk-funnel>`
-- `<cronk-title>`
-- `<cronk-version>`
-- `<cronk-statsbox>`
-- `<cronk-selector>`
+- [cronk-funnel](src/components/cronk-funnel/readme.md)
+- [cronk-title](src/components/cronk-title/readme.md)
+- [cronk-version](src/components/cronk-version/readme.md)
+- [cronk-statsbox](src/components/cronk-statsbox/readme.md)
+- [cronk-selector](src/components/cronk-selector/readme.md)
 - `<epi-headlinevalue>`
 - `<epi-coverageplot>`
 - `<epi-donutsummary>`
@@ -274,9 +274,9 @@ Each component in the `components` block of the JSON specifies a single HTML tag
 
 For information about the attributes available to set by the user see the [Storybook playground](https://metrichor-ui.git.oxfordnanolabs.local/component-storybook/?path=/story/epi2me-checkmark--default-configurable) where you can read documentation on the components and live-edit the values of attributes.
 
-### The `<cronk-selector>` component
+### The [cronk-selector](src/components/cronk-selector/readme.md) component
 
-The `<cronk-selector>` component is a cronkite specific component that generates filter functions and attaches them to datastreams that are configures to accept filters with the `@acceptsFilters` prop. The `<cronk-selector>` component currently has the following configuration as illustrated in the full example below:
+The [cronk-selector](src/components/cronk-selector/readme.md) component is a cronkite specific component that generates filter functions and attaches them to datastreams that are configures to accept filters with the `@acceptsFilters` prop. The [cronk-selector](src/components/cronk-selector/readme.md) component currently has the following configuration as illustrated in the full example below:
 
 ```javascript
 {
@@ -406,7 +406,3 @@ Here's an full example of a [hello-world](./examples/reports/hello-world.json) r
 }
 
 ```
-
-## DOCUMENTATION
-
-https://metrichor-reports.git.oxfordnanolabs.local/cronkite/docs/components/cronk-page

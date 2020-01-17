@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 
 @Component({
   styleUrl: 'app-root.scss',

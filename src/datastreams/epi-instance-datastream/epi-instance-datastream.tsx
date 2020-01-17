@@ -1,6 +1,6 @@
 import { Component, Element, h, Prop } from '@stencil/core';
-import ResponseHandlers from './responseHandlers';
 import * as CronkDataStream from '../interfaces';
+import ResponseHandlers from './responseHandlers';
 
 @Component({
   tag: 'epi-instance-datastream',

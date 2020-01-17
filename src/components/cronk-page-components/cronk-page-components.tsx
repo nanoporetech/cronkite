@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Host } from '@stencil/core';
 
 @Component({
   styleUrl: 'cronk-page-components.scss',

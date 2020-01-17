@@ -1,18 +1,15 @@
-// @Event({ bubbles: false, cancelable: true }) cronkPageReady!: EventEmitter<void>;
 // tslint:disable: no-import-side-effect
 import '@ionic/core';
+import { Component, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch } from '@stencil/core';
+import Ajv from 'ajv';
 import 'epi2me-ui-checkmark/dist';
+import 'epi2me-ui-coverageplot/dist';
 import 'epi2me-ui-donut/dist';
 import 'epi2me-ui-headlinevalue/dist';
-import 'epi2me-ui-coverageplot/dist';
-
-import { Component, Event, EventEmitter, h, Host, Listen, Prop, Method, State, Watch } from '@stencil/core';
-import { CronkJSONTypes } from '../../types/report-json';
-import Ajv from 'ajv';
 import debounce from 'lodash/debounce';
-import reportSchema from '../../global/cronkite.schema.json';
-
 import uuidv4 from 'uuid/v4';
+import reportSchema from '../../global/cronkite.schema.json';
+import { CronkJSONTypes } from '../../types/report-json';
 
 const DEFAULT_LAYOUT = {};
 
@@ -119,12 +116,12 @@ export class CronkPage {
       <Host id={id} class={classes}>
         {/* RENDER COMPONENTS */}
         {(isValidConfig && (
-          <cronk-page-components id={uuidv4()} slot="components">
+          <epi-report-components id={uuidv4()} slot="components">
             {(components || []).map((compDef: any) => {
               const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: DEFAULT_LAYOUT };
               const uuid = componentDefinition.layout.i || uuidv4();
               return (
-                <cronk-page-panel
+                <epi-report-panel
                   slot={componentDefinition.layout.position}
                   key={uuid}
                   id={uuid}
@@ -132,7 +129,7 @@ export class CronkPage {
                 />
               );
             })}
-          </cronk-page-components>
+          </epi-report-components>
         )) ||
           null}
         {/* RENDER STREAMS */}
