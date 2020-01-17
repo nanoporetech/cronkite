@@ -1,0 +1,136 @@
+:root {
+  --epi-base-font-size: 16;
+  // PRIMARY
+  --epi-color-primary: #007a9a;
+  --epi-color-primary-rgb: rgb(0, 122, 154);
+  --epi-color-primary-contrast: #efefef;
+  --epi-color-primary-contrast-rgb: rgb(239, 239, 239);
+  --epi-color-primary-shade: #006b88;
+  --epi-color-primary-tint: #1a87a4;
+  // SECONDARY
+  --epi-color-secondary: #68bbb9;
+  --epi-color-secondary-rgb: rgb(104, 187, 185);
+  --epi-color-secondary-contrast: #000;
+  --epi-color-secondary-contrast-rgb: rgb(0, 0, 0);
+  --epi-color-secondary-shade: #5ca5a3;
+  --epi-color-secondary-tint: #77c2c0;
+  // TERTIARY
+  --epi-color-tertiary: #fece62;
+  --epi-color-tertiary-rgb: rgb(254, 206, 98);
+  --epi-color-tertiary-contrast: #000;
+  --epi-color-tertiary-contrast-rgb: rgb(0, 0, 0);
+  --epi-color-tertiary-shade: #e0b556;
+  --epi-color-tertiary-tint: #fed372;
+  // SUCCESS
+  --epi-color-success: #17bb75;
+  --epi-color-success-rgb: rgb(23, 187, 117);
+  --epi-color-success-contrast: #000;
+  --epi-color-success-contrast-rgb: rgb(0, 0, 0);
+  --epi-color-success-shade: #14a567;
+  --epi-color-success-tint: #2ec283;
+  // WARNING
+  --epi-color-warning: #ffe728;
+  --epi-color-warning-rgb: rgb(255, 231, 40);
+  --epi-color-warning-contrast: #000;
+  --epi-color-warning-contrast-rgb: rgb(0, 0, 0);
+  --epi-color-warning-shade: #e0cb23;
+  --epi-color-warning-tint: #ffe93e;
+  // DANGER
+  --epi-color-danger: #ef4135;
+  --epi-color-danger-rgb: rgb(239, 65, 53);
+  --epi-color-danger-contrast: #efefef;
+  --epi-color-danger-contrast-rgb: rgb(239, 239, 239);
+  --epi-color-danger-shade: #d2392f;
+  --epi-color-danger-tint: #f15449;
+  // DARK
+  --epi-color-dark: #333;
+  --epi-color-dark-rgb: rgb(51, 51, 51);
+  --epi-color-dark-contrast: #efefef;
+  --epi-color-dark-contrast-rgb: rgb(239, 239, 239);
+  --epi-color-dark-shade: #3d4b4c;
+  --epi-color-dark-tint: #586667;
+  // MEDIUM
+  --epi-color-medium: #68767e;
+  --epi-color-medium-rgb: rgb(104, 118, 126);
+  --epi-color-medium-contrast: #efefef;
+  --epi-color-medium-contrast-rgb: rgb(239, 239, 239);
+  --epi-color-medium-shade: #5c686f;
+  --epi-color-medium-tint: #77848b;
+  // LIGHT
+  --epi-color-light: #e4e6e8;
+  --epi-color-light-rgb: rgb(228, 230, 232);
+  --epi-color-light-contrast: #000;
+  --epi-color-light-contrast-rgb: rgb(0, 0, 0);
+  --epi-color-light-shade: #c9cacc;
+  --epi-color-light-tint: #e7e9ea;
+  // BACKGROUND
+  --epi-background-color: #fff;
+  --epi-background-color-rgb: rgb(255, 255, 255);
+
+  // IONIC PRIMARY
+  --ion-color-primary: var(--epi-color-primary);
+  --ion-color-primary-rgb: var(--epi-color-primary-rgb);
+  --ion-color-primary-contrast: var(--epi-color-primary-contrast);
+  --ion-color-primary-contrast-rgb: var(--epi-color-primary-contrast-rgb);
+  --ion-color-primary-shade: var(--epi-color-primary-shade);
+  --ion-color-primary-tint: var(--epi-color-primary-tint);
+  // IONIC SECONDARY
+  --ion-color-secondary: var(--epi-color-secondary);
+  --ion-color-secondary-rgb: var(--epi-color-secondary-rgb);
+  --ion-color-secondary-contrast: var(--epi-color-secondary-contrast);
+  --ion-color-secondary-contrast-rgb: var(--epi-color-secondary-contrast-rgb);
+  --ion-color-secondary-shade: var(--epi-color-secondary-shade);
+  --ion-color-secondary-tint: var(--epi-color-secondary-tint);
+  // IONIC TERTIARY
+  --ion-color-tertiary: var(--epi-color-tertiary);
+  --ion-color-tertiary-rgb: var(--epi-color-tertiary-rgb);
+  --ion-color-tertiary-contrast: var(--epi-color-tertiary-contrast);
+  --ion-color-tertiary-contrast-rgb: var(--epi-color-tertiary-contrast-rgb);
+  --ion-color-tertiary-shade: var(--epi-color-tertiary-shade);
+  --ion-color-tertiary-tint: var(--epi-color-tertiary-tint);
+  // IONIC SUCCESS
+  --ion-color-success: var(--epi-color-success);
+  --ion-color-success-rgb: var(--epi-color-success-rgb);
+  --ion-color-success-contrast: var(--epi-color-success-contrast);
+  --ion-color-success-contrast-rgb: var(--epi-color-success-contrast-rgb);
+  --ion-color-success-shade: var(--epi-color-success-shade);
+  --ion-color-success-tint: var(--epi-color-success-tint);
+  // IONIC WARNING
+  --ion-color-warning: var(--epi-color-warning);
+  --ion-color-warning-rgb: var(--epi-color-warning-rgb);
+  --ion-color-warning-contrast: var(--epi-color-warning-contrast);
+  --ion-color-warning-contrast-rgb: var(--epi-color-warning-contrast-rgb);
+  --ion-color-warning-shade: var(--epi-color-warning-shade);
+  --ion-color-warning-tint: var(--epi-color-warning-tint);
+  // IONIC DANGER
+  --ion-color-danger: var(--epi-color-danger);
+  --ion-color-danger-rgb: var(--epi-color-danger-rgb);
+  --ion-color-danger-contrast: var(--epi-color-danger-contrast);
+  --ion-color-danger-contrast-rgb: var(--epi-color-danger-contrast-rgb);
+  --ion-color-danger-shade: var(--epi-color-danger-shade);
+  --ion-color-danger-tint: var(--epi-color-danger-tint);
+  // IONIC DARK
+  --ion-color-dark: var(--epi-color-dark);
+  --ion-color-dark-rgb: var(--epi-color-dark-rgb);
+  --ion-color-dark-contrast: var(--epi-color-dark-contrast);
+  --ion-color-dark-contrast-rgb: var(--epi-color-dark-contrast-rgb);
+  --ion-color-dark-shade: var(--epi-color-dark-shade);
+  --ion-color-dark-tint: var(--epi-color-dark-tint);
+  // IONIC MEDIUM
+  --ion-color-medium: var(--epi-color-medium);
+  --ion-color-medium-rgb: var(--epi-color-medium-rgb);
+  --ion-color-medium-contrast: var(--epi-color-medium-contrast);
+  --ion-color-medium-contrast-rgb: var(--epi-color-medium-contrast-rgb);
+  --ion-color-medium-shade: var(--epi-color-medium-shade);
+  --ion-color-medium-tint: var(--epi-color-medium-tint);
+  // IONIC LIGHT
+  --ion-color-light: var(--epi-color-light);
+  --ion-color-light-rgb: var(--epi-color-light-rgb);
+  --ion-color-light-contrast: var(--epi-color-light-contrast);
+  --ion-color-light-contrast-rgb: var(--epi-color-light-contrast-rgb);
+  --ion-color-light-shade: var(--epi-color-light-shade);
+  --ion-color-light-tint: var(--epi-color-light-tint);
+  // IONIC BACKGROUND
+  --ion-background-color: var(--epi-background-color);
+  --ion-background-color-rgb: var(--epi-background-color-rgb);
+}

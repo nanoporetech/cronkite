@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Cronkite - Dev</title>
+  <meta name="Description" content="Visualize your data" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#16161d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta http-equiv="x-ua-compatible" content="IE=Edge" />
+
+  <link href="./build/cronkite.css" rel="stylesheet" />
+  <script type="module" src="./build/cronkite.esm.js"></script>
+  <script nomodule src="./build/cronkite.js"></script>
+
+  <link rel="apple-touch-icon" href="./assets/icon/icon.png" />
+  <link rel="icon" type="image/x-icon" href="./assets/icon/favicon.ico" />
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    body,
+    html {
+      height: 100%;
+    }
+
+    ion-toolbar ion-item,
+    ion-toolbar {
+      --background: #333 !important;
+      --color: #eee;
+    }
+
+    ion-buttons .toolbar-label,
+    ion-buttons ion-item .toolbar-label {
+      --color: #999;
+
+      font-weight: bold;
+      color: #999 !important;
+    }
+
+    app-root {
+      display: block;
+      padding-bottom: 90px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-label class="toolbar-label">PAGE DEMO</ion-label>
+      <ion-select id="report-select" value="hello-world" ok-text="Okay" cancel-text="Dismiss">
+
+        <ion-select-option value="hello-world">Hello world</ion-select-option>
+        <ion-select-option value="pychopper">Pychopper</ion-select-option>
+        <ion-select-option value="component-nesting">Nested components</ion-select-option>
+        <ion-select-option value="socketio-demo">Socket.io Demo</ion-select-option>
+        <ion-select-option value="invalid">Invalid pageConfig</ion-select-option>
+        <ion-select-option value="invalid-component">Invalid component definition</ion-select-option>
+      </ion-select id="report-select">
+      <ion-item>
+        <ion-label class="toolbar-label">VIEW CONFIG</ion-label>
+        <ion-toggle slot="end" onIonChange='toggleShowConfig'></ion-toggle>
+      </ion-item>
+    </ion-buttons>
+    <ion-title>Cronkite demo</ion-title>
+  </ion-toolbar>
+
+  <app-root report="hello-world"></app-root>
+  <script>
+    document.addEventListener('ionChange', (e) => {
+      let source = e.target.tagName.toLowerCase()
+      if (source === 'ion-select') {
+        document.querySelector("app-root").report = e.detail.value;
+      }
+      if (source === 'ion-toggle') {
+        document.querySelector("cronk-page").showConfig = e.detail.checked;
+      }
+    })
+    function toggleShowConfig(e) {
+      console.info('toggleShowConfig', e)
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+$font-size: var(--ont-base-font-size, var(--epi-base-font-size, 16));
+
+@function remify($origSize, $baseFontSize: $font-size) {
+  @return calc(#{$origSize}/#{$baseFontSize} * 1rem);
+}

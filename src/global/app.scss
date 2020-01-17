@@ -1,0 +1,44 @@
+/* Core CSS required for Ionic components to work properly */
+@import '~@ionic/core/css/core.css';
+
+/* Basic CSS for apps built with Ionic */
+@import '~@ionic/core/css/normalize.css';
+@import '~@ionic/core/css/structure.css';
+@import '~@ionic/core/css/typography.css';
+
+/* Optional CSS utils that can be commented out */
+@import '~@ionic/core/css/padding.css';
+@import '~@ionic/core/css/float-elements.css';
+@import '~@ionic/core/css/text-alignment.css';
+@import '~@ionic/core/css/text-transformation.css';
+@import '~@ionic/core/css/flex-utils.css';
+@import '~@ionic/core/css/display.css';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-size: $font-size + px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overscroll-behavior: none;
+  font-family: 'Lato', sans-serif;
+}
+
+body,
+input,
+select,
+textarea,
+button {
+  font-family: 'Lato', sans-serif;
+  color: $color-dark-grey;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
