@@ -16,6 +16,7 @@
 
 ### Used by
 
+ - [cronk-page](../cronk-page)
  - [cronk-page-panel]()
 
 ### Depends on
@@ -28,6 +29,7 @@
 ```mermaid
 graph TD;
   cronk-page-panel --> cronk-page-panel
+  cronk-page --> cronk-page-panel
   style cronk-page-panel fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
