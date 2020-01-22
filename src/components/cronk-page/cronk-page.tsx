@@ -8,12 +8,13 @@ import 'epi2me-ui-donut/dist';
 import 'epi2me-ui-headlinevalue/dist';
 import debounce from 'lodash/debounce';
 import uuidv4 from 'uuid/v4';
-import reportSchema from '../../global/cronkite.schema.json';
+import reportSchema from '../../cronkite.schema.json';
 import { CronkJSONTypes } from '../../types/report-json';
 
 const DEFAULT_LAYOUT = {};
 
 @Component({
+  assetsDirs: ['../../cronkite.schema.json'],
   styleUrls: ['cronk-page.scss', '../../global/styles/theme.scss'],
   tag: 'cronk-page',
 })
