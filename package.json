@@ -1,6 +1,6 @@
 {
   "name": "cronkite",
-  "version": "1.0.7-beta",
+  "version": "1.0.8-beta",
   "description": "Cronkite - Render JSON as web pages",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

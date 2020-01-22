@@ -2,10 +2,10 @@
 import '@ionic/core';
 import { Component, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import Ajv from 'ajv';
-import 'epi2me-ui-checkmark/dist';
-import 'epi2me-ui-coverageplot/dist';
-import 'epi2me-ui-donut/dist';
-import 'epi2me-ui-headlinevalue/dist';
+import 'epi2me-ui-checkmark';
+import 'epi2me-ui-coverageplot';
+import 'epi2me-ui-donut';
+import 'epi2me-ui-headlinevalue';
 import debounce from 'lodash/debounce';
 import uuidv4 from 'uuid/v4';
 import reportSchema from '../../cronkite.schema.json';
