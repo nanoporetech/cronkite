@@ -37,7 +37,7 @@
       color: #999 !important;
     }
 
-    app-root {
+    cronk-app {
       display: block;
       padding-bottom: 90px;
     }
@@ -68,12 +68,12 @@
     <ion-title>Cronkite demo</ion-title>
   </ion-toolbar>
 
-  <app-root report="hello-world"></app-root>
+  <cronk-app report="hello-world"></cronk-app>
   <script>
     document.addEventListener('ionChange', (e) => {
       let source = e.target.tagName.toLowerCase()
       if (source === 'ion-select') {
-        document.querySelector("app-root").report = e.detail.value;
+        document.querySelector("cronk-app").report = e.detail.value;
       }
       if (source === 'ion-toggle') {
         document.querySelector("cronk-page").showConfig = e.detail.checked;

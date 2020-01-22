@@ -15,7 +15,7 @@ import {
 } from './types';
 
 export namespace Components {
-  interface AppRoot {
+  interface CronkApp {
     'report': string;
   }
   interface CronkDatastreams {
@@ -91,10 +91,10 @@ export namespace Components {
 declare global {
 
 
-  interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
-  var HTMLAppRootElement: {
-    prototype: HTMLAppRootElement;
-    new (): HTMLAppRootElement;
+  interface HTMLCronkAppElement extends Components.CronkApp, HTMLStencilElement {}
+  var HTMLCronkAppElement: {
+    prototype: HTMLCronkAppElement;
+    new (): HTMLCronkAppElement;
   };
 
   interface HTMLCronkDatastreamsElement extends Components.CronkDatastreams, HTMLStencilElement {}
@@ -181,7 +181,7 @@ declare global {
     new (): HTMLEpiInstanceDatastreamElement;
   };
   interface HTMLElementTagNameMap {
-    'app-root': HTMLAppRootElement;
+    'cronk-app': HTMLCronkAppElement;
     'cronk-datastreams': HTMLCronkDatastreamsElement;
     'cronk-errormessage': HTMLCronkErrormessageElement;
     'cronk-event-stream': HTMLCronkEventStreamElement;
@@ -200,7 +200,7 @@ declare global {
 }
 
 declare namespace LocalJSX {
-  interface AppRoot {
+  interface CronkApp {
     'report'?: string;
   }
   interface CronkDatastreams {
@@ -268,7 +268,7 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
-    'app-root': AppRoot;
+    'cronk-app': CronkApp;
     'cronk-datastreams': CronkDatastreams;
     'cronk-errormessage': CronkErrormessage;
     'cronk-event-stream': CronkEventStream;
@@ -292,7 +292,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
-      'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+      'cronk-app': LocalJSX.CronkApp & JSXBase.HTMLAttributes<HTMLCronkAppElement>;
       'cronk-datastreams': LocalJSX.CronkDatastreams & JSXBase.HTMLAttributes<HTMLCronkDatastreamsElement>;
       'cronk-errormessage': LocalJSX.CronkErrormessage & JSXBase.HTMLAttributes<HTMLCronkErrormessageElement>;
       'cronk-event-stream': LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;

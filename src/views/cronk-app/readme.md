@@ -1,4 +1,4 @@
-# app-root
+# cronk-app
 
 
 
@@ -21,7 +21,7 @@
 ### Graph
 ```mermaid
 graph TD;
-  app-root --> cronk-page
+  cronk-app --> cronk-page
   cronk-page --> cronk-page-components
   cronk-page --> cronk-page-panel
   cronk-page --> cronk-datastreams
@@ -29,7 +29,7 @@ graph TD;
   cronk-page-panel --> cronk-page-components
   cronk-page-panel --> cronk-page-panel
   cronk-datastreams --> cronk-event-stream
-  style app-root fill:#f9f,stroke:#333,stroke-width:4px
+  style cronk-app fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

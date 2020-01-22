@@ -47,7 +47,7 @@ Type: `Promise<boolean>`
 
 ### Used by
 
- - [app-root](../../views/app-root)
+ - [cronk-app](../../views/cronk-app)
 
 ### Depends on
 
@@ -65,7 +65,7 @@ graph TD;
   cronk-page-panel --> cronk-page-components
   cronk-page-panel --> cronk-page-panel
   cronk-datastreams --> cronk-event-stream
-  app-root --> cronk-page
+  cronk-app --> cronk-page
   style cronk-page fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,11 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 
 @Component({
-  styleUrl: 'app-root.scss',
-  tag: 'app-root',
+  styleUrl: 'cronk-app.scss',
+  tag: 'cronk-app',
 })
-export class AppRoot {
-  @Element() el!: HTMLAppRootElement;
+export class CronkApp {
+  @Element() el!: HTMLCronkAppElement;
   @Prop() report = 'hello-world';
 
   cronkPageEl?: HTMLCronkPageElement;
