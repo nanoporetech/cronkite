@@ -73,7 +73,7 @@
         "/www/examples/reports/*.json",
         "/**/*.cronkite.json"
       ],
-      "url": "/src/global/cronkite.schema.json"
+      "url": "/src/cronkite.schema.json"
     }
   ]
 }
