@@ -10,6 +10,13 @@ const buildTypeStyles = isDevMode ? 'src/global/styles/dev.scss' : 'src/global/s
 const srcIndexHtml = isDevMode ? 'src/index.dev.html' : 'src/index.html';
 
 export const config: Config = {
+  bundles: [
+    {
+      components: [
+        'cronk-page'
+      ],
+    },
+  ],
   commonjs: {
     include: /node_modules|(..\/.+)/,
   } as any,
