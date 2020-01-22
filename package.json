@@ -1,6 +1,6 @@
 {
   "name": "cronkite",
-  "version": "1.0.9-beta",
+  "version": "1.0.10-beta",
   "description": "Cronkite - Render JSON as web pages",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -42,10 +42,6 @@
     "@types/puppeteer": "1.20.3",
     "@types/socket.io-client": "1.4.32",
     "@types/uuid": "3.4.6",
-    "epi2me-ui-checkmark": "2019.5.30-2453041",
-    "epi2me-ui-coverageplot": "2019.7.22-2581832",
-    "epi2me-ui-donut": "2019.6.26-2513484",
-    "epi2me-ui-headlinevalue": "2019.11.30-2989080",
     "husky": "3.1.0",
     "jest": "24.9.0",
     "jest-cli": "24.9.0",
@@ -88,6 +84,10 @@
     "number-scale": "0.0.9",
     "socket.io-client": "2.3.0",
     "superstruct": "0.8.3",
-    "uuid": "3.3.3"
+    "uuid": "3.3.3",
+    "epi2me-ui-checkmark": "2019.5.30-2453041",
+    "epi2me-ui-coverageplot": "2019.7.22-2581832",
+    "epi2me-ui-donut": "2019.6.26-2513484",
+    "epi2me-ui-headlinevalue": "2019.11.30-2989080"
   }
 }
