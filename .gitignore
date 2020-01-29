@@ -1,7 +1,6 @@
 dist/
 www/
 loader/
-
 *~
 *.sw[mnpcod]
 *.log
@@ -16,6 +15,11 @@ log.txt
 .idea/
 .sass-cache/
 .versions/
+.vscode/
+.huskyrc.js
+.prettierrc.js
+.editorconfig
+.stylelintrc.js
 node_modules/
 $RECYCLE.BIN/
 
