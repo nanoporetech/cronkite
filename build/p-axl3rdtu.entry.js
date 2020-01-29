@@ -1,0 +1,1 @@
+import{r as o}from"./p-f24f087d.js";import{g as r,h as s,j as t}from"./p-f791c4b3.js";const n=class{constructor(r){o(this,r)}create(o){return r("ion-modal",o)}dismiss(o,r,t){return s(document,o,r,"ion-modal",t)}async getTop(){return t(document,"ion-modal")}};export{n as ion_modal_controller};

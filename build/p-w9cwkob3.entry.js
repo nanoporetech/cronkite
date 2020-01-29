@@ -1,0 +1,1 @@
+import{r}from"./p-f24f087d.js";import{g as t,h as o,j as s}from"./p-f791c4b3.js";const e=class{constructor(t){r(this,t)}create(r){return t("ion-alert",r)}dismiss(r,t,s){return o(document,r,t,"ion-alert",s)}async getTop(){return s(document,"ion-alert")}};export{e as ion_alert_controller};

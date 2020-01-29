@@ -1,0 +1,216 @@
+{
+  "id": "pychopper:report",
+  "components": [
+    {
+      "element": "cronk-title",
+      "@reportTitle": [
+        "PYCHOPPER CLASSIFICATION"
+      ],
+      "layout": {
+        "position": "header"
+      }
+    },
+    {
+      "element": "cronk-funnel",
+      "listen": "pychopper:datastream:reads",
+      "@statsList": {
+        "fn:jmespath": "[].{label: @.exit_status , count: @._stats.count}"
+      },
+      "style": {
+        "alignSelf": "center"
+      },
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "components": [
+        {
+          "element": "epi-headlinevalue",
+          "@label": "TOTAL ANALYSED",
+          "@value": {
+            "fn:jmespath": "sum(data.reads[*]._stats.count)"
+          },
+          "listen": "pychopper:datastream",
+          "layout": {
+            "width": 2
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@label": "SELECTED READS",
+          "@value": {
+            "fn:jmespath": "sum([*]._stats.count)"
+          },
+          "listen": "pychopper:datastream:reads",
+          "layout": {
+            "width": 2
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@label": "AVG SEQUENCE LENGTH",
+          "@caseSensitive": [
+            true
+          ],
+          "@value": {
+            "fn:formatNumber": [
+              {
+                "fn:divide": [
+                  {
+                    "fn:jmespath": "sum([?exit_status=='Classified']._stats.seqlen)"
+                  },
+                  {
+                    "fn:jmespath": "sum([?exit_status=='Classified']._stats.count)"
+                  }
+                ]
+              },
+              0,
+              "base"
+            ]
+          },
+          "listen": "pychopper:datastream:reads",
+          "layout": {
+            "width": 2
+          }
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@label": "AVG TRANSCRIPT LENGTH",
+          "@caseSensitive": [
+            true
+          ],
+          "@value": {
+            "fn:formatNumber": [
+              {
+                "fn:divide": [
+                  {
+                    "fn:jmespath": "sum([*]._stats.tlen)"
+                  },
+                  {
+                    "fn:jmespath": "sum([*]._stats.count)"
+                  }
+                ]
+              },
+              0,
+              "base"
+            ]
+          },
+          "listen": "pychopper:datastream:transcripts",
+          "layout": {
+            "width": 2
+          }
+        }
+      ],
+      "element": "cronk-statsbox",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "cronk-selector",
+      "heading": "SELECT BARCODE",
+      "@selectList": {
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
+      },
+      "@selector": [
+        "barcode"
+      ],
+      "listen": "pychopper:datastream",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "heading": "SEQUENCE LENGTH",
+      "@label-x": "SEQUENCE LENGTH (BASES)",
+      "@label-y": "READ COUNT",
+      "@units-y": "",
+      "@units-x": "bp",
+      "@tooltip-format-x": "x => ''",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
+      },
+      "element": "epi-coverageplot",
+      "listen": "pychopper:datastream:reads",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "cronk-selector",
+      "heading": "SELECT RUNID",
+      "@selectList": {
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
+      },
+      "@selector": [
+        "runid"
+      ],
+      "listen": "pychopper:datastream",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "heading": "TRANSCRIPT LENGTH",
+      "@label-x": "TRANSCRIPT LENGTH (BIN SIZE 100)",
+      "@label-y": "READ COUNT",
+      "@units-y": "",
+      "@units-x": "bp",
+      "@tooltip-format-x": "x => ''",
+      "@tooltip-format-y": "value => `${value} reads`",
+      "@label-x-left": "",
+      "@label-x-right": "",
+      "@data": {
+        "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
+      },
+      "element": "epi-coverageplot",
+      "listen": "pychopper:datastream:transcripts",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "cronk-version",
+      "@innerHTML": {
+        "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(version)])"
+      },
+      "layout": {
+        "position": "footer"
+      },
+      "listen": "pychopper:datastream"
+    }
+  ],
+  "streams": [
+    {
+      "element": "cronk-poll-datastream",
+      "@url": "http://localhost:3333/cronkite/examples/data/pychopper.json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit",
+      "@acceptsFilters": true,
+      "@channels": [
+        {
+          "channel": "pychopper:datastream",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        },
+        {
+          "channel": "pychopper:datastream:reads",
+          "shape": {
+            "fn:jmespath": "data.reads"
+          }
+        },
+        {
+          "channel": "pychopper:datastream:transcripts",
+          "shape": {
+            "fn:jmespath": "data.transcripts"
+          }
+        }
+      ]
+    }
+  ]
+}
