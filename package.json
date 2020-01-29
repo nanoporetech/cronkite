@@ -1,6 +1,7 @@
 {
-  "name": "cronkite",
-  "version": "1.0.10-beta",
+  "name": "@metrichor/cronkite",
+  "version": "1.0.11-beta",
+  "repository": "https://git.oxfordnanolabs.local/metrichor/api.git",
   "description": "Cronkite - Render JSON as web pages",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
