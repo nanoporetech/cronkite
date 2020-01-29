@@ -14,7 +14,7 @@ Conkite is web component for rendering UI interfaces (`dashboards`) that have be
 
 ## DEMO
 
-https://metrichor-reports.git.oxfordnanolabs.local/cronkite/
+https://nanoporetech.github.io/cronkite/
 
 ## COMPONENTS
 
