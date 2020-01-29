@@ -35,9 +35,20 @@ npm-publish-internal:
     - *package_common
     - npm i
     - npm run build:docs
+    - echo "registry=https://npm.oxfordnanolabs.local" > .npmrc
     - npm publish
   only:
     - develop
+
+npm-publish-external:
+  stage: publish
+  script:
+    - *package_common
+    - echo "https://registry.npmjs.org" > .npmrc
+    - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+    - npm publish --access=public
+  only:
+    - tags
 
 pages:
   stage: pages
