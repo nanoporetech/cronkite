@@ -30,6 +30,7 @@ unit-test:
 
 npm-publish-external:
   stage: publish
+  image:  docker-registry.oxfordnanolabs.local:5000/ont-base-ubuntu:16.04
   script:
     - *package_common
     - npm i
