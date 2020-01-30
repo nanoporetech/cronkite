@@ -23,7 +23,7 @@
     "fix-css": "npm run lint-css --fix",
     "fix-ts": "npm run tslint:app --fix",
     "fix": "npm run fix-ts && npm run fix-css",
-    "package:version": "for file in $(find . -type f -name package.json -not -path \"./node_modules/*\" -not -path \"./loader/*\"); do jq \".version=(.version | split(\\\".\\\") | [.[0], .[1], .[2]+\\\"-${PATCH:-`date +\"%-H%M\"`}\\\"] | join(\\\".\\\"))\" < $file > $file.tmp && mv $file.tmp $file; done",
+    "package:version": "for file in $(find . -type f -name package.json -not -path \"./node_modules/*\" -not -path \"./dist/*\" -not -path \"./loader/*\"); do jq \".version=(.version | split(\\\"-\\\") | .[0] | split(\\\".\\\") | [.[0], .[1], .[2]+\\\"-${PATCH:-`date +\"%-H%M\"`}\\\"] | join(\\\".\\\"))\" < $file > $file.tmp && mv $file.tmp $file; done",
     "lint-css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
     "lint-ts": "npm run tslint:app",
     "lint:ts:app": "tslint --project tsconfig.json src/**/*.ts src/**/*.tsx",
