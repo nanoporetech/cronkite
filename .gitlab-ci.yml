@@ -28,18 +28,6 @@ unit-test:
     - npm i
     - npm run test
 
-npm-publish-internal:
-  stage: publish
-  image:  docker-registry.oxfordnanolabs.local:5000/ont-base-ubuntu:16.04
-  script:
-    - *package_common
-    - npm i
-    - npm run build:docs
-    - echo "registry=https://npm.oxfordnanolabs.local" > .npmrc
-    - npm publish
-  only:
-    - develop
-
 npm-publish-external:
   stage: publish
   script:

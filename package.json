@@ -35,8 +35,8 @@
     "tslint": "tslint --format stylish"
   },
   "devDependencies": {
-    "@ionic/core": "4.11.7",
-    "@stencil/core": "^1.8.2",
+    "@ionic/core": "4.11.10",
+    "@stencil/core": "1.8.6",
     "@stencil/sass": "1.1.1",
     "@types/jest": "24.0.24",
     "@types/lodash": "4.14.149",
@@ -79,16 +79,13 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
+    "@metrichor/ui-components": "1.0.0-3156186",
     "ajv": "6.10.2",
     "greenlet": "1.1.0",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
     "socket.io-client": "2.3.0",
     "superstruct": "0.8.3",
-    "uuid": "3.3.3",
-    "epi2me-ui-checkmark": "2019.5.30-2453041",
-    "epi2me-ui-coverageplot": "2019.7.22-2581832",
-    "epi2me-ui-donut": "2019.6.26-2513484",
-    "epi2me-ui-headlinevalue": "2019.11.30-2989080"
+    "uuid": "3.3.3"
   }
 }
