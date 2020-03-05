@@ -107,9 +107,9 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
       const hasOne = (/\d+/g.exec(formattedNumber) || [])[0] === '1';
       return `${formattedNumber}${hasOne ? '' : 's'}`;
     case 'fn:toFixed':
-      [arg, precision] = val;
+      [arg, precision, unit] = val;
       result = (await transformValue(arg, data))[0] || 0.0;
-      return Number.parseFloat(result).toFixed(precision);
+      return `${Number.parseFloat(result).toFixed(precision)}${unit || ''}`;
     case 'fn:mode':
       [arg, precision] = val;
       result = (await transformValue(arg, data))[0] || 0.0;

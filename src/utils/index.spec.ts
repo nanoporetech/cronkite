@@ -113,6 +113,9 @@ describe('Dashboard utils', () => {
 
     returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 4], {});
     expect(returnValue).toStrictEqual('123456789.1235');
+
+    returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 4, '%'], {});
+    expect(returnValue).toStrictEqual('123456789.1235%');
   });
 
   it('applies the `mode` function', async () => {
