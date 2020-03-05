@@ -154,7 +154,7 @@ You have already been introduced to your first payload transform `fn:jmespath` w
     "fn:mode": // Calculate the mode of a `number[]`
     "fn:round": // Round a number to the nearest whole
     "fn:sum": // Calculate the sum of a `number[]`
-    "fn:tofixed": // Set the number of decimal values of a float
+    "fn:toFixed": // Set the number of decimal values of a float
     "fn:uniq": // Create a unique list of values from `any[]`
 }
 ```

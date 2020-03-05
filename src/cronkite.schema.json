@@ -219,7 +219,7 @@
             "fn:average": {
               "$ref": "#/definitions/componentProps"
             },
-            "fn:tofixed": {
+            "fn:toFixed": {
               "type": "array",
               "minItems": 2,
               "maxItems": 2,

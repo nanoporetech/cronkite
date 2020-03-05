@@ -107,13 +107,13 @@ describe('Dashboard utils', () => {
     expect(returnValue).toStrictEqual('1Mbase');
   });
 
-  // it('applies the `tofixed` function', async () => {
-  //   let returnValue = await applyFunction('fn:tofixed', [[123456789.123456789], 2], {});
-  //   expect(returnValue).toStrictEqual('123456789.12');
+  it('applies the `tofixed` function', async () => {
+    let returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 2], {});
+    expect(returnValue).toStrictEqual('123456789.12');
 
-  //   returnValue = await applyFunction('fn:tofixed', [[123456789.123456789], 4], {});
-  //   expect(returnValue).toStrictEqual('123456789.1235');
-  // });
+    returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 4], {});
+    expect(returnValue).toStrictEqual('123456789.1235');
+  });
 
   it('applies the `mode` function', async () => {
     // Calculate the most common value

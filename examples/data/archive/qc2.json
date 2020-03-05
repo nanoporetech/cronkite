@@ -14,7 +14,7 @@
     {
       "@label": "Average Sequence length",
       "@value": {
-        "fn:tofixed": [
+        "fn:toFixed": [
           {
             "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
           },
@@ -114,7 +114,7 @@
     {
       "@label": "Sequence Length Average",
       "@value": {
-        "fn:tofixed": [
+        "fn:toFixed": [
           {
             "fn:jmespath": "avg(data[? @.exit_status == 'Workflow successful'].seqlen.avg)"
           },
