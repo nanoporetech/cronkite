@@ -53,6 +53,7 @@ export namespace Components {
     'mode': RequestMode;
     'pollFrequency': number;
     'resendBroadcast': () => Promise<void>;
+    'responseFormat': RESPONSE_TYPES;
     'responseHandler': CronkDataStream.IDatastreamResponseHandler;
     'type': string;
     'url': string | null;
@@ -234,6 +235,7 @@ declare namespace LocalJSX {
     'credentials'?: RequestCredentials;
     'mode'?: RequestMode;
     'pollFrequency'?: number;
+    'responseFormat'?: RESPONSE_TYPES;
     'responseHandler'?: CronkDataStream.IDatastreamResponseHandler;
     'type'?: string;
     'url'?: string | null;

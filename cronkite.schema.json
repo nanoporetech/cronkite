@@ -156,6 +156,24 @@
             false
           ]
         },
+        "@responseFormat": {
+          "$id": "#/definitions/datastream/properties/@responseFormat",
+          "type": "string",
+          "title": "The @responseFormat Schema",
+          "default": "json",
+          "enum": [
+            "json",
+            "csv",
+            "tsv",
+            "text"
+          ],
+          "examples": [
+            "json",
+            "csv",
+            "tsv",
+            "text"
+          ]
+        },
         "@credentials": {
           "$id": "#/definitions/datastream/properties/@credentials",
           "type": "string",
@@ -455,6 +473,9 @@
               },
               "@acceptsFilters": {
                 "$ref": "#/definitions/datastream/properties/@acceptsFilters"
+              },
+              "@responseFormat": {
+                "$ref": "#/definitions/datastream/properties/@responseFormat"
               }
             }
           },

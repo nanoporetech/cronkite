@@ -13,6 +13,20 @@ const DEFAULT_CHANNELS: CronkDataStream.IChannelShape[] = [
   },
 ];
 
+const RESPONSE_MIMETYPE = {
+  csv: 'text/csv',
+  json: 'application/json',
+  text: 'text/plain',
+  tsv: 'text/tab-separated-values',
+};
+
+enum RESPONSE_TYPES {
+  JSON = 'json',
+  CSV = 'csv',
+  TSV = 'tsv',
+  TEXT = 'text',
+}
+
 @Component({
   tag: 'cronk-poll-datastream',
 })
@@ -41,6 +55,7 @@ export class CronkPollDatastream {
   @Element() hostEl!: HTMLElement;
 
   @Prop() type = 'data';
+  @Prop() responseFormat = RESPONSE_TYPES.JSON;
   @Prop() url: string | null = null;
   @Prop() channels: CronkDataStream.IChannelShape[] = DEFAULT_CHANNELS;
   @Prop() acceptsFilters = false;
@@ -91,7 +106,7 @@ export class CronkPollDatastream {
       cache: 'force-cache',
       credentials: this.credentials,
       headers: {
-        accept: 'application/json',
+        accept: RESPONSE_MIMETYPE[this.responseFormat],
       },
       method: method.toUpperCase(),
       mode: this.mode,
@@ -126,7 +141,30 @@ export class CronkPollDatastream {
     // if (!this.requestSuccess(response)) {
     //   throw new Error(`Request error (${uri}) returned status ${response.status}`)
     // }
-    const newData: CronkDataStream.IMetadataObj = await response.json();
+    let newData: any;
+    // let textResponse: string[][];
+    switch (this.responseFormat) {
+      case RESPONSE_TYPES.JSON:
+        newData = await response.json();
+        break;
+      case RESPONSE_TYPES.CSV:
+        const rawCsvResponse: string = await response.text();
+        newData = rawCsvResponse
+          .trimRight()
+          .split(/[\n\r]+/g)
+          .map(line => line.split(','));
+        break;
+      case RESPONSE_TYPES.TSV:
+        const rawTsvResponse: string = await response.text();
+        newData = rawTsvResponse
+          .trimRight()
+          .split(/[\n\r]+/g)
+          .map(line => line.split('\t'));
+        break;
+      default:
+        newData = await response.text();
+        break;
+    }
     this.cachedResponse = newData;
     await this.broadcast(newData);
   };
