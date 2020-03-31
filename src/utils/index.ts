@@ -165,10 +165,6 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
   return { [func]: val };
 };
 
-export const saveDashboardLayout = (dashboardId: string, layout: any) => {
-  localStorage.setItem(dashboardId, typeof layout === 'string' ? layout : JSON.stringify(layout));
-};
-
 export const processValue = async (data: any, value: any) => {
   if (typeof value === 'string') return value;
   const [result] = await transformValue(value, data);

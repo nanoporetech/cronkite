@@ -1,4 +1,4 @@
-import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { CronkStatsbox } from './cronk-statsbox';
 
 describe('cronk-statsbox', () => {
@@ -20,10 +20,4 @@ describe('cronk-statsbox', () => {
       expect(new CronkStatsbox()).toBeTruthy();
     });
   });
-
-  // describe('rendering', () => {
-  //   it('renders correctly', async () => {
-  //     await page.waitForChanges();
-  //   });
-  // });
 });

@@ -128,6 +128,22 @@ describe('Dashboard utils', () => {
     expect(returnValue).toStrictEqual(2.234);
   });
 
+  it('applies the `mod` function', async () => {
+    // Calculate the modulus of two numbers
+    let returnValue = await applyFunction('fn:mod', [27, 2], {});
+    expect(returnValue).toStrictEqual(1);
+    returnValue = await applyFunction('fn:mod', [26, 2], {});
+    expect(returnValue).toStrictEqual(0);
+  });
+
+  it('applies the `divide` function', async () => {
+    // Divide two numerical values
+    let returnValue = await applyFunction('fn:divide', [27, 2], {});
+    expect(returnValue).toStrictEqual(13.5);
+    returnValue = await applyFunction('fn:divide', [26, 2], {});
+    expect(returnValue).toStrictEqual(13);
+  });
+
   it('applies the `uniq` function', async () => {
     // Calculate the most common value
     let returnValue = await applyFunction('fn:uniq', [[1, 2, 4, 3, 2, 3, 4, 1, 2, 3, 2, 3, 3, 4, 2, 1]], {});

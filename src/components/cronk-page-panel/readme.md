@@ -17,13 +17,13 @@
 ### Used by
 
  - [cronk-page](../cronk-page)
- - [cronk-page-panel]()
+ - [cronk-page-panel](.)
 
 ### Depends on
 
 - [cronk-errormessage](../cronk-errormessage)
 - [cronk-page-components](../cronk-page-components)
-- [cronk-page-panel]()
+- [cronk-page-panel](.)
 
 ### Graph
 ```mermaid

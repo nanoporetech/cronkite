@@ -1,4 +1,4 @@
-import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { CronkTitle } from './cronk-title';
 
 describe('cronk-title', () => {
