@@ -3,7 +3,6 @@
   "extends": [
     "tslint:recommended",
     "tslint-config-airbnb",
-    "tslint-plugin-prettier",
     "tslint-config-prettier",
     "tslint-ionic-rules"
   ],
@@ -18,6 +17,9 @@
       "src/workers/**/*.ts"
     ]
   },
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ],
   "rules": {
     "import-name": [
       false

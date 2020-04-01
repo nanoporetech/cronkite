@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
@@ -35,19 +35,19 @@
     "tslint": "tslint --format stylish"
   },
   "devDependencies": {
-    "@ionic/core": "5.0.4",
-    "@stencil/core": "1.9.0",
-    "@stencil/sass": "1.1.1",
+    "@ionic/core": "5.0.7",
+    "@stencil/core": "1.9.2",
+    "@stencil/sass": "1.2.0",
     "@types/jest": "25.1.4",
     "@types/lodash": "4.14.149",
     "@types/puppeteer": "2.0.1",
     "@types/socket.io-client": "1.4.32",
-    "@types/uuid": "7.0.0",
+    "@types/uuid": "7.0.2",
     "husky": "4.2.3",
     "jest": "24.9.0",
     "jest-cli": "24.9.0",
     "lint-staged": "10.0.8",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "puppeteer": "2.1.1",
     "stylelint": "13.2.1",
     "stylelint-a11y": "^1.2.3",
@@ -61,7 +61,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-ionic-rules": "^0.0.21",
     "tslint-plugin-cypress": "^1.0.4",
-    "tslint-plugin-prettier": "2.2.0"
+    "tslint-plugin-prettier": "2.3.0"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
