@@ -98,12 +98,22 @@ describe('Dashboard utils', () => {
   it('applies the `formatNumber` function', async () => {
     // Load when there's nothing but ID given
     let returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 2, 'base'], {});
-    expect(returnValue).toStrictEqual('123Mbases');
+    expect(returnValue).toStrictEqual('123.46Mbases');
+    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, 'base'], {});
+    expect(returnValue).toStrictEqual('123.5Mbases');
+    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 0, 'base'], {});
+    expect(returnValue).toStrictEqual('124Mbases');
 
     // Test singular
-    returnValue = await applyFunction('fn:formatNumber', [[1234567.1234567], 1, 'base'], {});
-    expect(returnValue).toStrictEqual('1Mbase');
-    returnValue = await applyFunction('fn:formatNumber', [[1e6], 1, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [[1000.1], 1, 'base'], {});
+    expect(returnValue).toStrictEqual('1.1kbases');
+    returnValue = await applyFunction('fn:formatNumber', [[1000.1], 0, 'base'], {});
+    expect(returnValue).toStrictEqual('2kbases');
+    returnValue = await applyFunction('fn:formatNumber', [[1000.0], 0, 'base'], {});
+    expect(returnValue).toStrictEqual('1kbase');
+    returnValue = await applyFunction('fn:formatNumber', [[1001], 1, 'base'], {});
+    expect(returnValue).toStrictEqual('1.1kbases');
+    returnValue = await applyFunction('fn:formatNumber', [[1e6], 0, 'base'], {});
     expect(returnValue).toStrictEqual('1Mbase');
   });
 
@@ -126,6 +136,22 @@ describe('Dashboard utils', () => {
       {},
     );
     expect(returnValue).toStrictEqual(2.234);
+  });
+
+  it('applies the `mod` function', async () => {
+    // Calculate the modulus of two numbers
+    let returnValue = await applyFunction('fn:mod', [27, 2], {});
+    expect(returnValue).toStrictEqual(1);
+    returnValue = await applyFunction('fn:mod', [26, 2], {});
+    expect(returnValue).toStrictEqual(0);
+  });
+
+  it('applies the `divide` function', async () => {
+    // Divide two numerical values
+    let returnValue = await applyFunction('fn:divide', [27, 2], {});
+    expect(returnValue).toStrictEqual(13.5);
+    returnValue = await applyFunction('fn:divide', [26, 2], {});
+    expect(returnValue).toStrictEqual(13);
   });
 
   it('applies the `uniq` function', async () => {

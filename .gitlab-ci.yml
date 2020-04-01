@@ -1,3 +1,5 @@
+image: git.oxfordnanolabs.local:4567/metrichor-ui/node-cypress-runner/master:node10
+
 stages:
   - versiontrack
   - test
@@ -5,13 +7,13 @@ stages:
   - publish
   - deploy
 
-.package: &package_common |
-  source ./PATCH_VERSION
-  curl -sL https://deb.nodesource.com/setup_12.x | bash -
-  apt-get update
-  apt-get install -y --force-yes nodejs ont-ca-certs build-essential git xvfb jq
-  git config --global url.https://github.com/.insteadOf git://github.com/
-  echo "cafile=/usr/local/share/ca-certificates/ont/npm-bundle.pem" >> .npmrc
+# .package: &package_common |
+#   source ./PATCH_VERSION
+#   curl -sL https://deb.nodesource.com/setup_12.x | bash -
+#   apt-get update
+#   apt-get install -y --force-yes nodejs ont-ca-certs build-essential git xvfb jq
+#   git config --global url.https://github.com/.insteadOf git://github.com/
+#   echo "cafile=/usr/local/share/ca-certificates/ont/npm-bundle.pem" >> .npmrc
 
 versiontrack:
   stage: versiontrack
@@ -23,16 +25,13 @@ versiontrack:
 
 unit-test:
   stage: test
-  image: docker-registry.oxfordnanolabs.local:5000/node-chrome
   script:
     - npm i
     - npm run test
 
 npm-publish-external:
   stage: publish
-  image:  docker-registry.oxfordnanolabs.local:5000/ont-base-ubuntu:16.04
   script:
-    - *package_common
     - npm i
     - echo "Patching report versions to $PATCH"
     - npm run package:version
@@ -45,7 +44,6 @@ npm-publish-external:
 
 pages:
   stage: pages
-  image: docker-registry.oxfordnanolabs.local:5000/ont-base-node:8
   script:
     - npm i
     - npm run build:app

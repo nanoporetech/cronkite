@@ -10,10 +10,10 @@
 | Property                          | Attribute              | Description | Type                                                 | Default              |
 | --------------------------------- | ---------------------- | ----------- | ---------------------------------------------------- | -------------------- |
 | `channel`                         | `channel`              |             | `string`                                             | `'instance:default'` |
-| `credentials`                     | `credentials`          |             | `"include" \| "omit" \| "same-origin"`               | `'include'`          |
+| `credentials`                     | `credentials`          |             | `"include" or "omit" or "same-origin"`               | `'include'`          |
 | `flavour` _(required)_            | `flavour`              |             | `string`                                             | `undefined`          |
-| `idWorkflowInstance` _(required)_ | `id-workflow-instance` |             | `number \| string`                                   | `undefined`          |
-| `mode`                            | `mode`                 |             | `"cors" \| "navigate" \| "no-cors" \| "same-origin"` | `'cors'`             |
+| `idWorkflowInstance` _(required)_ | `id-workflow-instance` |             | `number or string`                                   | `undefined`          |
+| `mode`                            | `mode`                 |             | `"cors" or "navigate" or "no-cors" or "same-origin"` | `'cors'`             |
 | `pollFrequency`                   | `poll-frequency`       |             | `number`                                             | `15000`              |
 | `type`                            | `type`                 |             | `string`                                             | `'default'`          |
 

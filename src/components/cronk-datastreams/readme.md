@@ -9,8 +9,8 @@
 
 | Property    | Attribute     | Description | Type                    | Default     |
 | ----------- | ------------- | ----------- | ----------------------- | ----------- |
-| `streams`   | --            |             | `Stream[] \| undefined` | `undefined` |
-| `streamsID` | `streams-i-d` |             | `string \| undefined`   | `undefined` |
+| `streams`   | --            |             | `Stream[] or undefined` | `undefined` |
+| `streamsID` | `streams-i-d` |             | `string or undefined`   | `undefined` |
 
 
 ## Methods

@@ -1,4 +1,4 @@
-import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { CronkPageComponents } from './cronk-page-components';
 
 describe('cronk-page-components', () => {

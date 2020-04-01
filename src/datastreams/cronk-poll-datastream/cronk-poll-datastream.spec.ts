@@ -1,4 +1,4 @@
-import { newSpecPage, SpecPage } from '@stencil/core/dist/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { CronkPollDatastream } from './cronk-poll-datastream';
 
 describe('cronk-poll-datastream', () => {
@@ -26,8 +26,6 @@ describe('cronk-poll-datastream', () => {
       expect(rootEl).toEqualLightHtml(
         `<cronk-poll-datastream aria-hidden="true" class="cronk-data-eventstream"></cronk-poll-datastream>`,
       );
-      // rootEl.message = 'Nobody said it was easy';
-      // await page.waitForChanges();
     });
   });
 });

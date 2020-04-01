@@ -97,14 +97,13 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
     case 'fn:formatNumber':
       [arg, precision, unit] = val;
       result = (await transformValue(arg, data))[0] || 0.0;
-      let formattedNumber = numberScale(result, {
+      const formattedNumber = numberScale(result, {
         precision,
-        recursive: 2,
+        recursive: 0,
         scale: 'SI',
         unit: unit || '',
       });
-      formattedNumber = typeof formattedNumber === 'string' ? formattedNumber : formattedNumber[0];
-      const hasOne = (/\d+/g.exec(formattedNumber) || [])[0] === '1';
+      const hasOne = (/[\d\.]+/g.exec(formattedNumber) || [''])[0] === '1';
       return `${formattedNumber}${hasOne ? '' : 's'}`;
     case 'fn:toFixed':
       [arg, precision, unit] = val;
@@ -163,10 +162,6 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
       break;
   }
   return { [func]: val };
-};
-
-export const saveDashboardLayout = (dashboardId: string, layout: any) => {
-  localStorage.setItem(dashboardId, typeof layout === 'string' ? layout : JSON.stringify(layout));
 };
 
 export const processValue = async (data: any, value: any) => {

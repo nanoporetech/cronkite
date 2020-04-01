@@ -9,7 +9,7 @@
 
 | Property     | Attribute     | Description | Type                            | Default     |
 | ------------ | ------------- | ----------- | ------------------------------- | ----------- |
-| `pageConfig` | --            |             | `ReportDefinition \| undefined` | `undefined` |
+| `pageConfig` | --            |             | `ReportDefinition or undefined` | `undefined` |
 | `showConfig` | `show-config` |             | `boolean`                       | `false`     |
 
 

@@ -16,6 +16,8 @@ Conkite is web component for rendering UI interfaces (`dashboards`) that have be
 
 https://nanoporetech.github.io/cronkite/
 
+## [INSTALLING CRONKITE](./INSTALLING.md)
+
 ## COMPONENTS
 
 ### 1. ADDING HTML TAGS/ELEMENTS/WEB COMPONENTS
@@ -216,7 +218,7 @@ The [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) stre
 
 ### 2. `epi-workflow-instance-datastream`
 
-This datastream inherits from the [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found ain the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
+This datastream inherits from the [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found in the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
 
 #### Parameterisation of the request
 
