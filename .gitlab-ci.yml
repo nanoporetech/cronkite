@@ -1,3 +1,5 @@
+image: git.oxfordnanolabs.local:4567/metrichor-ui/node-cypress-runner/master:node10
+
 stages:
   - versiontrack
   - test
@@ -23,14 +25,12 @@ versiontrack:
 
 unit-test:
   stage: test
-  image:  docker-registry.oxfordnanolabs.local:5000/ont-base-node:12
   script:
     - npm i
     - npm run test
 
 npm-publish-external:
   stage: publish
-  image:  docker-registry.oxfordnanolabs.local:5000/ont-base-node:12
   script:
     - npm i
     - echo "Patching report versions to $PATCH"
@@ -44,7 +44,6 @@ npm-publish-external:
 
 pages:
   stage: pages
-  image: docker-registry.oxfordnanolabs.local:5000/ont-base-node:12
   script:
     - npm i
     - npm run build:app
