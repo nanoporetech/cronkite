@@ -21,6 +21,7 @@ export const config: Config = {
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.scss',
   namespace: 'cronkite',
+  taskQueue: 'async',
   outputTargets: [
     {
       baseUrl: '/cronkite',
@@ -36,6 +37,10 @@ export const config: Config = {
     },
     {
       type: 'dist',
+      esmLoaderPath: '../loader',
+    },
+    {
+      type: 'docs-readme'
     },
   ],
   plugins: [
