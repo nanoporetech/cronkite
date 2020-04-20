@@ -8,11 +8,9 @@ describe('cronk-proportion-bar', () => {
       html: `<cronk-proportion-bar></cronk-proportion-bar>`,
     });
     expect(page.root).toEqualHtml(`
-      <cronk-proportion-bar>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </cronk-proportion-bar>
+    <cronk-proportion-bar class="proportion-bar" value="0">
+      <div style="display: block; height: 100%; width: 0%;"></div>
+    </cronk-proportion-bar>
     `);
   });
 });
