@@ -1,0 +1,17 @@
+.proportion-bar {
+  min-height: var(--proportion-bar-min-height, 100%);
+  min-width: var(--proportion-bar-min-width, 100%);
+  height: var(--proportion-bar-height, 100%);
+  margin-top: var(--proportion-bar-margin-top, 0);
+  margin-left: var(--proportion-bar-margin-left, 0);
+  margin-bottom: var(--proportion-bar-margin-bottom, 0);
+  margin-right: var(--proportion-bar-margin-right, 0);
+  position: relative;
+  background-color: var(--cronk-color-light, #eee);
+  flex: 1 1 auto;
+
+  & div {
+    background-color: var(--proportion-bar-color, var(--cronk-color-primary, #444));
+    height: 100%;
+  }
+}

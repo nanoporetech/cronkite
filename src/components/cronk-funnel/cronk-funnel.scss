@@ -1,63 +1,51 @@
-cronk-funnel {
-  & ion-progress-bar {
-    height: 2rem;
-  }
+.summary-funnel {
+  display: grid;
+  grid-gap: 0.5rem 0.5rem;
 
-  .label {
-    text-transform: uppercase;
-  }
+  & .summary-funnel-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-column-gap: 1%;
+    align-items: center;
 
-  & table {
-    width: 96%;
-    margin-right: 4%;
-    table-layout: auto;
-    text-align: right;
+    & .proportion-label {
+      display: flex;
+      flex: 4 2 auto;
+      flex-wrap: nowrap;
+      align-items: center;
 
-    &.fixed {
-      table-layout: fixed;
-    }
-
-    &,
-    & td,
-    & th {
-      border-collapse: collapse;
-      text-align: right;
-    }
-
-    & th,
-    & .select-label {
-      font-weight: 800;
-      font-size: smaller;
-      color: var(--epi-color-medium);
-    }
-
-    & th,
-    & td {
-      padding: 0.5rem 0;
-      text-align: right;
-      white-space: nowrap;
-      color: var(--epi-color-dark-tint);
-      font-size: 16pt;
-
-      &:nth-child(2) {
-        width: 7rem;
-        padding-right: 0.5rem;
+      & .stats {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+        z-index: 1;
+        margin-right: 5%;
+        flex: 2;
       }
 
-      &:nth-child(3) {
-        width: 4rem;
-      }
+      & span {
+        &.counts {
+          font-weight: bold;
+          white-space: nowrap;
+        }
 
-      &:nth-child(4) {
-        width: 10rem;
-      }
-    }
+        &.percent {
+          color: var(--cronk-color-medium);
+          font-size: 100%;
+          font-family: monospace;
+          white-space: nowrap;
+        }
 
-    & td:nth-child(3) {
-      color: var(--epi-color-medium-tint);
-      font-size: 100%;
-      font-family: monospace;
-      text-align: left;
+        &.label {
+          text-transform: uppercase;
+          min-width: 50%;
+          display: inline-block;
+          text-align: left;
+          flex: 5;
+        }
+      }
     }
   }
 }

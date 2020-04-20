@@ -27,6 +27,10 @@ export namespace Components {
         "config": any;
     }
     interface CronkFunnel {
+        "hideCount": boolean;
+        "hideLabel": boolean;
+        "hidePercent": boolean;
+        "hideStats": boolean;
         "statsList": CronkDataTypes.IFunnelListItem[];
     }
     interface CronkPage {
@@ -54,6 +58,10 @@ export namespace Components {
         "responseHandler": CronkDataStream.IDatastreamResponseHandler;
         "type": string;
         "url": string | null;
+    }
+    interface CronkProportionBar {
+        "color": string;
+        "value": number;
     }
     interface CronkSelector {
         "heading": string;
@@ -141,6 +149,12 @@ declare global {
         prototype: HTMLCronkPollDatastreamElement;
         new (): HTMLCronkPollDatastreamElement;
     };
+    interface HTMLCronkProportionBarElement extends Components.CronkProportionBar, HTMLStencilElement {
+    }
+    var HTMLCronkProportionBarElement: {
+        prototype: HTMLCronkProportionBarElement;
+        new (): HTMLCronkProportionBarElement;
+    };
     interface HTMLCronkSelectorElement extends Components.CronkSelector, HTMLStencilElement {
     }
     var HTMLCronkSelectorElement: {
@@ -187,6 +201,7 @@ declare global {
         "cronk-page-components": HTMLCronkPageComponentsElement;
         "cronk-page-panel": HTMLCronkPagePanelElement;
         "cronk-poll-datastream": HTMLCronkPollDatastreamElement;
+        "cronk-proportion-bar": HTMLCronkProportionBarElement;
         "cronk-selector": HTMLCronkSelectorElement;
         "cronk-socketio-datastream": HTMLCronkSocketioDatastreamElement;
         "cronk-statsbox": HTMLCronkStatsboxElement;
@@ -210,6 +225,10 @@ declare namespace LocalJSX {
         "config"?: any;
     }
     interface CronkFunnel {
+        "hideCount"?: boolean;
+        "hideLabel"?: boolean;
+        "hidePercent"?: boolean;
+        "hideStats"?: boolean;
         "statsList"?: CronkDataTypes.IFunnelListItem[];
     }
     interface CronkPage {
@@ -234,6 +253,10 @@ declare namespace LocalJSX {
         "responseHandler"?: CronkDataStream.IDatastreamResponseHandler;
         "type"?: string;
         "url"?: string | null;
+    }
+    interface CronkProportionBar {
+        "color"?: string;
+        "value"?: number;
     }
     interface CronkSelector {
         "heading"?: string;
@@ -274,6 +297,7 @@ declare namespace LocalJSX {
         "cronk-page-components": CronkPageComponents;
         "cronk-page-panel": CronkPagePanel;
         "cronk-poll-datastream": CronkPollDatastream;
+        "cronk-proportion-bar": CronkProportionBar;
         "cronk-selector": CronkSelector;
         "cronk-socketio-datastream": CronkSocketioDatastream;
         "cronk-statsbox": CronkStatsbox;
@@ -295,6 +319,7 @@ declare module "@stencil/core" {
             "cronk-page-components": LocalJSX.CronkPageComponents & JSXBase.HTMLAttributes<HTMLCronkPageComponentsElement>;
             "cronk-page-panel": LocalJSX.CronkPagePanel & JSXBase.HTMLAttributes<HTMLCronkPagePanelElement>;
             "cronk-poll-datastream": LocalJSX.CronkPollDatastream & JSXBase.HTMLAttributes<HTMLCronkPollDatastreamElement>;
+            "cronk-proportion-bar": LocalJSX.CronkProportionBar & JSXBase.HTMLAttributes<HTMLCronkProportionBarElement>;
             "cronk-selector": LocalJSX.CronkSelector & JSXBase.HTMLAttributes<HTMLCronkSelectorElement>;
             "cronk-socketio-datastream": LocalJSX.CronkSocketioDatastream & JSXBase.HTMLAttributes<HTMLCronkSocketioDatastreamElement>;
             "cronk-statsbox": LocalJSX.CronkStatsbox & JSXBase.HTMLAttributes<HTMLCronkStatsboxElement>;

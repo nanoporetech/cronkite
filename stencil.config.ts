@@ -1,5 +1,6 @@
 import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
+
 // import svg from 'rollup-plugin-svg';
 
 // https://stenciljs.com/docs/config
@@ -21,7 +22,6 @@ export const config: Config = {
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.scss',
   namespace: 'cronkite',
-  taskQueue: 'async',
   outputTargets: [
     {
       baseUrl: '/cronkite',
@@ -47,10 +47,6 @@ export const config: Config = {
     sass({
       injectGlobalPaths: [
         buildTypeStyles,
-        'src/global/styles/colours.scss',
-        'src/global/styles/font.scss',
-        'src/global/styles/scaling.scss',
-        'src/global/styles/variables.scss',
       ],
     }),
   ],

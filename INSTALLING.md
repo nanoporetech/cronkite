@@ -28,7 +28,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 // cronkite is the name of our made up Web Component that we have
 // published to npm:
-import { defineCustomElements } from '@metrichor/cronkite/dist/loader';
+import { defineCustomElements } from '@metrichor/cronkite/loader';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
