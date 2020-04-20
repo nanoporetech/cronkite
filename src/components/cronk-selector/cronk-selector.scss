@@ -23,7 +23,7 @@ cronk-selector {
     }
 
     &.percent {
-      color: var(--epi-color-medium);
+      color: var(--cronk-color-medium);
       font-size: 100%;
       font-family: monospace;
       white-space: nowrap;
@@ -65,7 +65,7 @@ cronk-selector {
       & .select-label {
         font-weight: 800;
         font-size: smaller;
-        color: var(--epi-color-medium);
+        color: var(--cronk-color-medium);
       }
 
       & th,
@@ -93,7 +93,7 @@ cronk-selector {
       }
 
       & td:nth-child(4) {
-        color: var(--epi-color-medium);
+        color: var(--cronk-color-medium);
         font-size: 100%;
         font-family: monospace;
       }

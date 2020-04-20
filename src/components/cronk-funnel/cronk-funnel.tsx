@@ -7,6 +7,11 @@ import { CronkDataTypes } from '../../types';
 })
 export class CronkFunnel {
   @Prop() statsList: CronkDataTypes.IFunnelListItem[] = [];
+  @Prop() hideLabel = false;
+  @Prop() hideStats = false;
+  @Prop() hideCount = false;
+  @Prop() hidePercent = false;
+
   @Watch('statsList')
   statsListValidator(newStatsList: any[]) {
     const isValid = newStatsList.length === 0 || newStatsList.every(member => !!member.label && !!member.count);
@@ -35,20 +40,27 @@ export class CronkFunnel {
 
     return (
       <Host class="summary-funnel">
-        <table class="fixed">
-          <tbody>
-            {sortedMembers.map(member => (
-              <tr key={member.label} align-items-center="true">
-                <td>
-                  <ion-progress-bar color="secondary" value={member.count / total} />
-                </td>
-                <td class="counts">{member.count.toLocaleString()}</td>
-                <td class="percent">({((member.count / total) * 100).toFixed(2)}%)</td>
-                <td class="label">{member.label}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {sortedMembers.map(member => {
+          return (
+            <div key={member.label} class="summary-funnel-row">
+              <cronk-proportion-bar value={member.count / total} color="primary" />
+              {((!this.hideStats || !this.hideLabel) && (
+                <div class="proportion-label">
+                  {!this.hideStats && (
+                    <div class="stats">
+                      {!this.hideCount && <span class="counts">{member.count.toLocaleString()}</span>}
+                      {!this.hidePercent && (
+                        <span class="percent">{`${((member.count / total) * 100).toFixed(2)}%`}</span>
+                      )}
+                    </div>
+                  )}
+                  {!this.hideLabel && <span class="label">{member.label}</span>}
+                </div>
+              )) ||
+                null}
+            </div>
+          );
+        })}
       </Host>
     );
   }

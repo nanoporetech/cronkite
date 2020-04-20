@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.0.15",
+  "version": "1.1.1",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
@@ -13,6 +13,7 @@
   "unpkg": "dist/cronkite/cronkite.js",
   "files": [
     "dist/",
+    "loader/",
     "dist/collection/cronkite.schema.json"
   ],
   "scripts": {
@@ -36,27 +37,27 @@
   },
   "devDependencies": {
     "@ionic/core": "5.0.7",
-    "@stencil/core": "1.9.2",
-    "@stencil/sass": "1.2.0",
-    "@types/jest": "25.1.4",
-    "@types/lodash": "4.14.149",
+    "@stencil/core": "1.12.5",
+    "@stencil/sass": "1.3.1",
+    "@types/jest": "25.2.1",
+    "@types/lodash": "4.14.150",
     "@types/puppeteer": "2.0.1",
     "@types/socket.io-client": "1.4.32",
     "@types/uuid": "7.0.2",
-    "husky": "4.2.3",
+    "husky": "4.2.5",
     "jest": "24.9.0",
     "jest-cli": "24.9.0",
-    "lint-staged": "10.0.8",
-    "prettier": "^2.0.2",
+    "lint-staged": "10.1.6",
+    "prettier": "^2.0.4",
     "puppeteer": "2.1.1",
-    "stylelint": "13.2.1",
+    "stylelint": "13.3.2",
     "stylelint-a11y": "^1.2.3",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-no-indistinguishable-colors": "^1.3.0",
     "stylelint-order": "^4.0.0",
     "stylelint-prettier": "^1.1.2",
-    "stylelint-scss": "3.16.0",
-    "tslint": "6.1.0",
+    "stylelint-scss": "3.17.1",
+    "tslint": "6.1.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-ionic-rules": "^0.0.21",
@@ -80,12 +81,12 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@metrichor/ui-components": "1.0.1-3157558",
-    "ajv": "6.12.0",
+    "ajv": "6.12.2",
     "greenlet": "1.1.0",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
     "socket.io-client": "2.3.0",
     "superstruct": "0.8.3",
-    "uuid": "7.0.2"
+    "uuid": "7.0.3"
   }
 }

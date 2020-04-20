@@ -1,0 +1,182 @@
+{
+  "components": [
+    {
+      "@statsList": {
+        "fn:jmespath": "data[].{label: @.label, count: @.count}"
+      },
+      "element": "cronk-funnel",
+      "layout": {
+        "width": 2
+      },
+      "listen": "telemetry:classificationWIMP",
+      "style": {
+        "alignSelf": "center",
+        "paddingTop": "0.5rem"
+      }
+    },
+    {
+      "components": [
+        {
+          "@label": "TOTAL READS",
+          "@value": {
+            "fn:jmespath": "sum([totals.classified, totals.unclassified])"
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:classificationWIMP"
+        },
+        {
+          "@caseSensitive": [
+            true
+          ],
+          "@label": "READS CLASSIFIED",
+          "@value": {
+            "fn:jmespath": "totals.classified"
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:classificationWIMP"
+        },
+        {
+          "@caseSensitive": [
+            true
+          ],
+          "@label": "READS UNCLASSIFIED",
+          "@value": {
+            "fn:jmespath": "totals.unclassified"
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:classificationWIMP"
+        }
+      ],
+      "element": "cronk-statsbox",
+      "layout": {
+        "width": 2
+      }
+    },
+    {
+      "element": "hr",
+      "style": {
+        "borderBottom": "2px solid #ccc"
+      }
+    },
+    {
+      "@statsList": {
+        "fn:jmespath": "data[].{label: @.barcode , count: @.count}"
+      },
+      "element": "cronk-funnel",
+      "layout": {
+        "width": 2
+      },
+      "listen": "telemetry:qc:summary",
+      "style": {
+        "alignSelf": "center",
+        "paddingTop": "0.5rem"
+      }
+    },
+    {
+      "components": [
+        {
+          "@caseSensitive": [
+            true
+          ],
+          "@label": "TOTAL YIELD",
+          "@value": {
+            "fn:formatNumber": [
+              {
+                "fn:jmespath": "totalBases"
+              },
+              2,
+              "base"
+            ]
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:qc:summary"
+        },
+        {
+          "@label": "AVG QUALITY SCORE",
+          "@value": {
+            "fn:toFixed": [
+              {
+                "fn:jmespath": "averageQualityScore"
+              },
+              2
+            ]
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:qc:summary"
+        },
+        {
+          "@caseSensitive": [
+            true
+          ],
+          "@label": "AVG SEQUENCE LENGTH",
+          "@value": {
+            "fn:formatNumber": [
+              {
+                "fn:jmespath": "averageSequenceLength"
+              },
+              0,
+              "base"
+            ]
+          },
+          "element": "epi-headlinevalue",
+          "layout": {
+            "width": 4
+          },
+          "listen": "telemetry:qc:summary"
+        }
+      ],
+      "element": "cronk-statsbox",
+      "layout": {
+        "width": 2
+      }
+    }
+  ],
+  "id": "summary::report::233761",
+  "streams": [
+    {
+      "element": "cronk-poll-datastream",
+      "@url": "http://localhost:3333/cronkite/examples/data/wimp-summary.json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit",
+      "@acceptsFilters": true,
+      "@channels": [
+        {
+          "channel": "telemetry:classificationWIMP",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        }
+      ]
+    },
+    {
+      "element": "cronk-poll-datastream",
+      "@url": "http://localhost:3333/cronkite/examples/data/qc-summary.json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit",
+      "@acceptsFilters": true,
+      "@channels": [
+        {
+          "channel": "telemetry:qc:summary",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        }
+      ]
+    }
+  ]
+}

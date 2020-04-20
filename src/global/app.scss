@@ -14,6 +14,12 @@
 @import '~@ionic/core/css/flex-utils.css';
 @import '~@ionic/core/css/display.css';
 
+/* Conkite styles */
+@import './styles/colours.scss';
+@import './styles/variables.scss';
+@import './styles/font.scss';
+@import './styles/scaling.scss';
+
 html,
 body {
   margin: 0;
@@ -36,7 +42,7 @@ select,
 textarea,
 button {
   font-family: 'Lato', sans-serif;
-  color: $color-dark-grey;
+  color: $dark-shade;
 }
 
 * {

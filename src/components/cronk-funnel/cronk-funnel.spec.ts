@@ -39,18 +39,116 @@ describe('cronk-funnel', () => {
     it('renders one thing correctly', async () => {
       rootEl.statsList = [{ label: 'foo', count: 20 }];
       await page.waitForChanges();
-      expect(rootEl).toEqualLightHtml(`<cronk-funnel class="summary-funnel">
-        <table class="fixed">
-          <tbody>
-            <tr align-items-center="true">
-              <td><ion-progress-bar color="secondary" value="1"></ion-progress-bar></td>
-              <td class="counts">20</td>
-              <td class="percent">(100.00%)</td>
-              <td class="label">foo</td>
-            </tr>
-          </tbody>
-        </table>
+      expect(rootEl).toEqualLightHtml(`
+      <cronk-funnel class="summary-funnel">
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                20
+              </span>
+              <span class="percent">
+                100.00%
+              </span>
+            </div>
+            <span class="label">
+              foo
+            </span>
+          </div>
+        </div>
       </cronk-funnel>`);
+    });
+
+    it('hides fields depending on prop', async () => {
+      rootEl.statsList = [{ label: 'foo', count: 20 }];
+      await page.waitForChanges();
+      const funnelRowEl = rootEl.querySelector('.summary-funnel-row');
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                20
+              </span>
+              <span class="percent">
+                100.00%
+              </span>
+            </div>
+            <span class="label">
+              foo
+            </span>
+          </div>
+        </div>`);
+      rootEl.hideLabel = true;
+      await page.waitForChanges();
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                20
+              </span>
+              <span class="percent">
+                100.00%
+              </span>
+            </div>
+          </div>
+        </div>`);
+      rootEl.hideLabel = false;
+      rootEl.hideCount = true;
+      await page.waitForChanges();
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="percent">
+                100.00%
+              </span>
+            </div>
+            <span class="label">
+              foo
+            </span>
+          </div>
+        </div>`);
+      rootEl.hideCount = false;
+      rootEl.hidePercent = true;
+      await page.waitForChanges();
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                20
+              </span>
+            </div>
+            <span class="label">
+              foo
+            </span>
+          </div>
+        </div>`);
+      rootEl.hidePercent = false;
+      rootEl.hideStats = true;
+      await page.waitForChanges();
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <span class="label">
+              foo
+            </span>
+          </div>
+        </div>`);
+      rootEl.hideLabel = true;
+      await page.waitForChanges();
+      expect(funnelRowEl).toEqualLightHtml(`
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="1"></cronk-proportion-bar>
+        </div>`);
     });
 
     it('renders and sorts many things correctly', async () => {
@@ -60,30 +158,57 @@ describe('cronk-funnel', () => {
         { label: 'Doc', count: 203 },
       ];
       await page.waitForChanges();
-      expect(rootEl).toEqualLightHtml(`<cronk-funnel class="summary-funnel">
-      <table class="fixed">
-        <tbody>
-          <tr align-items-center="true">
-            <td><ion-progress-bar color="secondary" value="0.9022222222222223"></ion-progress-bar></td>
-            <td class="counts">203</td>
-            <td class="percent">(90.22%)</td>
-            <td class="label">Doc</td>
-          </tr>
-          <tr align-items-center="true">
-            <td><ion-progress-bar color="secondary" value="0.08888888888888889"></ion-progress-bar></td>
-            <td class="counts">20</td>
-            <td class="percent">(8.89%)</td>
-            <td class="label">Dopey</td>
-          </tr>
-          <tr align-items-center="true">
-            <td><ion-progress-bar color="secondary" value="0.008888888888888889"></ion-progress-bar></td>
-            <td class="counts">2</td>
-            <td class="percent">(0.89%)</td>
-            <td class="label">Sleepy</td>
-          </tr>
-        </tbody>
-      </table>
-    </cronk-funnel>`);
+      expect(rootEl).toEqualLightHtml(`
+      <cronk-funnel class="summary-funnel">
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="0.9022222222222223"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                203
+              </span>
+              <span class="percent">
+                90.22%
+              </span>
+            </div>
+            <span class="label">
+              Doc
+            </span>
+          </div>
+        </div>
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="0.08888888888888889"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                20
+              </span>
+              <span class="percent">
+                8.89%
+              </span>
+            </div>
+            <span class="label">
+              Dopey
+            </span>
+          </div>
+        </div>
+        <div class="summary-funnel-row">
+          <cronk-proportion-bar color="primary" value="0.008888888888888889"></cronk-proportion-bar>
+          <div class="proportion-label">
+            <div class="stats">
+              <span class="counts">
+                2
+              </span>
+              <span class="percent">
+                0.89%
+              </span>
+            </div>
+            <span class="label">
+              Sleepy
+            </span>
+          </div>
+        </div>
+      </cronk-funnel>`);
     });
   });
 });
