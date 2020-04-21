@@ -36,7 +36,6 @@ npm-publish-external:
     - echo "Patching report versions to $PATCH"
     - npm run package:version
     - npm run build:docs
-    - echo "https://registry.npmjs.org" >> .npmrc
     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> .npmrc
     - npm publish --access=public
   only:
