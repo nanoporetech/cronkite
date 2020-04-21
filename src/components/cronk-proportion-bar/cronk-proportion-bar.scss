@@ -7,11 +7,11 @@
   margin-bottom: var(--proportion-bar-margin-bottom, 0);
   margin-right: var(--proportion-bar-margin-right, 0);
   position: relative;
-  background-color: var(--cronk-color-light, #eee);
+  background-color: var(--proportion-bar--background-color, var(--cronk-color-light, var(--ion-color-light, #eee)));
   flex: 1 1 auto;
 
   & div {
-    background-color: var(--proportion-bar-color, var(--cronk-color-primary, #444));
+    background-color: var(--proportion-bar-color, var(--ion-color-primary, var(--ion-color-base, #444)));
     height: 100%;
   }
 }

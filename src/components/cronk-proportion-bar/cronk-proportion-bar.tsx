@@ -12,6 +12,7 @@ export class CronkProportionBar implements ComponentInterface {
     return (
       <Host class="proportion-bar">
         <div
+          class={`ion-color-${this.color}`}
           style={{
             display: 'block',
             height: '100%',

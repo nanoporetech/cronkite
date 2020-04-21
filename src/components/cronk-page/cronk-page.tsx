@@ -12,7 +12,7 @@ const DEFAULT_LAYOUT = {};
 
 @Component({
   assetsDirs: ['../../cronkite.schema.json'],
-  styleUrls: ['cronk-page.scss', '../../global/styles/theme.scss'],
+  styleUrls: ['cronk-page.scss'],
   tag: 'cronk-page',
 })
 export class CronkPage {

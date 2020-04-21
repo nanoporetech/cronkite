@@ -39,7 +39,7 @@ npm-publish-external:
     - npm run build:docs
     - echo $NPM_TOKEN
     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> ./.npmrc
-    - npm publish --verbose --access=public
+    - npm publish --verbose --access public --tag latest
   only:
     - tags
 

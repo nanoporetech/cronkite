@@ -40,14 +40,12 @@ export const config: Config = {
       esmLoaderPath: '../loader',
     },
     {
-      type: 'docs-readme'
+      type: 'docs-readme',
     },
   ],
   plugins: [
     sass({
-      injectGlobalPaths: [
-        buildTypeStyles,
-      ],
+      injectGlobalPaths: [buildTypeStyles],
     }),
   ],
   srcIndexHtml,
