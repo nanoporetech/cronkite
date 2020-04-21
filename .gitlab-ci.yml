@@ -33,15 +33,15 @@ npm-publish-external:
   stage: publish
   script:
     - npm i
+    - source ./PATCH_VERSION
     - echo "Patching report versions to $PATCH"
     - npm run package:version
     - npm run build:docs
     - echo $NPM_TOKEN
-    - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> .npmrc
+    - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> ./.npmrc
     - npm publish --verbose --access=public
   only:
     - tags
-    - master
 
 pages:
   stage: pages
