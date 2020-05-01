@@ -1,6 +1,6 @@
 import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
+// import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 // https://stenciljs.com/docs/config
 
@@ -47,9 +47,9 @@ export const config: Config = {
       injectGlobalPaths: [buildTypeStyles],
     }),
   ],
-  rollupPlugins: {
-    after: [nodePolyfills()],
-  },
+  // rollupPlugins: {
+  //   after: [nodePolyfills()],
+  // },
   srcIndexHtml,
   testing: {
     browserArgs: ['--no-sandbox', '--disable-setuid-sandbox'],

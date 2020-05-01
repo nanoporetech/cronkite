@@ -32,14 +32,6 @@
       "components": [
         {
           "element": "epi-headlinevalue",
-          "@label": "DOM events - JQ Transform",
-          "@value": {
-            "fn:jq": "\"Client X: \\(.clientX), Client Y: \\(.clientY)\""
-          },
-          "listen": "mousemove"
-        },
-        {
-          "element": "epi-headlinevalue",
           "@label": "DOM events - JMESPath transform",
           "@value": {
             "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"

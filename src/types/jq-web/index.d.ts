@@ -3,4 +3,3 @@
 declare module 'jq-web' {
   export function json(data: any, path: string): object;
 }
-

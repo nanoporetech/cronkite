@@ -1,7 +1,7 @@
 import numberScale from 'number-scale';
 import { struct } from 'superstruct';
 import { jmespath } from '../workers/jmespath.worker';
-import { jqSearch } from '../workers/jq.worker';
+// import { jqSearch } from '../workers/jq.worker';
 // tslint:disable: object-literal-sort-keys
 numberScale.defineScale(
   'genome',
@@ -161,9 +161,9 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
     case 'fn:jmespath':
       // console.info('JMESPATH', val, data, await jmespath(val, data))
       return jmespath(val, data);
-    case 'fn:jq':
-      // console.info('JQ', val, data, jqSearch(data, val));
-      return jqSearch(data, val);
+    // case 'fn:jq':
+    //   // console.info('JQ', val, data, jqSearch(data, val));
+    //   return jqSearch(data, val);
     default:
       break;
   }

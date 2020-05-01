@@ -53,7 +53,7 @@ publish_master:
   only:
     - master
   variables:
-    TAG: 'stable'
+    TAG: 'next'
 
 publish_release:
   <<: *npm_publish_external
