@@ -206,7 +206,9 @@
         {
           "type": [
             "array",
-            "string"
+            "string",
+            "number",
+            "boolean"
           ]
         },
         {
@@ -214,6 +216,15 @@
           "additionalProperties": false,
           "properties": {
             "fn:jmespath": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fn:jq": {
               "type": "string"
             }
           }
@@ -286,25 +297,11 @@
               "items": [
                 {
                   "title": "dividend",
-                  "oneOf": [
-                    {
-                      "$ref": "#/definitions/componentProps"
-                    },
-                    {
-                      "type": "integer"
-                    }
-                  ]
+                  "$ref": "#/definitions/componentProps"
                 },
                 {
                   "title": "divisor",
-                  "oneOf": [
-                    {
-                      "$ref": "#/definitions/componentProps"
-                    },
-                    {
-                      "type": "integer"
-                    }
-                  ]
+                  "$ref": "#/definitions/componentProps"
                 }
               ]
             },
@@ -315,25 +312,11 @@
               "items": [
                 {
                   "title": "dividend",
-                  "oneOf": [
-                    {
-                      "$ref": "#/definitions/componentProps"
-                    },
-                    {
-                      "type": "integer"
-                    }
-                  ]
+                  "$ref": "#/definitions/componentProps"
                 },
                 {
                   "title": "divisor",
-                  "oneOf": [
-                    {
-                      "$ref": "#/definitions/componentProps"
-                    },
-                    {
-                      "type": "integer"
-                    }
-                  ]
+                  "$ref": "#/definitions/componentProps"
                 }
               ]
             },

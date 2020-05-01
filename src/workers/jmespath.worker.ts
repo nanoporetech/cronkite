@@ -1,6 +1,5 @@
-import greenlet from 'greenlet';
 
-export const jmespath = greenlet((path, json) => {
+export const jmespath = async (path: string, json: any) => {
 
   function isArray(obj: any) {
     if (obj !== null) {
@@ -1607,6 +1606,4 @@ export const jmespath = greenlet((path, json) => {
     return interpreter.search(node, data);
   }
   return search(json, path);
-});
-
-export default jmespath
+};

@@ -1,7 +1,7 @@
 import numberScale from 'number-scale';
 import { struct } from 'superstruct';
-import jmespath from '../workers/jmespath-worker';
-
+import { jmespath } from '../workers/jmespath.worker';
+import { jqSearch } from '../workers/jq.worker';
 // tslint:disable: object-literal-sort-keys
 numberScale.defineScale(
   'genome',
@@ -65,7 +65,10 @@ export const validateArray = (arrayIn: any) => {
 };
 
 export const transformValue = async (value: any, data: any): Promise<any> => {
-  if (typeof value === 'string' || Array.isArray(value)) return value;
+  const isArrayValue = Array.isArray(value);
+  if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || isArrayValue) {
+    return isArrayValue ? value : [value];
+  }
   return Promise.all(
     Object.entries(value).map(async ([func, val]) => {
       return applyFunction(func, val, data);
@@ -158,6 +161,9 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
     case 'fn:jmespath':
       // console.info('JMESPATH', val, data, await jmespath(val, data))
       return jmespath(val, data);
+    case 'fn:jq':
+      // console.info('JQ', val, data, jqSearch(data, val));
+      return jqSearch(data, val);
     default:
       break;
   }

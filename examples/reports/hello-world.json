@@ -7,17 +7,6 @@
       "@value": "Hello World!"
     },
     {
-      "element": "epi-headlinevalue",
-      "@label": "Native DOM events",
-      "@value": {
-        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
-      },
-      "listen": "mousemove",
-      "layout": {
-        "width": 2
-      }
-    },
-    {
       "element": "epi-checkmark",
       "@message": {
         "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
@@ -35,7 +24,31 @@
       },
       "listen": "mousemove",
       "layout": {
-        "width": 2
+        "width": 3
+      }
+    },
+    {
+      "element": "div",
+      "components": [
+        {
+          "element": "epi-headlinevalue",
+          "@label": "DOM events - JQ Transform",
+          "@value": {
+            "fn:jq": "\"Client X: \\(.clientX), Client Y: \\(.clientY)\""
+          },
+          "listen": "mousemove"
+        },
+        {
+          "element": "epi-headlinevalue",
+          "@label": "DOM events - JMESPath transform",
+          "@value": {
+            "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+          },
+          "listen": "mousemove"
+        }
+      ],
+      "layout": {
+        "width": 1
       }
     },
     {

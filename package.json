@@ -50,6 +50,7 @@
     "lint-staged": "10.2.1",
     "prettier": "2.0.5",
     "puppeteer": "2.1.1",
+    "rollup-plugin-node-polyfills": "0.2.1",
     "stylelint": "13.3.2",
     "stylelint-a11y": "^1.2.3",
     "stylelint-config-standard": "^20.0.0",
@@ -82,7 +83,7 @@
   "dependencies": {
     "@metrichor/ui-components": "1.0.1-3157558",
     "ajv": "6.12.2",
-    "greenlet": "1.1.0",
+    "jq-web": "0.5.1",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
     "socket.io-client": "2.3.0",
