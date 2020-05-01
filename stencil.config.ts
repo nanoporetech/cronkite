@@ -2,8 +2,6 @@ import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 
-// import svg from 'rollup-plugin-svg';
-
 // https://stenciljs.com/docs/config
 
 const isDevMode = process.argv.includes('--dev');

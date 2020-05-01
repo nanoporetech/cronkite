@@ -73,10 +73,11 @@
           "listen": "hello:world:event"
         },
         {
-          "element": "ol",
-          "@innerHTML": {
-            "fn:jmespath": "join(``, [].join(``,['<li><a href=\\'',@.id,'\\'>',@.title,'</a>']))"
+          "element": "cronk-list",
+          "@items": {
+            "fn:jmespath": "[].join(``,['<a href=\\'',@.id,'\\'>',@.title,'</a>'])"
           },
+          "@ordered": true,
           "@label": "Query string",
           "listen": "hello:world:results"
         }

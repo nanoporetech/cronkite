@@ -33,6 +33,10 @@ export namespace Components {
         "hideStats": boolean;
         "statsList": CronkDataTypes.IFunnelListItem[];
     }
+    interface CronkList {
+        "items": any[];
+        "ordered": boolean;
+    }
     interface CronkPage {
         "loadConfig": (newConfig: any) => Promise<void>;
         "pageConfig"?: CronkJSONTypes.ReportDefinition | undefined;
@@ -125,6 +129,12 @@ declare global {
         prototype: HTMLCronkFunnelElement;
         new (): HTMLCronkFunnelElement;
     };
+    interface HTMLCronkListElement extends Components.CronkList, HTMLStencilElement {
+    }
+    var HTMLCronkListElement: {
+        prototype: HTMLCronkListElement;
+        new (): HTMLCronkListElement;
+    };
     interface HTMLCronkPageElement extends Components.CronkPage, HTMLStencilElement {
     }
     var HTMLCronkPageElement: {
@@ -197,6 +207,7 @@ declare global {
         "cronk-errormessage": HTMLCronkErrormessageElement;
         "cronk-event-stream": HTMLCronkEventStreamElement;
         "cronk-funnel": HTMLCronkFunnelElement;
+        "cronk-list": HTMLCronkListElement;
         "cronk-page": HTMLCronkPageElement;
         "cronk-page-components": HTMLCronkPageComponentsElement;
         "cronk-page-panel": HTMLCronkPagePanelElement;
@@ -230,6 +241,10 @@ declare namespace LocalJSX {
         "hidePercent"?: boolean;
         "hideStats"?: boolean;
         "statsList"?: CronkDataTypes.IFunnelListItem[];
+    }
+    interface CronkList {
+        "items"?: any[];
+        "ordered"?: boolean;
     }
     interface CronkPage {
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
@@ -293,6 +308,7 @@ declare namespace LocalJSX {
         "cronk-errormessage": CronkErrormessage;
         "cronk-event-stream": CronkEventStream;
         "cronk-funnel": CronkFunnel;
+        "cronk-list": CronkList;
         "cronk-page": CronkPage;
         "cronk-page-components": CronkPageComponents;
         "cronk-page-panel": CronkPagePanel;
@@ -315,6 +331,7 @@ declare module "@stencil/core" {
             "cronk-errormessage": LocalJSX.CronkErrormessage & JSXBase.HTMLAttributes<HTMLCronkErrormessageElement>;
             "cronk-event-stream": LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;
             "cronk-funnel": LocalJSX.CronkFunnel & JSXBase.HTMLAttributes<HTMLCronkFunnelElement>;
+            "cronk-list": LocalJSX.CronkList & JSXBase.HTMLAttributes<HTMLCronkListElement>;
             "cronk-page": LocalJSX.CronkPage & JSXBase.HTMLAttributes<HTMLCronkPageElement>;
             "cronk-page-components": LocalJSX.CronkPageComponents & JSXBase.HTMLAttributes<HTMLCronkPageComponentsElement>;
             "cronk-page-panel": LocalJSX.CronkPagePanel & JSXBase.HTMLAttributes<HTMLCronkPagePanelElement>;
