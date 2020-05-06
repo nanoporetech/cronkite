@@ -1,52 +1,38 @@
-
 export const jmespath = async (path: string, json: any) => {
-
-  function isArray(obj: any) {
-    if (obj !== null) {
-      return Object.prototype.toString.call(obj) === "[object Array]";
-    } else {
-      return false;
-    }
-  }
-
   function isObject(obj: any) {
-    if (obj !== null) {
-      return Object.prototype.toString.call(obj) === "[object Object]";
-    } else {
-      return false;
-    }
+    return obj !== null && Object.prototype.toString.call(obj) === '[object Object]';
   }
 
   function strictDeepEqual(first: any, second: any) {
     if (first === second) {
       return true;
     }
-    var firstType = Object.prototype.toString.call(first);
+    const firstType = Object.prototype.toString.call(first);
     if (firstType !== Object.prototype.toString.call(second)) {
       return false;
     }
-    if (isArray(first) === true) {
+    if (Array.isArray(first)) {
       if (first.length !== second.length) {
         return false;
       }
-      for (var i = 0; i < first.length; i++) {
-        if (strictDeepEqual(first[i], second[i]) === false) {
+      for (let i = 0; i < first.length; i += 1) {
+        if (!strictDeepEqual(first[i], second[i])) {
           return false;
         }
       }
       return true;
     }
-    if (isObject(first) === true) {
-      var keysSeen = {};
-      for (var key in first) {
+    if (isObject(first)) {
+      const keysSeen = {};
+      for (const key in first) {
         if (Object.hasOwnProperty.call(first, key)) {
-          if (strictDeepEqual(first[key], second[key]) === false) {
+          if (!strictDeepEqual(first[key], second[key])) {
             return false;
           }
           keysSeen[key] = true;
         }
       }
-      for (var key2 in second) {
+      for (const key2 in second) {
         if (Object.hasOwnProperty.call(second, key2)) {
           if (keysSeen[key2] !== true) {
             return false;
@@ -59,40 +45,41 @@ export const jmespath = async (path: string, json: any) => {
   }
 
   function isFalse(obj: any) {
-    if (obj === "" || obj === false || obj === null || obj === undefined) {
+    if (obj === '' || obj === false || obj === null || obj === undefined) {
       return true;
-    } else if (isArray(obj) && obj.length === 0) {
+    }
+    if (Array.isArray(obj) && obj.length === 0) {
       return true;
-    } else if (isObject(obj)) {
-      for (var key in obj) {
+    }
+    if (isObject(obj)) {
+      for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
           return false;
         }
       }
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   function objValues(obj: any) {
-    var keys = Object.keys(obj);
-    var values = [];
-    for (var i = 0; i < keys.length; i++) {
+    const keys = Object.keys(obj);
+    const values = [];
+    for (let i = 0; i < keys.length; i += 1) {
       values.push(obj[keys[i]]);
     }
     return values;
   }
 
-  var trimLeft: any;
-  if (typeof String.prototype.trimLeft === "function") {
-    trimLeft = function (str: string) {
+  let trimLeft: (str: string) => string;
+  if (typeof String.prototype.trimLeft === 'function') {
+    trimLeft = (str: string) => {
       return str.trimLeft();
     };
   } else {
-    trimLeft = function (str: string) {
+    trimLeft = (str: string): string => {
       const match = str.match(/^\s*(.*)/);
-      return match && match[1];
+      return (match && match[1]) as string;
     };
   }
 
@@ -107,724 +94,709 @@ export const jmespath = async (path: string, json: any) => {
     7: 'NULL',
     8: 'ARRAY_NUMBER',
     9: 'ARRAY_STRING',
+  };
+
+  const TYPE_NUMBER = 0;
+  const TYPE_ANY = 1;
+  const TYPE_STRING = 2;
+  const TYPE_ARRAY = 3;
+  const TYPE_OBJECT = 4;
+  const TYPE_BOOLEAN = 5;
+  const TYPE_EXPREF = 6;
+  const TYPE_NULL = 7;
+  const TYPE_ARRAY_NUMBER = 8;
+  const TYPE_ARRAY_STRING = 9;
+
+  const TOK_EOF = 'EOF';
+  const TOK_UNQUOTEDIDENTIFIER = 'UnquotedIdentifier';
+  const TOK_QUOTEDIDENTIFIER = 'QuotedIdentifier';
+  const TOK_RBRACKET = 'Rbracket';
+  const TOK_RPAREN = 'Rparen';
+  const TOK_COMMA = 'Comma';
+  const TOK_COLON = 'Colon';
+  const TOK_RBRACE = 'Rbrace';
+  const TOK_NUMBER = 'Number';
+  const TOK_CURRENT = 'Current';
+  const TOK_EXPREF = 'Expref';
+  const TOK_PIPE = 'Pipe';
+  const TOK_OR = 'Or';
+  const TOK_AND = 'And';
+  const TOK_EQ = 'EQ';
+  const TOK_GT = 'GT';
+  const TOK_LT = 'LT';
+  const TOK_GTE = 'GTE';
+  const TOK_LTE = 'LTE';
+  const TOK_NE = 'NE';
+  const TOK_FLATTEN = 'Flatten';
+  const TOK_STAR = 'Star';
+  const TOK_FILTER = 'Filter';
+  const TOK_DOT = 'Dot';
+  const TOK_NOT = 'Not';
+  const TOK_LBRACE = 'Lbrace';
+  const TOK_LBRACKET = 'Lbracket';
+  const TOK_LPAREN = 'Lparen';
+  const TOK_LITERAL = 'Literal';
+
+  const basicTokens = {
+    '(': TOK_LPAREN,
+    ')': TOK_RPAREN,
+    '*': TOK_STAR,
+    ',': TOK_COMMA,
+    '.': TOK_DOT,
+    ':': TOK_COLON,
+    '@': TOK_CURRENT,
+    ']': TOK_RBRACKET,
+    '{': TOK_LBRACE,
+    '}': TOK_RBRACE,
+  };
+
+  const operatorStartToken = {
+    '!': true,
+    '<': true,
+    '=': true,
+    '>': true,
+  };
+
+  const skipChars = {
+    '\t': true,
+    '\n': true,
+    ' ': true,
+  };
+
+  interface Token {
+    type: string;
+    value: string | number;
+    start: number;
   }
 
-  var TYPE_NUMBER = 0;
-  var TYPE_ANY = 1;
-  var TYPE_STRING = 2;
-  var TYPE_ARRAY = 3;
-  var TYPE_OBJECT = 4;
-  var TYPE_BOOLEAN = 5;
-  var TYPE_EXPREF = 6;
-  var TYPE_NULL = 7;
-  var TYPE_ARRAY_NUMBER = 8;
-  var TYPE_ARRAY_STRING = 9;
-
-  var TOK_EOF = "EOF";
-  var TOK_UNQUOTEDIDENTIFIER = "UnquotedIdentifier";
-  var TOK_QUOTEDIDENTIFIER = "QuotedIdentifier";
-  var TOK_RBRACKET = "Rbracket";
-  var TOK_RPAREN = "Rparen";
-  var TOK_COMMA = "Comma";
-  var TOK_COLON = "Colon";
-  var TOK_RBRACE = "Rbrace";
-  var TOK_NUMBER = "Number";
-  var TOK_CURRENT = "Current";
-  var TOK_EXPREF = "Expref";
-  var TOK_PIPE = "Pipe";
-  var TOK_OR = "Or";
-  var TOK_AND = "And";
-  var TOK_EQ = "EQ";
-  var TOK_GT = "GT";
-  var TOK_LT = "LT";
-  var TOK_GTE = "GTE";
-  var TOK_LTE = "LTE";
-  var TOK_NE = "NE";
-  var TOK_FLATTEN = "Flatten";
-  var TOK_STAR = "Star";
-  var TOK_FILTER = "Filter";
-  var TOK_DOT = "Dot";
-  var TOK_NOT = "Not";
-  var TOK_LBRACE = "Lbrace";
-  var TOK_LBRACKET = "Lbracket";
-  var TOK_LPAREN = "Lparen";
-  var TOK_LITERAL = "Literal";
-
-  var basicTokens = {
-    ".": TOK_DOT,
-    "*": TOK_STAR,
-    ",": TOK_COMMA,
-    ":": TOK_COLON,
-    "{": TOK_LBRACE,
-    "}": TOK_RBRACE,
-    "]": TOK_RBRACKET,
-    "(": TOK_LPAREN,
-    ")": TOK_RPAREN,
-    "@": TOK_CURRENT
-  };
-
-  var operatorStartToken = {
-    "<": true,
-    ">": true,
-    "=": true,
-    "!": true
-  };
-
-  var skipChars = {
-    " ": true,
-    "\t": true,
-    "\n": true
-  };
-
-
   function isAlpha(ch: string) {
-    return (ch >= "a" && ch <= "z") ||
-      (ch >= "A" && ch <= "Z") ||
-      ch === "_" ||
-      ch === "$";
+    // tslint:disable-next-line: strict-comparisons
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch === '_';
   }
 
   function isNum(ch: string) {
-    return (ch >= "0" && ch <= "9") ||
-      ch === "-";
+    // tslint:disable-next-line: strict-comparisons
+    return (ch >= '0' && ch <= '9') || ch === '-';
   }
   function isAlphaNum(ch: string) {
-    return (ch >= "a" && ch <= "z") ||
-      (ch >= "A" && ch <= "Z") ||
-      (ch >= "0" && ch <= "9") ||
-      ch === "_" ||
-      ch === "$";
+    // tslint:disable-next-line: strict-comparisons
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch === '_';
   }
 
   class Lexer {
-    _current = 0
-    tokenize(stream: any) {
-      var tokens = [];
+    _current = 0;
+    tokenize(stream: string) {
+      const tokens: Token[] = [];
 
-      var start;
-      var identifier;
-      var token;
+      let start;
+      let identifier;
+      let token;
       while (this._current < stream.length) {
         if (isAlpha(stream[this._current])) {
           start = this._current;
-          identifier = this._consumeUnquotedIdentifier(stream);
+          identifier = this.consumeUnquotedIdentifier(stream);
           tokens.push({
+            start,
             type: TOK_UNQUOTEDIDENTIFIER,
             value: identifier,
-            start: start
           });
         } else if (basicTokens[stream[this._current]] !== undefined) {
           tokens.push({
+            start: this._current,
             type: basicTokens[stream[this._current]],
             value: stream[this._current],
-            start: this._current
           });
-          this._current++;
+          this._current += 1;
         } else if (isNum(stream[this._current])) {
-          token = this._consumeNumber(stream);
+          token = this.consumeNumber(stream);
           tokens.push(token);
-        } else if (stream[this._current] === "[") {
-          token = this._consumeLBracket(stream);
+        } else if (stream[this._current] === '[') {
+          token = this.consumeLBracket(stream);
           tokens.push(token);
-        } else if (stream[this._current] === "\"") {
+        } else if (stream[this._current] === '"') {
           start = this._current;
-          identifier = this._consumeQuotedIdentifier(stream);
+          identifier = this.consumeQuotedIdentifier(stream);
           tokens.push({
+            start,
             type: TOK_QUOTEDIDENTIFIER,
             value: identifier,
-            start: start
           });
-        } else if (stream[this._current] === "'") {
+        } else if (stream[this._current] === `'`) {
           start = this._current;
-          identifier = this._consumeRawStringLiteral(stream);
+          identifier = this.consumeRawStringLiteral(stream);
           tokens.push({
+            start,
             type: TOK_LITERAL,
             value: identifier,
-            start: start
           });
-        } else if (stream[this._current] === "`") {
+        } else if (stream[this._current] === '`') {
           start = this._current;
-          var literal = this._consumeLiteral(stream);
+          const literal = this.consumeLiteral(stream);
           tokens.push({
+            start,
             type: TOK_LITERAL,
             value: literal,
-            start: start
           });
         } else if (operatorStartToken[stream[this._current]] !== undefined) {
-          tokens.push(this._consumeOperator(stream));
+          token = this.consumeOperator(stream);
+          token && tokens.push(token);
         } else if (skipChars[stream[this._current]] !== undefined) {
-          this._current++;
-        } else if (stream[this._current] === "&") {
+          this._current += 1;
+        } else if (stream[this._current] === '&') {
           start = this._current;
-          this._current++;
-          if (stream[this._current] === "&") {
-            this._current++;
-            tokens.push({ type: TOK_AND, value: "&&", start: start });
+          this._current += 1;
+          if (stream[this._current] === '&') {
+            this._current += 1;
+            tokens.push({ start, type: TOK_AND, value: '&&' });
           } else {
-            tokens.push({ type: TOK_EXPREF, value: "&", start: start });
+            tokens.push({ start, type: TOK_EXPREF, value: '&' });
           }
-        } else if (stream[this._current] === "|") {
+        } else if (stream[this._current] === '|') {
           start = this._current;
-          this._current++;
-          if (stream[this._current] === "|") {
-            this._current++;
-            tokens.push({ type: TOK_OR, value: "||", start: start });
+          this._current += 1;
+          if (stream[this._current] === '|') {
+            this._current += 1;
+            tokens.push({ start, type: TOK_OR, value: '||' });
           } else {
-            tokens.push({ type: TOK_PIPE, value: "|", start: start });
+            tokens.push({ start, type: TOK_PIPE, value: '|' });
           }
         } else {
-          var error = new Error("Unknown character:" + stream[this._current]);
-          error.name = "LexerError";
+          const error = new Error(`Unknown character: ${stream[this._current]}`);
+          error.name = 'LexerError';
           throw error;
         }
       }
       return tokens;
     }
 
-    _consumeUnquotedIdentifier(stream: any) {
-      var start = this._current;
-      this._current++;
+    private consumeUnquotedIdentifier(stream: string): string {
+      const start = this._current;
+      this._current += 1;
       while (this._current < stream.length && isAlphaNum(stream[this._current])) {
-        this._current++;
+        this._current += 1;
       }
       return stream.slice(start, this._current);
     }
 
-    _consumeQuotedIdentifier(stream: any) {
-      var start = this._current;
-      this._current++;
-      var maxLength = stream.length;
-      while (stream[this._current] !== "\"" && this._current < maxLength) {
-        var current = this._current;
-        if (stream[current] === "\\" && (stream[current + 1] === "\\" ||
-          stream[current + 1] === "\"")) {
+    private consumeQuotedIdentifier(stream: string): string {
+      const start = this._current;
+      this._current += 1;
+      const maxLength = stream.length;
+      while (stream[this._current] !== '"' && this._current < maxLength) {
+        let current = this._current;
+        if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === '"')) {
           current += 2;
         } else {
-          current++;
+          current += 1;
         }
         this._current = current;
       }
-      this._current++;
+      this._current += 1;
       return JSON.parse(stream.slice(start, this._current));
     }
 
-    _consumeRawStringLiteral(stream: any) {
-      var start = this._current;
-      this._current++;
-      var maxLength = stream.length;
-      while (stream[this._current] !== "'" && this._current < maxLength) {
-        var current = this._current;
-        if (stream[current] === "\\" && (stream[current + 1] === "\\" ||
-          stream[current + 1] === "'")) {
+    private consumeRawStringLiteral(stream: string): string {
+      const start = this._current;
+      this._current += 1;
+      const maxLength = stream.length;
+      while (stream[this._current] !== `'` && this._current < maxLength) {
+        let current = this._current;
+        if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === `'`)) {
           current += 2;
         } else {
-          current++;
+          current += 1;
         }
         this._current = current;
       }
-      this._current++;
-      var literal = stream.slice(start + 1, this._current - 1);
-      return literal.replace("\\'", "'");
+      this._current += 1;
+      const literal = stream.slice(start + 1, this._current - 1);
+      return literal.replace(`\\'`, `'`);
     }
 
-    _consumeNumber(stream: any) {
-      var start = this._current;
-      this._current++;
-      var maxLength = stream.length;
+    private consumeNumber(stream: string): Token {
+      const start = this._current;
+      this._current += 1;
+      const maxLength = stream.length;
       while (isNum(stream[this._current]) && this._current < maxLength) {
-        this._current++;
+        this._current += 1;
       }
-      var value = parseInt(stream.slice(start, this._current));
-      return { type: TOK_NUMBER, value: value, start: start };
+      const value = parseInt(stream.slice(start, this._current), 10);
+      return { start, value, type: TOK_NUMBER };
     }
 
-    _consumeLBracket(stream: any) {
-      var start = this._current;
-      this._current++;
-      if (stream[this._current] === "?") {
-        this._current++;
-        return { type: TOK_FILTER, value: "[?", start: start };
-      } else if (stream[this._current] === "]") {
-        this._current++;
-        return { type: TOK_FLATTEN, value: "[]", start: start };
-      } else {
-        return { type: TOK_LBRACKET, value: "[", start: start };
+    private consumeLBracket(stream: string): Token {
+      const start = this._current;
+      this._current += 1;
+      if (stream[this._current] === '?') {
+        this._current += 1;
+        return { start, type: TOK_FILTER, value: '[?' };
       }
+      if (stream[this._current] === ']') {
+        this._current += 1;
+        return { start, type: TOK_FLATTEN, value: '[]' };
+      }
+      return { start, type: TOK_LBRACKET, value: '[' };
     }
 
-    _consumeOperator(stream: any) {
-      var start = this._current;
-      var startingChar = stream[start];
-      this._current++;
-      if (startingChar === "!") {
-        if (stream[this._current] === "=") {
-          this._current++;
-          return { type: TOK_NE, value: "!=", start: start };
-        } else {
-          return { type: TOK_NOT, value: "!", start: start };
+    private consumeOperator(stream: string): Token | undefined {
+      const start = this._current;
+      const startingChar = stream[start];
+      this._current += 1;
+      if (startingChar === '!') {
+        if (stream[this._current] === '=') {
+          this._current += 1;
+          return { start, type: TOK_NE, value: '!=' };
         }
-      } else if (startingChar === "<") {
-        if (stream[this._current] === "=") {
-          this._current++;
-          return { type: TOK_LTE, value: "<=", start: start };
-        } else {
-          return { type: TOK_LT, value: "<", start: start };
+        return { start, type: TOK_NOT, value: '!' };
+      }
+      if (startingChar === '<') {
+        if (stream[this._current] === '=') {
+          this._current += 1;
+          return { start, type: TOK_LTE, value: '<=' };
         }
-      } else if (startingChar === ">") {
-        if (stream[this._current] === "=") {
-          this._current++;
-          return { type: TOK_GTE, value: ">=", start: start };
-        } else {
-          return { type: TOK_GT, value: ">", start: start };
+        return { start, type: TOK_LT, value: '<' };
+      }
+      if (startingChar === '>') {
+        if (stream[this._current] === '=') {
+          this._current += 1;
+          return { start, type: TOK_GTE, value: '>=' };
         }
-      } else if (startingChar === "=") {
-        if (stream[this._current] === "=") {
-          this._current++;
-          return { type: TOK_EQ, value: "==", start: start };
-        }
+        return { start, type: TOK_GT, value: '>' };
+      }
+      if (startingChar === '=' && stream[this._current] === '=') {
+        this._current += 1;
+        return { start, type: TOK_EQ, value: '==' };
       }
       return;
     }
 
-    _consumeLiteral(stream: any) {
-      this._current++;
-      var start = this._current;
-      var maxLength = stream.length;
-      var literal;
-      while (stream[this._current] !== "`" && this._current < maxLength) {
-        var current = this._current;
-        if (stream[current] === "\\" && (stream[current + 1] === "\\" ||
-          stream[current + 1] === "`")) {
+    private consumeLiteral(stream: string): any {
+      this._current += 1;
+      const start = this._current;
+      const maxLength = stream.length;
+      let literal;
+      while (stream[this._current] !== '`' && this._current < maxLength) {
+        let current = this._current;
+        if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === '`')) {
           current += 2;
         } else {
-          current++;
+          current += 1;
         }
         this._current = current;
       }
-      var literalString = trimLeft(stream.slice(start, this._current));
-      literalString = literalString.replace("\\`", "`");
-      if (this._looksLikeJSON(literalString)) {
-        literal = JSON.parse(literalString);
-      } else {
-        literal = JSON.parse("\"" + literalString + "\"");
-      }
-      this._current++;
+      let literalString = trimLeft(stream.slice(start, this._current));
+      literalString = literalString.replace('\\`', '`');
+      literal = (this.looksLikeJSON(literalString) && JSON.parse(literalString)) || JSON.parse(`"${literalString}"`);
+      this._current += 1;
       return literal;
     }
 
-    _looksLikeJSON(literalString: string) {
-      var startingChars = "[{\"";
-      var jsonLiterals = ["true", "false", "null"];
-      var numberLooking = "-0123456789";
+    private looksLikeJSON(literalString: string): boolean {
+      const startingChars = '[{"';
+      const jsonLiterals = ['true', 'false', 'null'];
+      const numberLooking = '-0123456789';
 
-      if (literalString === "") {
+      if (literalString === '') {
         return false;
-      } else if (startingChars.indexOf(literalString[0]) >= 0) {
+      }
+      if (startingChars.indexOf(literalString[0]) >= 0) {
         return true;
-      } else if (jsonLiterals.indexOf(literalString) >= 0) {
+      }
+      if (jsonLiterals.indexOf(literalString) >= 0) {
         return true;
-      } else if (numberLooking.indexOf(literalString[0]) >= 0) {
+      }
+      if (numberLooking.indexOf(literalString[0]) >= 0) {
         try {
           JSON.parse(literalString);
           return true;
         } catch (ex) {
           return false;
         }
-      } else {
-        return false;
       }
+      return false;
     }
+  }
+
+  const bindingPower: { [token: string]: number } = {
+    [TOK_EOF]: 0,
+    [TOK_UNQUOTEDIDENTIFIER]: 0,
+    [TOK_QUOTEDIDENTIFIER]: 0,
+    [TOK_RBRACKET]: 0,
+    [TOK_RPAREN]: 0,
+    [TOK_COMMA]: 0,
+    [TOK_RBRACE]: 0,
+    [TOK_NUMBER]: 0,
+    [TOK_CURRENT]: 0,
+    [TOK_EXPREF]: 0,
+    [TOK_PIPE]: 1,
+    [TOK_OR]: 2,
+    [TOK_AND]: 3,
+    [TOK_EQ]: 5,
+    [TOK_GT]: 5,
+    [TOK_LT]: 5,
+    [TOK_GTE]: 5,
+    [TOK_LTE]: 5,
+    [TOK_NE]: 5,
+    [TOK_FLATTEN]: 9,
+    [TOK_STAR]: 20,
+    [TOK_FILTER]: 21,
+    [TOK_DOT]: 40,
+    [TOK_NOT]: 45,
+    [TOK_LBRACE]: 50,
+    [TOK_LBRACKET]: 55,
+    [TOK_LPAREN]: 60,
   };
 
-  var bindingPower: any = {};
-  bindingPower[TOK_EOF] = 0;
-  bindingPower[TOK_UNQUOTEDIDENTIFIER] = 0;
-  bindingPower[TOK_QUOTEDIDENTIFIER] = 0;
-  bindingPower[TOK_RBRACKET] = 0;
-  bindingPower[TOK_RPAREN] = 0;
-  bindingPower[TOK_COMMA] = 0;
-  bindingPower[TOK_RBRACE] = 0;
-  bindingPower[TOK_NUMBER] = 0;
-  bindingPower[TOK_CURRENT] = 0;
-  bindingPower[TOK_EXPREF] = 0;
-  bindingPower[TOK_PIPE] = 1;
-  bindingPower[TOK_OR] = 2;
-  bindingPower[TOK_AND] = 3;
-  bindingPower[TOK_EQ] = 5;
-  bindingPower[TOK_GT] = 5;
-  bindingPower[TOK_LT] = 5;
-  bindingPower[TOK_GTE] = 5;
-  bindingPower[TOK_LTE] = 5;
-  bindingPower[TOK_NE] = 5;
-  bindingPower[TOK_FLATTEN] = 9;
-  bindingPower[TOK_STAR] = 20;
-  bindingPower[TOK_FILTER] = 21;
-  bindingPower[TOK_DOT] = 40;
-  bindingPower[TOK_NOT] = 45;
-  bindingPower[TOK_LBRACE] = 50;
-  bindingPower[TOK_LBRACKET] = 55;
-  bindingPower[TOK_LPAREN] = 60;
-
   class Parser {
-    index: number = 0;
-    tokens: any[] = [];
-    parse(expression: any) {
-      this._loadTokens(expression);
+    index = 0;
+    tokens: Token[] = [];
+    parse(expression: string) {
+      this.loadTokens(expression);
       this.index = 0;
-      var ast = this.expression(0);
-      if (this._lookahead(0) !== TOK_EOF) {
-        var t = this._lookaheadToken(0);
-        var error = new Error(
-          "Unexpected token type: " + t.type + ", value: " + t.value);
-        error.name = "ParserError";
+      const ast = this.expression(0);
+      if (this.lookahead(0) !== TOK_EOF) {
+        const token = this.lookaheadToken(0);
+        const error = new Error(`Unexpected token type: ${token.type}, value: ${token.value}`);
+        error.name = 'ParserError';
         throw error;
       }
       return ast;
     }
 
-    _loadTokens(expression: any) {
-      var lexer = new Lexer();
-      var tokens = lexer.tokenize(expression);
-      tokens.push({ type: TOK_EOF, value: "", start: expression.length });
+    private loadTokens(expression: string) {
+      const lexer = new Lexer();
+      const tokens = lexer.tokenize(expression);
+      tokens.push({ type: TOK_EOF, value: '', start: expression.length });
       this.tokens = tokens;
     }
 
     expression(rbp: number): any {
-      var leftToken = this._lookaheadToken(0);
-      this._advance();
-      var left = this.nud(leftToken);
-      var currentToken = this._lookahead(0);
-      while (rbp < bindingPower[currentToken]) {
-        this._advance();
-        left = this.led(currentToken, left);
-        currentToken = this._lookahead(0);
+      const leftToken = this.lookaheadToken(0);
+      this.advance();
+      let left = this.nud(leftToken);
+      let currentTokenType = this.lookahead(0);
+      while (rbp < bindingPower[currentTokenType]) {
+        this.advance();
+        left = this.led(currentTokenType, left);
+        currentTokenType = this.lookahead(0);
       }
       return left;
     }
 
-    _lookahead(number: number) {
-      return this.tokens[this.index + number].type;
+    private lookahead(offset: number) {
+      return this.tokens[this.index + offset].type;
     }
 
-    _lookaheadToken(number: number) {
-      return this.tokens[this.index + number];
+    private lookaheadToken(offset: number) {
+      return this.tokens[this.index + offset];
     }
 
-    _advance() {
-      this.index++;
+    private advance() {
+      this.index += 1;
     }
 
     nud(token: any): any {
-      var left;
-      var right;
-      var expression;
+      let left;
+      let right;
+      let expression;
       switch (token.type) {
         case TOK_LITERAL:
-          return { type: "Literal", value: token.value };
+          return { type: 'Literal', value: token.value };
         case TOK_UNQUOTEDIDENTIFIER:
-          return { type: "Field", name: token.value };
+          return { type: 'Field', name: token.value };
         case TOK_QUOTEDIDENTIFIER:
-          var node = { type: "Field", name: token.value };
-          if (this._lookahead(0) === TOK_LPAREN) {
-            throw new Error("Quoted identifier not allowed for function names.");
+          const node = { type: 'Field', name: token.value };
+          if (this.lookahead(0) === TOK_LPAREN) {
+            throw new Error('Quoted identifier not allowed for function names.');
           } else {
             return node;
           }
         case TOK_NOT:
           right = this.expression(bindingPower.Not);
-          return { type: "NotExpression", children: [right] };
+          return { type: 'NotExpression', children: [right] };
         case TOK_STAR:
-          left = { type: "Identity" };
-          right = null;
-          if (this._lookahead(0) === TOK_RBRACKET) {
-            right = { type: "Identity" };
-          } else {
-            right = this._parseProjectionRHS(bindingPower.Star);
-          }
-          return { type: "ValueProjection", children: [left, right] };
+          left = { type: 'Identity' };
+          right =
+            (this.lookahead(0) === TOK_RBRACKET && { type: 'Identity' }) || this.parseProjectionRHS(bindingPower.Star);
+          return { type: 'ValueProjection', children: [left, right] };
         case TOK_FILTER:
-          return this.led(token.type, { type: "Identity" });
+          return this.led(token.type, { type: 'Identity' });
         case TOK_LBRACE:
-          return this._parseMultiselectHash();
+          return this.parseMultiselectHash();
         case TOK_FLATTEN:
-          left = { type: TOK_FLATTEN, children: [{ type: "Identity" }] };
-          right = this._parseProjectionRHS(bindingPower.Flatten);
-          return { type: "Projection", children: [left, right] };
+          left = { type: TOK_FLATTEN, children: [{ type: 'Identity' }] };
+          right = this.parseProjectionRHS(bindingPower.Flatten);
+          return { type: 'Projection', children: [left, right] };
         case TOK_LBRACKET:
-          if (this._lookahead(0) === TOK_NUMBER || this._lookahead(0) === TOK_COLON) {
-            right = this._parseIndexExpression();
-            return this._projectIfSlice({ type: "Identity" }, right);
-          } else if (this._lookahead(0) === TOK_STAR &&
-            this._lookahead(1) === TOK_RBRACKET) {
-            this._advance();
-            this._advance();
-            right = this._parseProjectionRHS(bindingPower.Star);
-            return {
-              type: "Projection",
-              children: [{ type: "Identity" }, right]
-            };
-          } else {
-            return this._parseMultiselectList();
+          if (this.lookahead(0) === TOK_NUMBER || this.lookahead(0) === TOK_COLON) {
+            right = this.parseIndexExpression();
+            return this.projectIfSlice({ type: 'Identity' }, right);
           }
+          if (this.lookahead(0) === TOK_STAR && this.lookahead(1) === TOK_RBRACKET) {
+            this.advance();
+            this.advance();
+            right = this.parseProjectionRHS(bindingPower.Star);
+            return {
+              children: [{ type: 'Identity' }, right],
+              type: 'Projection',
+            };
+          }
+          return this.parseMultiselectList();
         case TOK_CURRENT:
           return { type: TOK_CURRENT };
         case TOK_EXPREF:
           expression = this.expression(bindingPower.Expref);
-          return { type: "ExpressionReference", children: [expression] };
+          return { type: 'ExpressionReference', children: [expression] };
         case TOK_LPAREN:
-          var args = [];
-          while (this._lookahead(0) !== TOK_RPAREN) {
-            if (this._lookahead(0) === TOK_CURRENT) {
+          const args = [];
+          while (this.lookahead(0) !== TOK_RPAREN) {
+            if (this.lookahead(0) === TOK_CURRENT) {
               expression = { type: TOK_CURRENT };
-              this._advance();
+              this.advance();
             } else {
               expression = this.expression(0);
             }
             args.push(expression);
           }
-          this._match(TOK_RPAREN);
+          this.match(TOK_RPAREN);
           return args[0];
         default:
-          this._errorToken(token);
+          this.errorToken(token);
       }
     }
 
     led(tokenName: string, left: any): any {
-      var right;
+      let right;
       switch (tokenName) {
         case TOK_DOT:
-          var rbp = bindingPower.Dot;
-          if (this._lookahead(0) !== TOK_STAR) {
-            right = this._parseDotRHS(rbp);
-            return { type: "Subexpression", children: [left, right] };
-          } else {
-            this._advance();
-            right = this._parseProjectionRHS(rbp);
-            return { type: "ValueProjection", children: [left, right] };
+          const rbp = bindingPower.Dot;
+          if (this.lookahead(0) !== TOK_STAR) {
+            right = this.parseDotRHS(rbp);
+            return { type: 'Subexpression', children: [left, right] };
           }
+          this.advance();
+          right = this.parseProjectionRHS(rbp);
+          return { type: 'ValueProjection', children: [left, right] };
+
         case TOK_PIPE:
           right = this.expression(bindingPower.Pipe);
           return { type: TOK_PIPE, children: [left, right] };
         case TOK_OR:
           right = this.expression(bindingPower.Or);
-          return { type: "OrExpression", children: [left, right] };
+          return { type: 'OrExpression', children: [left, right] };
         case TOK_AND:
           right = this.expression(bindingPower.And);
-          return { type: "AndExpression", children: [left, right] };
+          return { type: 'AndExpression', children: [left, right] };
         case TOK_LPAREN:
-          var name = left.name;
-          var args = [];
-          var expression, node;
-          while (this._lookahead(0) !== TOK_RPAREN) {
-            if (this._lookahead(0) === TOK_CURRENT) {
+          const name = left.name;
+          const args = [];
+          let expression;
+          let node;
+          while (this.lookahead(0) !== TOK_RPAREN) {
+            if (this.lookahead(0) === TOK_CURRENT) {
               expression = { type: TOK_CURRENT };
-              this._advance();
+              this.advance();
             } else {
               expression = this.expression(0);
             }
-            if (this._lookahead(0) === TOK_COMMA) {
-              this._match(TOK_COMMA);
+            if (this.lookahead(0) === TOK_COMMA) {
+              this.match(TOK_COMMA);
             }
             args.push(expression);
           }
-          this._match(TOK_RPAREN);
-          node = { type: "Function", name: name, children: args };
+          this.match(TOK_RPAREN);
+          node = { name, type: 'Function', children: args };
           return node;
         case TOK_FILTER:
-          var condition = this.expression(0);
-          this._match(TOK_RBRACKET);
-          if (this._lookahead(0) === TOK_FLATTEN) {
-            right = { type: "Identity" };
-          } else {
-            right = this._parseProjectionRHS(bindingPower.Filter);
-          }
-          return { type: "FilterProjection", children: [left, right, condition] };
+          const condition = this.expression(0);
+          this.match(TOK_RBRACKET);
+          right =
+            (this.lookahead(0) === TOK_FLATTEN && { type: 'Identity' }) || this.parseProjectionRHS(bindingPower.Filter);
+          return { type: 'FilterProjection', children: [left, right, condition] };
         case TOK_FLATTEN:
-          var leftNode = { type: TOK_FLATTEN, children: [left] };
-          var rightNode = this._parseProjectionRHS(bindingPower.Flatten);
-          return { type: "Projection", children: [leftNode, rightNode] };
+          const leftNode = { type: TOK_FLATTEN, children: [left] };
+          const rightNode = this.parseProjectionRHS(bindingPower.Flatten);
+          return { type: 'Projection', children: [leftNode, rightNode] };
         case TOK_EQ:
         case TOK_NE:
         case TOK_GT:
         case TOK_GTE:
         case TOK_LT:
         case TOK_LTE:
-          return this._parseComparator(left, tokenName);
+          return this.parseComparator(left, tokenName);
         case TOK_LBRACKET:
-          var token = this._lookaheadToken(0);
+          const token = this.lookaheadToken(0);
           if (token.type === TOK_NUMBER || token.type === TOK_COLON) {
-            right = this._parseIndexExpression();
-            return this._projectIfSlice(left, right);
-          } else {
-            this._match(TOK_STAR);
-            this._match(TOK_RBRACKET);
-            right = this._parseProjectionRHS(bindingPower.Star);
-            return { type: "Projection", children: [left, right] };
+            right = this.parseIndexExpression();
+            return this.projectIfSlice(left, right);
           }
+          this.match(TOK_STAR);
+          this.match(TOK_RBRACKET);
+          right = this.parseProjectionRHS(bindingPower.Star);
+          return { type: 'Projection', children: [left, right] };
+
         default:
-          this._errorToken(this._lookaheadToken(0));
+          this.errorToken(this.lookaheadToken(0));
       }
     }
 
-    _match(tokenType: any) {
-      if (this._lookahead(0) === tokenType) {
-        this._advance();
+    private match(tokenType: any) {
+      if (this.lookahead(0) === tokenType) {
+        this.advance();
       } else {
-        var t = this._lookaheadToken(0);
-        var error = new Error("Expected " + tokenType + ", got: " + t.type);
-        error.name = "ParserError";
+        const token = this.lookaheadToken(0);
+        const error = new Error(`Expected ${tokenType}, got: ${token.type}`);
+        error.name = 'ParserError';
         throw error;
       }
     }
 
-    _errorToken(token: any) {
-      var error = new Error("Invalid token (" +
-        token.type + "): \"" +
-        token.value + "\"");
-      error.name = "ParserError";
+    private errorToken(token: any) {
+      const error = new Error(`Invalid token (${token.type}): "${token.value}"`);
+      error.name = 'ParserError';
       throw error;
     }
 
-
-    _parseIndexExpression() {
-      if (this._lookahead(0) === TOK_COLON || this._lookahead(1) === TOK_COLON) {
-        return this._parseSliceExpression();
-      } else {
-        var node = {
-          type: "Index",
-          value: this._lookaheadToken(0).value
+    private parseIndexExpression() {
+      if (this.lookahead(0) === TOK_COLON || this.lookahead(1) === TOK_COLON) {
+        return this.parseSliceExpression();
+      }
+      {
+        const node = {
+          type: 'Index',
+          value: this.lookaheadToken(0).value,
         };
-        this._advance();
-        this._match(TOK_RBRACKET);
+        this.advance();
+        this.match(TOK_RBRACKET);
         return node;
       }
     }
 
-    _projectIfSlice(left: any, right: any) {
-      var indexExpr = { type: "IndexExpression", children: [left, right] };
-      if (right.type === "Slice") {
+    private projectIfSlice(left: any, right: any) {
+      const indexExpr = { type: 'IndexExpression', children: [left, right] };
+      if (right.type === 'Slice') {
         return {
-          type: "Projection",
-          children: [indexExpr, this._parseProjectionRHS(bindingPower.Star)]
+          children: [indexExpr, this.parseProjectionRHS(bindingPower.Star)],
+          type: 'Projection',
         };
-      } else {
-        return indexExpr;
       }
+      return indexExpr;
     }
 
-    _parseSliceExpression() {
-      var parts = [null, null, null];
-      var index = 0;
-      var currentToken = this._lookahead(0);
-      while (currentToken !== TOK_RBRACKET && index < 3) {
-        if (currentToken === TOK_COLON) {
-          index++;
-          this._advance();
-        } else if (currentToken === TOK_NUMBER) {
-          parts[index] = this._lookaheadToken(0).value;
-          this._advance();
+    private parseSliceExpression() {
+      const parts: (string | number | null)[] = [null, null, null];
+      let index = 0;
+      let currentTokenType = this.lookahead(0);
+      while (currentTokenType !== TOK_RBRACKET && index < 3) {
+        if (currentTokenType === TOK_COLON) {
+          index += 1;
+          this.advance();
+        } else if (currentTokenType === TOK_NUMBER) {
+          parts[index] = this.lookaheadToken(0).value;
+          this.advance();
         } else {
-          var t = this._lookahead(0);
-          var error = new Error("Syntax error, unexpected token: " +
-            t.value + "(" + t.type + ")");
-          error.name = "Parsererror";
+          const token = this.lookaheadToken(0);
+          const error = new Error(`Syntax error, unexpected token: ${token.value}(${token.type})`);
+          error.name = 'Parsererror';
           throw error;
         }
-        currentToken = this._lookahead(0);
+        currentTokenType = this.lookahead(0);
       }
-      this._match(TOK_RBRACKET);
+      this.match(TOK_RBRACKET);
       return {
-        type: "Slice",
-        children: parts
+        children: parts,
+        type: 'Slice',
       };
     }
 
-    _parseComparator(left: any, comparator: any) {
-      var right = this.expression(bindingPower[comparator]);
-      return { type: "Comparator", name: comparator, children: [left, right] };
+    private parseComparator(left: any, comparator: any) {
+      const right = this.expression(bindingPower[comparator]);
+      return { type: 'Comparator', name: comparator, children: [left, right] };
     }
 
-    _parseDotRHS(rbp: number) {
-      var lookahead = this._lookahead(0);
-      var exprTokens = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
+    private parseDotRHS(rbp: number) {
+      const lookahead = this.lookahead(0);
+      const exprTokens = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
       if (exprTokens.indexOf(lookahead) >= 0) {
         return this.expression(rbp);
-      } else if (lookahead === TOK_LBRACKET) {
-        this._match(TOK_LBRACKET);
-        return this._parseMultiselectList();
-      } else if (lookahead === TOK_LBRACE) {
-        this._match(TOK_LBRACE);
-        return this._parseMultiselectHash();
+      }
+      if (lookahead === TOK_LBRACKET) {
+        this.match(TOK_LBRACKET);
+        return this.parseMultiselectList();
+      }
+      if (lookahead === TOK_LBRACE) {
+        this.match(TOK_LBRACE);
+        return this.parseMultiselectHash();
       }
     }
 
-    _parseProjectionRHS(rbp: number) {
-      var right;
-      if (bindingPower[this._lookahead(0)] < 10) {
-        right = { type: "Identity" };
-      } else if (this._lookahead(0) === TOK_LBRACKET) {
+    private parseProjectionRHS(rbp: number) {
+      let right;
+      if (bindingPower[this.lookahead(0)] < 10) {
+        right = { type: 'Identity' };
+      } else if (this.lookahead(0) === TOK_LBRACKET) {
         right = this.expression(rbp);
-      } else if (this._lookahead(0) === TOK_FILTER) {
+      } else if (this.lookahead(0) === TOK_FILTER) {
         right = this.expression(rbp);
-      } else if (this._lookahead(0) === TOK_DOT) {
-        this._match(TOK_DOT);
-        right = this._parseDotRHS(rbp);
+      } else if (this.lookahead(0) === TOK_DOT) {
+        this.match(TOK_DOT);
+        right = this.parseDotRHS(rbp);
       } else {
-        var t = this._lookaheadToken(0);
-        var error = new Error("Sytanx error, unexpected token: " +
-          t.value + "(" + t.type + ")");
-        error.name = "ParserError";
+        const token = this.lookaheadToken(0);
+        const error = new Error(`Sytanx error, unexpected token: ${token.value}(${token.type})`);
+        error.name = 'ParserError';
         throw error;
       }
       return right;
     }
 
-    _parseMultiselectList() {
-      var expressions = [];
-      while (this._lookahead(0) !== TOK_RBRACKET) {
-        var expression = this.expression(0);
+    private parseMultiselectList() {
+      const expressions = [];
+      while (this.lookahead(0) !== TOK_RBRACKET) {
+        const expression = this.expression(0);
         expressions.push(expression);
-        if (this._lookahead(0) === TOK_COMMA) {
-          this._match(TOK_COMMA);
-          if (this._lookahead(0) === TOK_RBRACKET) {
-            throw new Error("Unexpected token Rbracket");
+        if (this.lookahead(0) === TOK_COMMA) {
+          this.match(TOK_COMMA);
+          if (this.lookahead(0) === TOK_RBRACKET) {
+            throw new Error('Unexpected token Rbracket');
           }
         }
       }
-      this._match(TOK_RBRACKET);
-      return { type: "MultiSelectList", children: expressions };
+      this.match(TOK_RBRACKET);
+      return { type: 'MultiSelectList', children: expressions };
     }
 
-    _parseMultiselectHash() {
-      var pairs = [];
-      var identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
-      var keyToken, keyName, value, node;
+    private parseMultiselectHash() {
+      const pairs = [];
+      const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
+      let keyToken;
+      let keyName;
+      let value;
+      let node;
+      // tslint:disable-next-line: prettier
       for (; ;) {
-        keyToken = this._lookaheadToken(0);
+        keyToken = this.lookaheadToken(0);
         if (identifierTypes.indexOf(keyToken.type) < 0) {
-          throw new Error("Expecting an identifier token, got: " +
-            keyToken.type);
+          throw new Error(`Expecting an identifier token, got: ${keyToken.type}`);
         }
         keyName = keyToken.value;
-        this._advance();
-        this._match(TOK_COLON);
+        this.advance();
+        this.match(TOK_COLON);
         value = this.expression(0);
-        node = { type: "KeyValuePair", name: keyName, value: value };
+        node = { value, type: 'KeyValuePair', name: keyName };
         pairs.push(node);
-        if (this._lookahead(0) === TOK_COMMA) {
-          this._match(TOK_COMMA);
-        } else if (this._lookahead(0) === TOK_RBRACE) {
-          this._match(TOK_RBRACE);
+        if (this.lookahead(0) === TOK_COMMA) {
+          this.match(TOK_COMMA);
+        } else if (this.lookahead(0) === TOK_RBRACE) {
+          this.match(TOK_RBRACE);
           break;
         }
       }
-      return { type: "MultiSelectHash", children: pairs };
+      return { type: 'MultiSelectHash', children: pairs };
     }
-  };
-
+  }
 
   class TreeInterpreter {
-
     runtime: any;
 
     constructor(runtime: any) {
@@ -836,39 +808,48 @@ export const jmespath = async (path: string, json: any) => {
     }
 
     visit(node: any, value: any): any {
-      var matched, current, result, first, second, field, left, right, collected, i;
+      let matched;
+      let current;
+      let result;
+      let first;
+      let second;
+      let field;
+      let left;
+      let right;
+      let collected;
+      let i;
+      let base;
       switch (node.type) {
-        case "Field":
+        case 'Field':
           if (value === null) {
             return null;
-          } else if (isObject(value)) {
+          }
+          if (isObject(value)) {
             field = value[node.name];
             if (field === undefined) {
               return null;
-            } else {
-              return field;
             }
-          } else {
-            return null;
+            return field;
           }
-        case "Subexpression":
+          return null;
+        case 'Subexpression':
           result = this.visit(node.children[0], value);
-          for (i = 1; i < node.children.length; i++) {
+          for (i = 1; i < node.children.length; i += 1) {
             result = this.visit(node.children[1], result);
             if (result === null) {
               return null;
             }
           }
           return result;
-        case "IndexExpression":
+        case 'IndexExpression':
           left = this.visit(node.children[0], value);
           right = this.visit(node.children[1], left);
           return right;
-        case "Index":
-          if (!isArray(value)) {
+        case 'Index':
+          if (!Array.isArray(value)) {
             return null;
           }
-          var index = node.value;
+          let index = node.value;
           if (index < 0) {
             index = value.length + index;
           }
@@ -877,15 +858,15 @@ export const jmespath = async (path: string, json: any) => {
             result = null;
           }
           return result;
-        case "Slice":
-          if (!isArray(value)) {
+        case 'Slice':
+          if (!Array.isArray(value)) {
             return null;
           }
-          var sliceParams = node.children.slice(0);
-          var computed = this.computeSliceParams(value.length, sliceParams);
-          var start = computed[0];
-          var stop = computed[1];
-          var step = computed[2];
+          const sliceParams = node.children.slice(0);
+          const computed = this.computeSliceParams(value.length, sliceParams);
+          const start = computed[0];
+          const stop = computed[1];
+          const step = computed[2];
           result = [];
           if (start === null || stop === null || step === null) return;
           if (step > 0) {
@@ -898,54 +879,54 @@ export const jmespath = async (path: string, json: any) => {
             }
           }
           return result;
-        case "Projection":
-          var base = this.visit(node.children[0], value);
-          if (!isArray(base)) {
+        case 'Projection':
+          base = this.visit(node.children[0], value);
+          if (!Array.isArray(base)) {
             return null;
           }
           collected = [];
-          for (i = 0; i < base.length; i++) {
+          for (i = 0; i < base.length; i += 1) {
             current = this.visit(node.children[1], base[i]);
             if (current !== null) {
               collected.push(current);
             }
           }
           return collected;
-        case "ValueProjection":
+        case 'ValueProjection':
           base = this.visit(node.children[0], value);
           if (!isObject(base)) {
             return null;
           }
           collected = [];
-          var values = objValues(base);
-          for (i = 0; i < values.length; i++) {
+          const values = objValues(base);
+          for (i = 0; i < values.length; i += 1) {
             current = this.visit(node.children[1], values[i]);
             if (current !== null) {
               collected.push(current);
             }
           }
           return collected;
-        case "FilterProjection":
+        case 'FilterProjection':
           base = this.visit(node.children[0], value);
-          if (!isArray(base)) {
+          if (!Array.isArray(base)) {
             return null;
           }
-          var filtered = [];
-          var finalResults = [];
-          for (i = 0; i < base.length; i++) {
+          const filtered = [];
+          const finalResults = [];
+          for (i = 0; i < base.length; i += 1) {
             matched = this.visit(node.children[2], base[i]);
             if (!isFalse(matched)) {
               filtered.push(base[i]);
             }
           }
-          for (var j = 0; j < filtered.length; j++) {
+          for (let j = 0; j < filtered.length; j += 1) {
             current = this.visit(node.children[1], filtered[j]);
             if (current !== null) {
               finalResults.push(current);
             }
           }
           return finalResults;
-        case "Comparator":
+        case 'Comparator':
           first = this.visit(node.children[0], value);
           second = this.visit(node.children[1], value);
           switch (node.name) {
@@ -968,128 +949,116 @@ export const jmespath = async (path: string, json: any) => {
               result = first <= second;
               break;
             default:
-              throw new Error("Unknown comparator: " + node.name);
+              throw new Error(`Unknown comparator: ${node.name}`);
           }
           return result;
         case TOK_FLATTEN:
-          var original = this.visit(node.children[0], value);
-          if (!isArray(original)) {
+          const original = this.visit(node.children[0], value);
+          if (!Array.isArray(original)) {
             return null;
           }
-          var merged = [];
-          for (i = 0; i < original.length; i++) {
+          const merged = [];
+          for (i = 0; i < original.length; i += 1) {
             current = original[i];
-            if (isArray(current)) {
+            if (Array.isArray(current)) {
               merged.push.apply(merged, current);
             } else {
               merged.push(current);
             }
           }
           return merged;
-        case "Identity":
+        case 'Identity':
           return value;
-        case "MultiSelectList":
+        case 'MultiSelectList':
           if (value === null) {
             return null;
           }
           collected = [];
-          for (i = 0; i < node.children.length; i++) {
+          for (i = 0; i < node.children.length; i += 1) {
             collected.push(this.visit(node.children[i], value));
           }
           return collected;
-        case "MultiSelectHash":
+        case 'MultiSelectHash':
           if (value === null) {
             return null;
           }
           collected = {};
-          var child;
-          for (i = 0; i < node.children.length; i++) {
+          let child;
+          for (i = 0; i < node.children.length; i += 1) {
             child = node.children[i];
             collected[child.name] = this.visit(child.value, value);
           }
           return collected;
-        case "OrExpression":
+        case 'OrExpression':
           matched = this.visit(node.children[0], value);
           if (isFalse(matched)) {
             matched = this.visit(node.children[1], value);
           }
           return matched;
-        case "AndExpression":
+        case 'AndExpression':
           first = this.visit(node.children[0], value);
 
-          if (isFalse(first) === true) {
+          if (isFalse(first)) {
             return first;
           }
           return this.visit(node.children[1], value);
-        case "NotExpression":
+        case 'NotExpression':
           first = this.visit(node.children[0], value);
           return isFalse(first);
-        case "Literal":
+        case 'Literal':
           return node.value;
         case TOK_PIPE:
           left = this.visit(node.children[0], value);
           return this.visit(node.children[1], left);
         case TOK_CURRENT:
           return value;
-        case "Function":
-          var resolvedArgs = [];
-          for (i = 0; i < node.children.length; i++) {
-            resolvedArgs.push(this.visit(node.children[i], value));
+        case 'Function':
+          const resolvedArgs = [];
+          for (let j = 0; j < node.children.length; j += 1) {
+            resolvedArgs.push(this.visit(node.children[j], value));
           }
           return this.runtime.callFunction(node.name, resolvedArgs);
-        case "ExpressionReference":
-          var refNode = node.children[0];
+        case 'ExpressionReference':
+          const refNode = node.children[0];
           refNode.jmespathType = TOK_EXPREF;
           return refNode;
         default:
-          throw new Error("Unknown node type: " + node.type);
+          throw new Error(`Unknown node type: ${node.type}`);
       }
     }
 
-    computeSliceParams(arrayLength: number, sliceParams: number[]) {
-      var start = sliceParams[0];
-      var stop = sliceParams[1];
-      var step = sliceParams[2];
-      var computed: (number | null)[] = [null, null, null];
+    computeSliceParams(arrayLength: number, sliceParams: number[]): (number | null)[] {
+      let start = sliceParams[0];
+      let stop = sliceParams[1];
+      let step = sliceParams[2];
       if (step === null) {
         step = 1;
       } else if (step === 0) {
-        var error = new Error("Invalid slice, step cannot be 0");
-        error.name = "RuntimeError";
+        const error = new Error('Invalid slice, step cannot be 0');
+        error.name = 'RuntimeError';
         throw error;
       }
-      var stepValueNegative = step < 0 ? true : false;
+      const stepValueNegative = step < 0 ? true : false;
+      start =
+        (start === null && (stepValueNegative ? arrayLength - 1 : 0)) || this.capSliceRange(arrayLength, start, step);
+      stop = (stop === null && (stepValueNegative ? -1 : arrayLength)) || this.capSliceRange(arrayLength, stop, step);
 
-      if (start === null) {
-        start = stepValueNegative ? arrayLength - 1 : 0;
-      } else {
-        start = this.capSliceRange(arrayLength, start, step);
-      }
-
-      if (stop === null) {
-        stop = stepValueNegative ? -1 : arrayLength;
-      } else {
-        stop = this.capSliceRange(arrayLength, stop, step);
-      }
-      computed[0] = start;
-      computed[1] = stop;
-      computed[2] = step;
-      return computed;
+      return [start, stop, step];
     }
 
-    capSliceRange(arrayLength: number, actualValue: number, step: number) {
-      if (actualValue < 0) {
-        actualValue += arrayLength;
-        if (actualValue < 0) {
-          actualValue = step < 0 ? -1 : 0;
+    capSliceRange(arrayLength: number, actualValue: number, step: number): number {
+      let nextActualValue = actualValue;
+      if (nextActualValue < 0) {
+        nextActualValue += arrayLength;
+        if (nextActualValue < 0) {
+          nextActualValue = step < 0 ? -1 : 0;
         }
-      } else if (actualValue >= arrayLength) {
-        actualValue = step < 0 ? arrayLength - 1 : arrayLength;
+      } else if (nextActualValue >= arrayLength) {
+        nextActualValue = step < 0 ? arrayLength - 1 : arrayLength;
       }
-      return actualValue;
+      return nextActualValue;
     }
-
-  };
+  }
 
   class Runtime {
     _interpreter?: TreeInterpreter;
@@ -1098,114 +1067,115 @@ export const jmespath = async (path: string, json: any) => {
       this._interpreter = interpreter;
     }
 
-    functionTable = {
-      abs: { _func: this._functionAbs, _signature: [{ types: [TYPE_NUMBER] }] },
-      avg: { _func: this._functionAvg, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
-      ceil: { _func: this._functionCeil, _signature: [{ types: [TYPE_NUMBER] }] },
+    private functionTable = {
+      abs: { _func: this.functionAbs, _signature: [{ types: [TYPE_NUMBER] }] },
+      avg: { _func: this.functionAvg, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
+      ceil: { _func: this.functionCeil, _signature: [{ types: [TYPE_NUMBER] }] },
       contains: {
-        _func: this._functionContains,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] },
-        { types: [TYPE_ANY] }]
+        _func: this.functionContains,
+        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }, { types: [TYPE_ANY] }],
       },
-      "ends_with": {
-        _func: this._functionEndsWith,
-        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }]
+      ends_with: {
+        _func: this.functionEndsWith,
+        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
       },
-      floor: { _func: this._functionFloor, _signature: [{ types: [TYPE_NUMBER] }] },
+      floor: { _func: this.functionFloor, _signature: [{ types: [TYPE_NUMBER] }] },
+      join: {
+        _func: this.functionJoin,
+        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_ARRAY_STRING] }],
+      },
+      keys: { _func: this.functionKeys, _signature: [{ types: [TYPE_OBJECT] }] },
       length: {
-        _func: this._functionLength,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }]
+        _func: this.functionLength,
+        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
       },
       map: {
-        _func: this._functionMap,
-        _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }]
+        _func: this.functionMap,
+        _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
       },
       max: {
-        _func: this._functionMax,
-        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }]
+        _func: this.functionMax,
+        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
       },
-      "merge": {
-        _func: this._functionMerge,
-        _signature: [{ types: [TYPE_OBJECT], variadic: true }]
+      max_by: {
+        _func: this.functionMaxBy,
+        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
       },
-      "max_by": {
-        _func: this._functionMaxBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }]
-      },
-      sum: { _func: this._functionSum, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
-      "starts_with": {
-        _func: this._functionStartsWith,
-        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }]
+      merge: {
+        _func: this.functionMerge,
+        _signature: [{ types: [TYPE_OBJECT], variadic: true }],
       },
       min: {
-        _func: this._functionMin,
-        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }]
+        _func: this.functionMin,
+        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
       },
-      "min_by": {
-        _func: this._functionMinBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }]
+      min_by: {
+        _func: this.functionMinBy,
+        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
       },
-      type: { _func: this._functionType, _signature: [{ types: [TYPE_ANY] }] },
-      keys: { _func: this._functionKeys, _signature: [{ types: [TYPE_OBJECT] }] },
-      values: { _func: this._functionValues, _signature: [{ types: [TYPE_OBJECT] }] },
-      sort: { _func: this._functionSort, _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }] },
-      "sort_by": {
-        _func: this._functionSortBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }]
-      },
-      join: {
-        _func: this._functionJoin,
-        _signature: [
-          { types: [TYPE_STRING] },
-          { types: [TYPE_ARRAY_STRING] }
-        ]
+      not_null: {
+        _func: this.functionNotNull,
+        _signature: [{ types: [TYPE_ANY], variadic: true }],
       },
       reverse: {
-        _func: this._functionReverse,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }]
+        _func: this.functionReverse,
+        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }],
       },
-      "to_array": { _func: this._functionToArray, _signature: [{ types: [TYPE_ANY] }] },
-      "to_string": { _func: this._functionToString, _signature: [{ types: [TYPE_ANY] }] },
-      "to_number": { _func: this._functionToNumber, _signature: [{ types: [TYPE_ANY] }] },
-      "not_null": {
-        _func: this._functionNotNull,
-        _signature: [{ types: [TYPE_ANY], variadic: true }]
-      }
+      sort: { _func: this.functionSort, _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }] },
+      sort_by: {
+        _func: this.functionSortBy,
+        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
+      },
+      starts_with: {
+        _func: this.functionStartsWith,
+        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
+      },
+      sum: { _func: this.functionSum, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
+      to_array: { _func: this.functionToArray, _signature: [{ types: [TYPE_ANY] }] },
+      to_number: { _func: this.functionToNumber, _signature: [{ types: [TYPE_ANY] }] },
+      to_string: { _func: this.functionToString, _signature: [{ types: [TYPE_ANY] }] },
+      type: { _func: this.functionType, _signature: [{ types: [TYPE_ANY] }] },
+      values: { _func: this.functionValues, _signature: [{ types: [TYPE_OBJECT] }] },
+    };
+
+    registerFunction(
+      name: string,
+      functionGenerator: (ctx: any) => { _func: (...args: any[]) => any; _signature: any },
+    ) {
+      this.functionTable[name] = functionGenerator(this);
     }
 
     callFunction(name: string, resolvedArgs: any) {
-      var functionEntry = this.functionTable[name];
+      const functionEntry = this.functionTable[name];
       if (functionEntry === undefined) {
-        throw new Error("Unknown function: " + name + "()");
+        throw new Error(`Unknown function: ${name}()`);
       }
-      this._validateArgs(name, resolvedArgs, functionEntry._signature);
+      this.validateArgs(name, resolvedArgs, functionEntry._signature);
       return functionEntry._func.call(this, resolvedArgs);
     }
 
-    _validateArgs(name: string, args: any[], signature: any[]) {
-      var pluralized;
+    private validateArgs(name: string, args: any[], signature: any[]) {
+      let pluralized;
       if (signature[signature.length - 1].variadic) {
         if (args.length < signature.length) {
-          pluralized = signature.length === 1 ? " argument" : " arguments";
-          throw new Error("ArgumentError: " + name + "() " +
-            "takes at least" + signature.length + pluralized +
-            " but received " + args.length);
+          pluralized = signature.length === 1 ? ' argument' : ' arguments';
+          throw new Error(
+            `ArgumentError: ${name}() takes at least ${signature.length} ${pluralized} but received ${args.length}`,
+          );
         }
       } else if (args.length !== signature.length) {
-        pluralized = signature.length === 1 ? " argument" : " arguments";
-        throw new Error("ArgumentError: " + name + "() " +
-          "takes " + signature.length + pluralized +
-          " but received " + args.length);
+        pluralized = signature.length === 1 ? ' argument' : ' arguments';
+        throw new Error(`ArgumentError: ${name}() takes ${signature.length} ${pluralized} but received ${args.length}`);
       }
-      var currentSpec;
-      var actualType;
-      var typeMatched;
-      for (var i = 0; i < signature.length; i++) {
+      let currentSpec;
+      let actualType;
+      let typeMatched;
+      for (let i = 0; i < signature.length; i += 1) {
         typeMatched = false;
         currentSpec = signature[i].types;
-        actualType = this._getTypeName(args[i]);
-        for (var j = 0; j < currentSpec.length; j++) {
-          if (actualType !== undefined && this._typeMatches(actualType, currentSpec[j], args[i])) {
+        actualType = this.getTypeName(args[i]);
+        for (let j = 0; j < currentSpec.length; j += 1) {
+          if (actualType !== undefined && this.typeMatches(actualType, currentSpec[j], args[i])) {
             typeMatched = true;
             break;
           }
@@ -1213,33 +1183,32 @@ export const jmespath = async (path: string, json: any) => {
         if (!typeMatched) {
           throw new Error(`
           TypeError: ${name}()
-            expected argument ${ (i + 1)} to be type ${currentSpec}(${
-            typesAsString[currentSpec]}) but received type ${actualType}(${
-            actualType && typesAsString[actualType] || 'UNDEFINED'}) instead.`);
+            expected argument ${i + 1} to be type ${currentSpec}(${
+            typesAsString[currentSpec]
+            // tslint:disable-next-line: prettier
+            }) but received type ${actualType}(${(actualType && typesAsString[actualType]) || 'UNDEFINED'}) instead.`);
         }
       }
     }
 
-    _typeMatches(actual: number, expected: number, argValue: any[]) {
+    private typeMatches(actual: number, expected: number, argValue: any[]) {
       if (expected === TYPE_ANY) {
         return true;
       }
-      if (expected === TYPE_ARRAY_STRING ||
-        expected === TYPE_ARRAY_NUMBER ||
-        expected === TYPE_ARRAY) {
+      if (expected === TYPE_ARRAY_STRING || expected === TYPE_ARRAY_NUMBER || expected === TYPE_ARRAY) {
         if (expected === TYPE_ARRAY) {
           return actual === TYPE_ARRAY;
-        } else if (actual === TYPE_ARRAY) {
-          var subtype;
+        }
+        if (actual === TYPE_ARRAY) {
+          let subtype;
           if (expected === TYPE_ARRAY_NUMBER) {
             subtype = TYPE_NUMBER;
           } else if (expected === TYPE_ARRAY_STRING) {
             subtype = TYPE_STRING;
           }
-          for (var i = 0; i < argValue.length; i++) {
-            const typeName = this._getTypeName(argValue[i]);
-            if (typeName !== undefined && subtype !== undefined && !this._typeMatches(
-              typeName, subtype, argValue[i])) {
+          for (let i = 0; i < argValue.length; i += 1) {
+            const typeName = this.getTypeName(argValue[i]);
+            if (typeName !== undefined && subtype !== undefined && !this.typeMatches(typeName, subtype, argValue[i])) {
               return false;
             }
           }
@@ -1248,225 +1217,224 @@ export const jmespath = async (path: string, json: any) => {
       } else {
         return actual === expected;
       }
-      return false
+      return false;
     }
-    _getTypeName(obj: any) {
+    private getTypeName(obj: any) {
       switch (Object.prototype.toString.call(obj)) {
-        case "[object String]":
+        case '[object String]':
           return TYPE_STRING;
-        case "[object Number]":
+        case '[object Number]':
           return TYPE_NUMBER;
-        case "[object Array]":
+        case '[object Array]':
           return TYPE_ARRAY;
-        case "[object Boolean]":
+        case '[object Boolean]':
           return TYPE_BOOLEAN;
-        case "[object Null]":
+        case '[object Null]':
           return TYPE_NULL;
-        case "[object Object]":
+        case '[object Object]':
           if (obj.jmespathType === TOK_EXPREF) {
             return TYPE_EXPREF;
-          } else {
-            return TYPE_OBJECT;
           }
+          return TYPE_OBJECT;
+
         default:
           return;
       }
     }
 
-    _functionStartsWith(resolvedArgs: any[]) {
+    private functionStartsWith(resolvedArgs: any[]) {
       return resolvedArgs[0].lastIndexOf(resolvedArgs[1]) === 0;
     }
 
-    _functionEndsWith(resolvedArgs: any[]) {
-      var searchStr = resolvedArgs[0];
-      var suffix = resolvedArgs[1];
+    private functionEndsWith(resolvedArgs: any[]) {
+      const searchStr = resolvedArgs[0];
+      const suffix = resolvedArgs[1];
       return searchStr.indexOf(suffix, searchStr.length - suffix.length) !== -1;
     }
 
-    _functionReverse(resolvedArgs: any[]) {
-      var typeName = this._getTypeName(resolvedArgs[0]);
+    private functionReverse(resolvedArgs: any[]) {
+      const typeName = this.getTypeName(resolvedArgs[0]);
       if (typeName === TYPE_STRING) {
-        var originalStr = resolvedArgs[0];
-        var reversedStr = "";
-        for (var i = originalStr.length - 1; i >= 0; i--) {
+        const originalStr = resolvedArgs[0];
+        let reversedStr = '';
+        for (let i = originalStr.length - 1; i >= 0; i -= 1) {
           reversedStr += originalStr[i];
         }
         return reversedStr;
-      } else {
-        var reversedArray = resolvedArgs[0].slice(0);
+      }
+      {
+        const reversedArray = resolvedArgs[0].slice(0);
         reversedArray.reverse();
         return reversedArray;
       }
     }
 
-    _functionAbs(resolvedArgs: any[]) {
+    private functionAbs(resolvedArgs: any[]) {
       return Math.abs(resolvedArgs[0]);
     }
 
-    _functionCeil(resolvedArgs: any[]) {
+    private functionCeil(resolvedArgs: any[]) {
       return Math.ceil(resolvedArgs[0]);
     }
 
-    _functionAvg(resolvedArgs: any[]) {
-      var sum = 0;
-      var inputArray = resolvedArgs[0];
-      for (var i = 0; i < inputArray.length; i++) {
+    private functionAvg(resolvedArgs: any[]) {
+      let sum = 0;
+      const inputArray = resolvedArgs[0];
+      for (let i = 0; i < inputArray.length; i += 1) {
         sum += inputArray[i];
       }
       return sum / inputArray.length;
     }
 
-    _functionContains(resolvedArgs: any[]) {
+    private functionContains(resolvedArgs: any[]) {
       return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
     }
 
-    _functionFloor(resolvedArgs: any[]) {
+    private functionFloor(resolvedArgs: any[]) {
       return Math.floor(resolvedArgs[0]);
     }
 
-    _functionLength(resolvedArgs: any[]) {
+    private functionLength(resolvedArgs: any[]) {
       if (!isObject(resolvedArgs[0])) {
         return resolvedArgs[0].length;
-      } else {
-        return Object.keys(resolvedArgs[0]).length;
       }
+      return Object.keys(resolvedArgs[0]).length;
     }
 
-    _functionMap(resolvedArgs: any[]) {
+    private functionMap(resolvedArgs: any[]) {
       if (!this._interpreter) return [];
-      var mapped = [];
-      var interpreter = this._interpreter;
-      var exprefNode = resolvedArgs[0];
-      var elements = resolvedArgs[1];
-      for (var i = 0; i < elements.length; i++) {
+      const mapped = [];
+      const interpreter = this._interpreter;
+      const exprefNode = resolvedArgs[0];
+      const elements = resolvedArgs[1];
+      for (let i = 0; i < elements.length; i += 1) {
         mapped.push(interpreter.visit(exprefNode, elements[i]));
       }
       return mapped;
     }
 
-    _functionMerge(resolvedArgs: any[]) {
-      var merged = {};
-      for (var i = 0; i < resolvedArgs.length; i++) {
-        var current = resolvedArgs[i];
-        for (var key in current) {
+    private functionMerge(resolvedArgs: any[]) {
+      const merged = {};
+      for (let i = 0; i < resolvedArgs.length; i += 1) {
+        const current = resolvedArgs[i];
+        for (const key in current) {
           merged[key] = current[key];
         }
       }
       return merged;
     }
 
-    _functionMax(resolvedArgs: any[]) {
+    private functionMax(resolvedArgs: any[]) {
       if (resolvedArgs[0].length > 0) {
-        var typeName = this._getTypeName(resolvedArgs[0][0]);
+        const typeName = this.getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
           return Math.max.apply(Math, resolvedArgs[0]);
-        } else {
-          var elements = resolvedArgs[0];
-          var maxElement = elements[0];
-          for (var i = 1; i < elements.length; i++) {
+        }
+        {
+          const elements = resolvedArgs[0];
+          let maxElement = elements[0];
+          for (let i = 1; i < elements.length; i += 1) {
             if (maxElement.localeCompare(elements[i]) < 0) {
               maxElement = elements[i];
             }
           }
           return maxElement;
         }
-      } else {
-        return null;
       }
+      return null;
     }
 
-    _functionMin(resolvedArgs: any[]) {
+    private functionMin(resolvedArgs: any[]) {
       if (resolvedArgs[0].length > 0) {
-        var typeName = this._getTypeName(resolvedArgs[0][0]);
+        const typeName = this.getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
           return Math.min.apply(Math, resolvedArgs[0]);
-        } else {
-          var elements = resolvedArgs[0];
-          var minElement = elements[0];
-          for (var i = 1; i < elements.length; i++) {
+        }
+        {
+          const elements = resolvedArgs[0];
+          let minElement = elements[0];
+          for (let i = 1; i < elements.length; i += 1) {
             if (elements[i].localeCompare(minElement) < 0) {
               minElement = elements[i];
             }
           }
           return minElement;
         }
-      } else {
-        return null;
       }
+      return null;
     }
 
-    _functionSum(resolvedArgs: any[]) {
-      var sum = 0;
-      var listToSum = resolvedArgs[0];
-      for (var i = 0; i < listToSum.length; i++) {
+    private functionSum(resolvedArgs: any[]) {
+      let sum = 0;
+      const listToSum = resolvedArgs[0];
+      for (let i = 0; i < listToSum.length; i += 1) {
         sum += listToSum[i];
       }
       return sum;
     }
 
-    _functionType(resolvedArgs: any[]) {
-      switch (this._getTypeName(resolvedArgs[0])) {
+    private functionType(resolvedArgs: any[]) {
+      switch (this.getTypeName(resolvedArgs[0])) {
         case TYPE_NUMBER:
-          return "number";
+          return 'number';
         case TYPE_STRING:
-          return "string";
+          return 'string';
         case TYPE_ARRAY:
-          return "array";
+          return 'array';
         case TYPE_OBJECT:
-          return "object";
+          return 'object';
         case TYPE_BOOLEAN:
-          return "boolean";
+          return 'boolean';
         case TYPE_EXPREF:
-          return "expref";
+          return 'expref';
         case TYPE_NULL:
-          return "null";
+          return 'null';
         default:
           return;
       }
     }
 
-    _functionKeys(resolvedArgs: any[]) {
+    private functionKeys(resolvedArgs: any[]) {
       return Object.keys(resolvedArgs[0]);
     }
 
-    _functionValues(resolvedArgs: any[]) {
-      var obj = resolvedArgs[0];
-      var keys = Object.keys(obj);
-      var values = [];
-      for (var i = 0; i < keys.length; i++) {
+    private functionValues(resolvedArgs: any[]) {
+      const obj = resolvedArgs[0];
+      const keys = Object.keys(obj);
+      const values = [];
+      for (let i = 0; i < keys.length; i += 1) {
         values.push(obj[keys[i]]);
       }
       return values;
     }
 
-    _functionJoin(resolvedArgs: any[]) {
-      var joinChar = resolvedArgs[0];
-      var listJoin = resolvedArgs[1];
+    private functionJoin(resolvedArgs: any[]) {
+      const joinChar = resolvedArgs[0];
+      const listJoin = resolvedArgs[1];
       return listJoin.join(joinChar);
     }
 
-    _functionToArray(resolvedArgs: any[]) {
-      if (this._getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
+    private functionToArray(resolvedArgs: any[]) {
+      if (this.getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
         return resolvedArgs[0];
-      } else {
-        return [resolvedArgs[0]];
       }
+      return [resolvedArgs[0]];
     }
 
-    _functionToString(resolvedArgs: any[]) {
-      if (this._getTypeName(resolvedArgs[0]) === TYPE_STRING) {
+    private functionToString(resolvedArgs: any[]) {
+      if (this.getTypeName(resolvedArgs[0]) === TYPE_STRING) {
         return resolvedArgs[0];
-      } else {
-        return JSON.stringify(resolvedArgs[0]);
       }
+      return JSON.stringify(resolvedArgs[0]);
     }
 
-    _functionToNumber(resolvedArgs: any[]) {
-      var typeName = this._getTypeName(resolvedArgs[0]);
-      var convertedValue;
+    private functionToNumber(resolvedArgs: any[]) {
+      const typeName = this.getTypeName(resolvedArgs[0]);
+      let convertedValue;
       if (typeName === TYPE_NUMBER) {
         return resolvedArgs[0];
-      } else if (typeName === TYPE_STRING) {
+      }
+      if (typeName === TYPE_STRING) {
         convertedValue = +resolvedArgs[0];
         if (!isNaN(convertedValue)) {
           return convertedValue;
@@ -1475,73 +1443,67 @@ export const jmespath = async (path: string, json: any) => {
       return null;
     }
 
-    _functionNotNull(resolvedArgs: any[]) {
-      for (var i = 0; i < resolvedArgs.length; i++) {
-        if (this._getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
+    private functionNotNull(resolvedArgs: any[]) {
+      for (let i = 0; i < resolvedArgs.length; i += 1) {
+        if (this.getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
           return resolvedArgs[i];
         }
       }
       return null;
     }
 
-    _functionSort(resolvedArgs: any[]) {
-      var sortedArray = resolvedArgs[0].slice(0);
+    private functionSort(resolvedArgs: any[]) {
+      const sortedArray = resolvedArgs[0].slice(0);
       sortedArray.sort();
       return sortedArray;
     }
 
-    _functionSortBy(resolvedArgs: any[]) {
+    private functionSortBy(resolvedArgs: any[]) {
       if (!this._interpreter) return [];
-      var sortedArray = resolvedArgs[0].slice(0);
+      const sortedArray = resolvedArgs[0].slice(0);
       if (sortedArray.length === 0) {
         return sortedArray;
       }
-      var interpreter = this._interpreter;
-      var exprefNode = resolvedArgs[1];
-      var requiredType = this._getTypeName(
-        interpreter.visit(exprefNode, sortedArray[0]));
+      const interpreter = this._interpreter;
+      const exprefNode = resolvedArgs[1];
+      const requiredType = this.getTypeName(interpreter.visit(exprefNode, sortedArray[0]));
       if (requiredType !== undefined && [TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
-        throw new Error("TypeError");
+        throw new Error('TypeError');
       }
-      var that = this;
-      var decorated = [];
-      for (var i = 0; i < sortedArray.length; i++) {
+      const decorated = [];
+      for (let i = 0; i < sortedArray.length; i += 1) {
         decorated.push([i, sortedArray[i]]);
       }
-      decorated.sort(function (a, b) {
-        var exprA = interpreter.visit(exprefNode, a[1]);
-        var exprB = interpreter.visit(exprefNode, b[1]);
-        if (that._getTypeName(exprA) !== requiredType) {
-          throw new Error(
-            "TypeError: expected " + requiredType + ", received " +
-            that._getTypeName(exprA));
-        } else if (that._getTypeName(exprB) !== requiredType) {
-          throw new Error(
-            "TypeError: expected " + requiredType + ", received " +
-            that._getTypeName(exprB));
+      decorated.sort((a, b) => {
+        const exprA = interpreter.visit(exprefNode, a[1]);
+        const exprB = interpreter.visit(exprefNode, b[1]);
+        if (this.getTypeName(exprA) !== requiredType) {
+          throw new Error(`TypeError: expected ${requiredType}, received ${this.getTypeName(exprA)}`);
+        } else if (this.getTypeName(exprB) !== requiredType) {
+          throw new Error(`TypeError: expected ${requiredType}, received ${this.getTypeName(exprB)}`);
         }
         if (exprA > exprB) {
           return 1;
-        } else if (exprA < exprB) {
-          return -1;
-        } else {
-          return a[0] - b[0];
         }
+        if (exprA < exprB) {
+          return -1;
+        }
+        return a[0] - b[0];
       });
-      for (var j = 0; j < decorated.length; j++) {
+      for (let j = 0; j < decorated.length; j += 1) {
         sortedArray[j] = decorated[j][1];
       }
       return sortedArray;
     }
 
-    _functionMaxBy(resolvedArgs: any[]) {
-      var exprefNode = resolvedArgs[1];
-      var resolvedArray = resolvedArgs[0];
-      var keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-      var maxNumber = -Infinity;
-      var maxRecord;
-      var current;
-      for (var i = 0; i < resolvedArray.length; i++) {
+    private functionMaxBy(resolvedArgs: any[]) {
+      const exprefNode = resolvedArgs[1];
+      const resolvedArray = resolvedArgs[0];
+      const keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
+      let maxNumber = -Infinity;
+      let maxRecord;
+      let current;
+      for (let i = 0; i < resolvedArray.length; i += 1) {
         current = keyFunction && keyFunction(resolvedArray[i]);
         if (current > maxNumber) {
           maxNumber = current;
@@ -1551,14 +1513,14 @@ export const jmespath = async (path: string, json: any) => {
       return maxRecord;
     }
 
-    _functionMinBy(resolvedArgs: any[]) {
-      var exprefNode = resolvedArgs[1];
-      var resolvedArray = resolvedArgs[0];
-      var keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-      var minNumber = Infinity;
-      var minRecord;
-      var current;
-      for (var i = 0; i < resolvedArray.length; i++) {
+    private functionMinBy(resolvedArgs: any[]) {
+      const exprefNode = resolvedArgs[1];
+      const resolvedArray = resolvedArgs[0];
+      const keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
+      let minNumber = Infinity;
+      let minRecord;
+      let current;
+      for (let i = 0; i < resolvedArray.length; i += 1) {
         current = keyFunction && keyFunction(resolvedArray[i]);
         if (current < minNumber) {
           minNumber = current;
@@ -1570,40 +1532,48 @@ export const jmespath = async (path: string, json: any) => {
 
     createKeyFunction(exprefNode: any, allowedTypes: any) {
       if (!this._interpreter) return;
-      var that = this;
-      var interpreter = this._interpreter;
-      var keyFunc = function (x: any) {
-        var current = interpreter.visit(exprefNode, x);
-        if (allowedTypes.indexOf(that._getTypeName(current)) < 0) {
-          var msg = "TypeError: expected one of " + allowedTypes +
-            ", received " + that._getTypeName(current);
+      const interpreter = this._interpreter;
+      const keyFunc = (x: any) => {
+        const current = interpreter.visit(exprefNode, x);
+        if (allowedTypes.indexOf(this.getTypeName(current)) < 0) {
+          const msg = `TypeError: expected one of ${allowedTypes}, received ${this.getTypeName(current)}`;
           throw new Error(msg);
         }
         return current;
       };
       return keyFunc;
     }
+  }
 
-  };
-
-  // function compile(stream: any) {
-  //   var parser = new Parser();
-  //   var ast = parser.parse(stream);
+  // function compile(stream: string) {
+  //   const parser = new Parser();
+  //   const ast = parser.parse(stream);
   //   return ast;
   // }
 
-  // function tokenize(stream: any) {
-  //   var lexer = new Lexer();
+  // function tokenize(stream: string) {
+  //   const lexer = new Lexer();
   //   return lexer.tokenize(stream);
   // }
 
   function search(data: any, expression: string) {
-    var parser = new Parser();
-    var runtime = new Runtime();
-    var interpreter = new TreeInterpreter(runtime);
+    const parser = new Parser();
+    const runtime = new Runtime();
+
+    runtime.registerFunction('divide', () => ({
+      _func: (resolvedArgs: number[]) => {
+        const [divisor, dividend] = resolvedArgs;
+        return divisor / dividend;
+      },
+      _signature: [{ types: [TYPE_NUMBER] }, { types: [TYPE_NUMBER] }],
+    }));
+
+    const interpreter = new TreeInterpreter(runtime);
     runtime._interpreter = interpreter;
-    var node = parser.parse(expression);
+    const node = parser.parse(expression);
+    // console.info('WORKER::EXPRESSION', node, expression)
     return interpreter.search(node, data);
   }
+
   return search(json, path);
 };
