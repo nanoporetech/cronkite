@@ -10,6 +10,7 @@ export class CronkSimpleGrid {
   @Prop() data: any[] = [];
 
   render() {
+    if (!this.data.length) return;
     return (
       <table>
         <thead>

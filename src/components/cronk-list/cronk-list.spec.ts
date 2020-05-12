@@ -38,7 +38,7 @@ describe('cronk-list', () => {
       ];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-list>
-      <ul>
+      <ul class="unordered">
         <li>
           not the correct data
         </li>
@@ -70,7 +70,7 @@ describe('cronk-list', () => {
       rootEl.ordered = true;
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-list>
-      <ol>
+      <ol class="ordered">
         <li>
           not the correct data
         </li>
