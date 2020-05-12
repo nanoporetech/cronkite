@@ -1,5 +1,30 @@
 {
   "definitions": {
+    "streamConfig": {
+      "$id": "#/definitions/streamConfig",
+      "title": "Event listener configuration",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stream"
+      ],
+      "properties": {
+        "stream": {
+          "type": "string",
+          "pattern": "^\\w(.*)$"
+        },
+        "cache": {
+          "type": "number",
+          "minimum": 1,
+          "default": 1
+        },
+        "debounce": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        }
+      }
+    },
     "channel": {
       "$id": "#/definitions/channel",
       "type": "object",
@@ -67,13 +92,25 @@
         },
         "listen": {
           "$id": "#/definitions/component/properties/listen",
-          "type": "string",
           "title": "The Listen Schema",
           "minLength": 1,
           "examples": [
-            "mousemove"
+            "mousemove",
+            {
+              "stream": "mousemove",
+              "cache": 4,
+              "debounce": 100
+            }
           ],
-          "pattern": "^\\w(.*)$"
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\w(.*)$"
+            },
+            {
+              "$ref": "#/definitions/streamConfig"
+            }
+          ]
         },
         "style": {
           "$id": "#/definitions/component/properties/style",

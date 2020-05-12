@@ -10,30 +10,31 @@
     },
     {
       "element": "iframe",
-      "@src": "https://socket-io-chat.now.sh/",
+      "@src": "https://socketio-chat-h9jt.herokuapp.com/",
       "@name": "myiFrame",
       "@scrolling": "no",
       "@frameborder": "1",
       "@marginheight": "0px",
       "@marginwidth": "0px",
-      "@height": "400px",
-      "@width": "900px"
+      "@height": "300px",
+      "@width": "500px"
     },
     {
-      "element": "epi-headlinevalue",
-      "@label": {
-        "fn:jmespath": "username"
+      "element": "cronk-list",
+      "@bullets": false,
+      "@items": {
+        "fn:jmespath": "[].join('', ['<b style=\"font-size:1.5rem\">', @.username || '',':</b> ', @.message || '', '</b>'])"
       },
-      "@value": {
-        "fn:jmespath": "message"
-      },
-      "listen": "socketio:newmessage"
+      "listen": {
+        "stream": "socketio:newmessage",
+        "cache": 4
+      }
     }
   ],
   "streams": [
     {
       "element": "cronk-socketio-datastream",
-      "@url": "https://socket-io-chat.now.sh/",
+      "@url": "https://socketio-chat-h9jt.herokuapp.com/",
       "@channels": [
         {
           "channel": "socketio:newmessage",

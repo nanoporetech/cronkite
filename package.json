@@ -85,6 +85,7 @@
     "ajv": "6.12.2",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
+    "rxjs": "6.5.5",
     "socket.io-client": "2.3.0",
     "superstruct": "0.8.3",
     "uuid": "8.0.0"

@@ -1,5 +1,7 @@
 // tslint:disable: no-import-side-effect
 import { Component, h, Host, Prop, State } from '@stencil/core';
+import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { mapAttributesToProps } from '../../utils';
 
@@ -27,7 +29,8 @@ export class CronkPagePanel {
   @State() errorMessage?: any;
 
   panelEl?: string;
-  listeners: any[] = [];
+  listeners$?: Subscription;
+  streamCache?: ReplaySubject<any>;
 
   async updateCustomElProps(attributes: any, dataIn: any) {
     try {
@@ -40,11 +43,9 @@ export class CronkPagePanel {
     }
   }
 
-  eventHandler = async (event: CustomEvent): Promise<void> => {
-    console.debug(`Got event for <${this.panelConfig.element}>`, event);
-    let { detail } = event;
-    detail = detail || eventAsJSON(event);
-    await this.updateCustomElProps(this.customElAttrs, detail);
+  payloadHandler = async (payload: any): Promise<void> => {
+    console.info('PAYLOAD::', payload);
+    await this.updateCustomElProps(this.customElAttrs, payload);
   };
 
   async componentWillLoad() {
@@ -52,19 +53,36 @@ export class CronkPagePanel {
     const { element, listen, hidden, ...attributes } = this.panelConfig;
     this.panelEl = element;
     this.customElAttrs = attributes;
+    this.streamCache = new ReplaySubject<any>();
+    let payloadCache: any[] = [];
 
     if (listen) {
-      window.addEventListener(listen, this.eventHandler);
-      this.listeners.push({ listen, handle: this.eventHandler });
+      const { stream, debounce, cache: cacheSize } =
+        typeof listen !== 'string' ? listen : { stream: listen, debounce: 0, cache: 1 };
+
+      const eventObservable$ = fromEvent<Event | CustomEvent<any>>(window, stream);
+      this.listeners$ = eventObservable$
+        .pipe(
+          debounceTime(debounce),
+          tap((event: Event | CustomEvent) => console.debug(`Got event for <${this.panelConfig.element}>`, event)),
+          map((event: Event | CustomEvent) => {
+            const { detail } = event as CustomEvent;
+            return detail || eventAsJSON(event);
+          }),
+        )
+        .subscribe(payload => {
+          payloadCache = [payload, ...payloadCache.slice(0, cacheSize - 1)];
+          this.streamCache?.next(cacheSize === 1 ? payloadCache[0] : payloadCache);
+        });
+
+      this.listeners$.add(this.streamCache.subscribe(this.payloadHandler));
     } else {
       await this.updateCustomElProps(attributes, {}); // For components not attached to event streams
     }
   }
 
   async componentDidUnload() {
-    this.listeners.forEach(listener => {
-      window.removeEventListener(listener.event, listener.handler);
-    });
+    this.listeners$?.unsubscribe();
   }
 
   render() {
