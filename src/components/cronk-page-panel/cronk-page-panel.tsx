@@ -44,7 +44,6 @@ export class CronkPagePanel {
   }
 
   payloadHandler = async (payload: any): Promise<void> => {
-    console.info('PAYLOAD::', payload);
     await this.updateCustomElProps(this.customElAttrs, payload);
   };
 
