@@ -33,6 +33,12 @@ export namespace Components {
         "hideStats": boolean;
         "statsList": CronkDataTypes.IFunnelListItem[];
     }
+    interface CronkList {
+        "bullets": boolean;
+        "items": any[];
+        "ordered": boolean;
+        "reverse": boolean;
+    }
     interface CronkPage {
         "loadConfig": (newConfig: any) => Promise<void>;
         "pageConfig"?: CronkJSONTypes.ReportDefinition | undefined;
@@ -67,6 +73,11 @@ export namespace Components {
         "heading": string;
         "selectList": ISelectListMember[];
         "selector": any;
+    }
+    interface CronkSimpleGrid {
+        "data": any[];
+        "display": "grid" | "auto";
+        "headers": string[];
     }
     interface CronkSocketioDatastream {
         "acceptsFilters": boolean;
@@ -125,6 +136,12 @@ declare global {
         prototype: HTMLCronkFunnelElement;
         new (): HTMLCronkFunnelElement;
     };
+    interface HTMLCronkListElement extends Components.CronkList, HTMLStencilElement {
+    }
+    var HTMLCronkListElement: {
+        prototype: HTMLCronkListElement;
+        new (): HTMLCronkListElement;
+    };
     interface HTMLCronkPageElement extends Components.CronkPage, HTMLStencilElement {
     }
     var HTMLCronkPageElement: {
@@ -160,6 +177,12 @@ declare global {
     var HTMLCronkSelectorElement: {
         prototype: HTMLCronkSelectorElement;
         new (): HTMLCronkSelectorElement;
+    };
+    interface HTMLCronkSimpleGridElement extends Components.CronkSimpleGrid, HTMLStencilElement {
+    }
+    var HTMLCronkSimpleGridElement: {
+        prototype: HTMLCronkSimpleGridElement;
+        new (): HTMLCronkSimpleGridElement;
     };
     interface HTMLCronkSocketioDatastreamElement extends Components.CronkSocketioDatastream, HTMLStencilElement {
     }
@@ -197,12 +220,14 @@ declare global {
         "cronk-errormessage": HTMLCronkErrormessageElement;
         "cronk-event-stream": HTMLCronkEventStreamElement;
         "cronk-funnel": HTMLCronkFunnelElement;
+        "cronk-list": HTMLCronkListElement;
         "cronk-page": HTMLCronkPageElement;
         "cronk-page-components": HTMLCronkPageComponentsElement;
         "cronk-page-panel": HTMLCronkPagePanelElement;
         "cronk-poll-datastream": HTMLCronkPollDatastreamElement;
         "cronk-proportion-bar": HTMLCronkProportionBarElement;
         "cronk-selector": HTMLCronkSelectorElement;
+        "cronk-simple-grid": HTMLCronkSimpleGridElement;
         "cronk-socketio-datastream": HTMLCronkSocketioDatastreamElement;
         "cronk-statsbox": HTMLCronkStatsboxElement;
         "cronk-title": HTMLCronkTitleElement;
@@ -230,6 +255,12 @@ declare namespace LocalJSX {
         "hidePercent"?: boolean;
         "hideStats"?: boolean;
         "statsList"?: CronkDataTypes.IFunnelListItem[];
+    }
+    interface CronkList {
+        "bullets"?: boolean;
+        "items"?: any[];
+        "ordered"?: boolean;
+        "reverse"?: boolean;
     }
     interface CronkPage {
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
@@ -263,6 +294,11 @@ declare namespace LocalJSX {
         "selectList"?: ISelectListMember[];
         "selector"?: any;
     }
+    interface CronkSimpleGrid {
+        "data"?: any[];
+        "display"?: "grid" | "auto";
+        "headers"?: string[];
+    }
     interface CronkSocketioDatastream {
         "acceptsFilters"?: boolean;
         "channels"?: CronkDataStream.IChannelShape[];
@@ -293,12 +329,14 @@ declare namespace LocalJSX {
         "cronk-errormessage": CronkErrormessage;
         "cronk-event-stream": CronkEventStream;
         "cronk-funnel": CronkFunnel;
+        "cronk-list": CronkList;
         "cronk-page": CronkPage;
         "cronk-page-components": CronkPageComponents;
         "cronk-page-panel": CronkPagePanel;
         "cronk-poll-datastream": CronkPollDatastream;
         "cronk-proportion-bar": CronkProportionBar;
         "cronk-selector": CronkSelector;
+        "cronk-simple-grid": CronkSimpleGrid;
         "cronk-socketio-datastream": CronkSocketioDatastream;
         "cronk-statsbox": CronkStatsbox;
         "cronk-title": CronkTitle;
@@ -315,12 +353,14 @@ declare module "@stencil/core" {
             "cronk-errormessage": LocalJSX.CronkErrormessage & JSXBase.HTMLAttributes<HTMLCronkErrormessageElement>;
             "cronk-event-stream": LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;
             "cronk-funnel": LocalJSX.CronkFunnel & JSXBase.HTMLAttributes<HTMLCronkFunnelElement>;
+            "cronk-list": LocalJSX.CronkList & JSXBase.HTMLAttributes<HTMLCronkListElement>;
             "cronk-page": LocalJSX.CronkPage & JSXBase.HTMLAttributes<HTMLCronkPageElement>;
             "cronk-page-components": LocalJSX.CronkPageComponents & JSXBase.HTMLAttributes<HTMLCronkPageComponentsElement>;
             "cronk-page-panel": LocalJSX.CronkPagePanel & JSXBase.HTMLAttributes<HTMLCronkPagePanelElement>;
             "cronk-poll-datastream": LocalJSX.CronkPollDatastream & JSXBase.HTMLAttributes<HTMLCronkPollDatastreamElement>;
             "cronk-proportion-bar": LocalJSX.CronkProportionBar & JSXBase.HTMLAttributes<HTMLCronkProportionBarElement>;
             "cronk-selector": LocalJSX.CronkSelector & JSXBase.HTMLAttributes<HTMLCronkSelectorElement>;
+            "cronk-simple-grid": LocalJSX.CronkSimpleGrid & JSXBase.HTMLAttributes<HTMLCronkSimpleGridElement>;
             "cronk-socketio-datastream": LocalJSX.CronkSocketioDatastream & JSXBase.HTMLAttributes<HTMLCronkSocketioDatastreamElement>;
             "cronk-statsbox": LocalJSX.CronkStatsbox & JSXBase.HTMLAttributes<HTMLCronkStatsboxElement>;
             "cronk-title": LocalJSX.CronkTitle & JSXBase.HTMLAttributes<HTMLCronkTitleElement>;

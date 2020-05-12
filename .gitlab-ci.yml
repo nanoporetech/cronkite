@@ -29,7 +29,7 @@ unit-test:
     - npm i
     - npm run test
 
-npm-publish-external:
+.npm-publish-external: &npm_publish_external
   stage: publish
   script:
     - npm i
@@ -39,9 +39,28 @@ npm-publish-external:
     - npm run build:docs
     - echo $NPM_TOKEN
     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> ./.npmrc
-    - npm publish --verbose --access public --tag latest
+    - npm publish --verbose --access public --tag ${TAG}
+
+publish_dev:
+  <<: *npm_publish_external
+  only:
+    - develop
+  variables:
+    TAG: 'develop'
+
+publish_master:
+  <<: *npm_publish_external
+  only:
+    - master
+  variables:
+    TAG: 'next'
+
+publish_release:
+  <<: *npm_publish_external
   only:
     - tags
+  variables:
+    TAG: 'latest'
 
 pages:
   stage: pages

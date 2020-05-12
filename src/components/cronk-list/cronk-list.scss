@@ -1,0 +1,16 @@
+cronk-list {
+  line-height: var(--cronk-list-line-height, 1.5);
+
+  & ul,
+  & ol {
+    list-style-type: none;
+  }
+
+  & .unordered {
+    list-style-type: disc;
+  }
+
+  & .ordered {
+    list-style-type: decimal;
+  }
+}

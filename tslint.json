@@ -13,8 +13,7 @@
     ],
     "exclude": [
       "node_modules/**",
-      "**/*.json",
-      "src/workers/**/*.ts"
+      "**/*.json"
     ]
   },
   "rulesDirectory": [
