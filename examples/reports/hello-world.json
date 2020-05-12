@@ -36,6 +36,22 @@
       }
     },
     {
+      "element": "cronk-simple-grid",
+      "@headers": [
+        [
+          "Title",
+          "Authors",
+          "Year"
+        ]
+      ],
+      "@data": {
+        "fn:jmespath": "([][join('', ['<a href=\"https://doi.org/', doi, '\">' , title, '</a>']), authorString, pubYear])[0:2]"
+      },
+      "@ordered": true,
+      "@label": "Query string",
+      "listen": "hello:world:results"
+    },
+    {
       "element": "div",
       "style": {
         "backgroundColor": "#222"
@@ -59,7 +75,7 @@
         {
           "element": "cronk-list",
           "@items": {
-            "fn:jmespath": "[].join(``,['<a href=\\'',@.id,'\\'>',@.title,'</a>'])"
+            "fn:jmespath": "[].join(``,['<a href=\"https://doi.org/', @.doi, '\">' , @.title, '</a>'])"
           },
           "@ordered": true,
           "@label": "Query string",
