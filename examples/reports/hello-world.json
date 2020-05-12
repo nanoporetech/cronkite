@@ -14,14 +14,6 @@
       "@fail": {
         "fn:jmespath": "clientX>`500`"
       },
-      "@size": {
-        "fn:divide": [
-          {
-            "fn:jmespath": "clientY"
-          },
-          4
-        ]
-      },
       "listen": "mousemove",
       "layout": {
         "width": 3

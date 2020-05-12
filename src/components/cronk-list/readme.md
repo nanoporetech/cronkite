@@ -9,8 +9,10 @@
 
 | Property  | Attribute | Description | Type      | Default |
 | --------- | --------- | ----------- | --------- | ------- |
+| `bullets` | `bullets` |             | `boolean` | `true`  |
 | `items`   | --        |             | `any[]`   | `[]`    |
 | `ordered` | `ordered` |             | `boolean` | `false` |
+| `reverse` | `reverse` |             | `boolean` | `false` |
 
 
 ----------------------------------------------

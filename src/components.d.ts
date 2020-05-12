@@ -34,8 +34,10 @@ export namespace Components {
         "statsList": CronkDataTypes.IFunnelListItem[];
     }
     interface CronkList {
+        "bullets": boolean;
         "items": any[];
         "ordered": boolean;
+        "reverse": boolean;
     }
     interface CronkPage {
         "loadConfig": (newConfig: any) => Promise<void>;
@@ -243,8 +245,10 @@ declare namespace LocalJSX {
         "statsList"?: CronkDataTypes.IFunnelListItem[];
     }
     interface CronkList {
+        "bullets"?: boolean;
         "items"?: any[];
         "ordered"?: boolean;
+        "reverse"?: boolean;
     }
     interface CronkPage {
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
