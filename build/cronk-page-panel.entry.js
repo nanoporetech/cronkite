@@ -1,5 +1,5 @@
 import { r as registerInstance, h, H as Host } from './index-c35d3352.js';
-import './_commonjsHelpers-cc66c86a.js';
+import './commonjsHelpers-cc66c86a.js';
 import { m as mapAttributesToProps } from './index-566c5fd3.js';
 import { u as uuidv4 } from './index-a7b13f2e.js';
 
@@ -7018,14 +7018,14 @@ const CronkPagePanel = class {
             const eventObservable$ = fromEvent(window, stream);
             this.listeners$ = eventObservable$
                 .pipe(debounceTime(debounce), tap((event) => console.debug(`Got event for <${this.panelConfig.element}>`, event)), map((event) => {
-                const { detail } = event;
-                return detail || eventAsJSON(event);
-            }))
+                    const { detail } = event;
+                    return detail || eventAsJSON(event);
+                }))
                 .subscribe(payload => {
-                var _a;
-                payloadCache = [payload, ...payloadCache.slice(0, cacheSize - 1)];
-                (_a = this.streamCache) === null || _a === void 0 ? void 0 : _a.next(cacheSize === 1 ? payloadCache[0] : payloadCache);
-            });
+                    var _a;
+                    payloadCache = [payload, ...payloadCache.slice(0, cacheSize - 1)];
+                    (_a = this.streamCache) === null || _a === void 0 ? void 0 : _a.next(cacheSize === 1 ? payloadCache[0] : payloadCache);
+                });
             this.listeners$.add(this.streamCache.subscribe(this.payloadHandler));
         }
         else {

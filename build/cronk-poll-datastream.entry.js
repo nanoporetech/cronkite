@@ -1,5 +1,5 @@
 import { r as registerInstance, h, H as Host, c as getElement } from './index-c35d3352.js';
-import './_commonjsHelpers-cc66c86a.js';
+import './commonjsHelpers-cc66c86a.js';
 import { p as processValue } from './index-566c5fd3.js';
 
 const DEFAULT_SHAPE = {
@@ -189,10 +189,12 @@ const CronkPollDatastream = class {
         await this.initDataStream();
     }
     render() {
-        return (h(Host, { "aria-hidden": 'true', class: {
+        return (h(Host, {
+            "aria-hidden": 'true', class: {
                 'cronk-filtered-datastream': this.acceptsFilters,
                 [`cronk-${this.type}-eventstream`]: true,
-            } }));
+            }
+        }));
     }
     get hostEl() { return getElement(this); }
 };

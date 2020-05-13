@@ -1,4 +1,4 @@
-import { a as commonjsGlobal } from './_commonjsHelpers-cc66c86a.js';
+import { a as commonjsGlobal } from './commonjsHelpers-cc66c86a.js';
 
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
@@ -43,12 +43,12 @@ var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
  */
 function getRawTag(value) {
   var isOwn = hasOwnProperty.call(value, symToStringTag),
-      tag = value[symToStringTag];
+    tag = value[symToStringTag];
 
   try {
     value[symToStringTag] = undefined;
     var unmasked = true;
-  } catch (e) {}
+  } catch (e) { }
 
   var result = nativeObjectToString.call(value);
   if (unmasked) {
@@ -88,7 +88,7 @@ var _objectToString = objectToString;
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
+  undefinedTag = '[object Undefined]';
 
 /** Built-in value references. */
 var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;

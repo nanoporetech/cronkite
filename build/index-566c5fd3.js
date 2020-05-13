@@ -1,457 +1,457 @@
-import { c as createCommonjsModule, a as commonjsGlobal } from './_commonjsHelpers-cc66c86a.js';
+import { c as createCommonjsModule, a as commonjsGlobal } from './commonjsHelpers-cc66c86a.js';
 
 var numberScale = createCommonjsModule(function (module, exports) {
-// UMD: https://github.com/umdjs/umd/blob/master/returnExports.js
-(function (root, factory) {
-  /* istanbul ignore next */
-  if (typeof undefined === 'function' && undefined.amd) {
-    // AMD. Register as an anonymous module.
+  // UMD: https://github.com/umdjs/umd/blob/master/returnExports.js
+  (function (root, factory) {
     /* istanbul ignore next */
-    undefined(factory);
-  /* istanbul ignore else */
-  } else if ('object' === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    // Browser globals (root is window)
-    /* istanbul ignore next */
-    root.numberScale = factory();
-  }
-})(commonjsGlobal, function () {
-  'use strict';
-
-  /**
-   * The default options
-   *
-   * @namespace defaultOptions
-   * @property {Number}  precision         the decimal precision to display (0 for integers only)
-   * @property {string}  roundMode         one of `even`, `odd`, `up`, `down`, or any other value
-   * @property {string}  scale             the scale key to use
-   * @property {string}  unit              the unit suffix to display
-   * @property {Number}  recursive         a positive integer to recursively decompose the value into scale fragments
-   * @see formatPrecision
-   * @see round
-   */
-  var defaultOptions = {
-    //maxExponent: 308,
-    //minExponent: -324,
-    precision: 2,
-    roundMode: 'up',
-    scale: 'SI',
-    unit: '',
-    recursive: 0
-  };
-  /* @private */
-  var defaultOptionsKeys = Object.keys(defaultOptions);
-  /**
-   * All known scales
-   *
-   * @namespace
-   * @private
-   * @property {Object}  SI        International System of Units (https://en.wikipedia.org/wiki/International_System_of_Units)
-   * @property {Object}  time      Time Unit scale
-   * @property {object}  IEEE1541  IEEE 1541 Units for bytes measurements
-   */
-  var knownScales = {
-    SI: buildScale({
-      'y': 1e-24,
-      'z': 1e-21,
-      'a': 1e-18,
-      'f': 1e-15,
-      'p': 1e-12,
-      'n': 1e-9,
-      'µ': 1e-6,
-      'm': 1e-3,
-      '': 1,
-      'k': 1e3,
-      'M': 1e6,
-      'G': 1e9,
-      'T': 1e12,
-      'P': 1e15,
-      'E': 1e18,
-      'Z': 1e21,
-      'Y': 1e24
-    }, 1),
-    time: buildScale({
-      'ns': 1e-9,
-      'ms': 1e-3,
-      's': 1,
-      'm': 60,
-      'h': 3600, // 60*60
-      'd': 86400 // 60*60*24
-    }, 1),
-    IEEE1541: buildScale({
-      '': 1,
-      'Ki': 1e3,
-      'Mi': 1e6,
-      'Gi': 1e9,
-      'Ti': 1e12,
-      'Pi': 1e15,
-      'Ei': 1e18,
-      'Zi': 1e21,
-      'Yi': 1e24
-    }, 0)
-  };
-
-
-  /**
-   * Return an object with all the required options filled out.
-   * Any omitted values will be fetched from the default options
-   *
-   * @see defaultOptions
-   * @param {Object} options
-   * @returns {Object}
-   */
-  function mergeDefaults(options) {
-    var i;
-    var iLen;
-
-    options = options || {};
-
-    for (i = 0, iLen = defaultOptionsKeys.length; i < iLen; ++i) {
-      if (!(defaultOptionsKeys[i] in options)) {
-        options[defaultOptionsKeys[i]] = defaultOptions[defaultOptionsKeys[i]];
-      }
-    }
-
-    return options;
-  }
-
-  /**
-   * Make sure str does not contain any regex expressions
-   *
-   * @function escapeRegexp
-   * @private
-   * @param {string} str
-   * @returns {string}
-   */
-  function escapeRegexp(str) {
-    return str.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
-  }
-
-  /**
-   * Round the given value, considering it as a negative, or positive one.
-   *
-   * The function will round to the next 'even', or 'odd' number, or will round
-   * 'down', or 'up' to any next integer. For any other value, a default mathematical
-   * rounding will be performed (i.e. round to the nearest integer, half up)
-   *
-   * @function round
-   * @private
-   * @param {string} mode    one of 'even', 'odd', 'up', 'down', or any other value
-   * @param {boolean} neg    if the value should considered as negative
-   * @param {Number} value   a value to round (i.e. with decimals)
-   * @returns {Number}       the value rounded
-   */
-  function round(mode, neg, value) {
-    var i = value | 0;
-
-    if (neg) {
-      i = -i;
-      value = -value;
-    }
-
-    //console.log("??? ROUND", mode, neg, value, i, i & 1);
-
-    if (mode === 'even') {
-      if (!neg && (i > value) || (i & 1)) {  // odd
-        value = i + 1;
-      } else {
-        value = i;
-      }
-    } else if (mode === 'odd') {
-      if (!neg && (i > value) || (i & 1)) {  // odd
-        value = i;
-      } else {
-        value = i + 1;
-      }
-    } else if (mode === 'up') {
-      value = Math.ceil(value);
-    } else if (mode === 'down') {
-      value = Math.floor(value);
+    if (typeof undefined === 'function' && undefined.amd) {
+      // AMD. Register as an anonymous module.
+      /* istanbul ignore next */
+      undefined(factory);
+      /* istanbul ignore else */
+    } else if ('object' === 'object') {
+      // Node. Does not work with strict CommonJS, but
+      // only CommonJS-like environments that support module.exports,
+      // like Node.
+      module.exports = factory();
     } else {
-      value = Math.round(value);
+      // Browser globals (root is window)
+      /* istanbul ignore next */
+      root.numberScale = factory();
     }
+  })(commonjsGlobal, function () {
+    'use strict';
 
-    return neg ? Math.abs(value) : value;
-  }
-
-  /**
-   * Make sure a decimal value contains the specified precision.
-   * Ignore any integer value.
-   *
-   * @function formatPrecision
-   * @private
-   * @param {Number} value
-   * @param {Number} precision
-   * @returns {string}
-   */
-  function formatPrecision(value, precision) {
-    var i = value | 0;
-
-    if ((i !== value) && Math.max(precision, 0)) {
-      return Number(value).toFixed(precision);
-    } else {
-      return String(value);
-    }
-  }
-
-  /**
-   * Build a scale and prepare it to be used by the formatter and parser
-   *
-   * @function buildScale
-   * @private
-   * @param {Object} prefixes       a key-value object which keys are scale units and values it's base value
-   * @param {Number} baseUnitValue  the base value, or scale pivot point
-   * @return {Object}
-   */
-  function buildScale(prefixes, baseUnitValue) {
-    var list = [];  // Lists prefixes and their factor in ascending order.
-    var map = {};   // Maps from prefixes to their factor.
-    var re;         // Regex to parse a value and its associated unit.
-    var unitBase;   // the base unit for this scale
-    var unitTmpValue = Number.MAX_VALUE;
-    var tmp = [];
-
-    baseUnitValue = baseUnitValue || 0;
-
-    Object.keys(prefixes).forEach(function (prefix) {
-      var name = prefix;
-      var value = prefixes[prefix];
-
-      list.push([name, value]);
-
-      map[name] = value;
-
-      tmp.push(escapeRegexp(name));
-
-      if (Math.abs(baseUnitValue - value) < Math.abs(baseUnitValue - unitTmpValue)) {
-        unitBase = name;
-        unitTmpValue = value;
-      }
-    });
-
-    list.sort(function (a, b) {
-      return (a[1] - b[1]);
-    });
-
-    tmp = tmp.sort(function (a, b) {
-      return b.length - a.length; // Matches longest first.
-    }).join('|');
-    re = new RegExp('^\\s*((?:-)?\\d+(?:\\.\\d+)?)\\s*('+ tmp +').*?$', 'i');
-
-    return {
-      list: list,
-      map: map,
-      re: re,
-      base: unitBase
+    /**
+     * The default options
+     *
+     * @namespace defaultOptions
+     * @property {Number}  precision         the decimal precision to display (0 for integers only)
+     * @property {string}  roundMode         one of `even`, `odd`, `up`, `down`, or any other value
+     * @property {string}  scale             the scale key to use
+     * @property {string}  unit              the unit suffix to display
+     * @property {Number}  recursive         a positive integer to recursively decompose the value into scale fragments
+     * @see formatPrecision
+     * @see round
+     */
+    var defaultOptions = {
+      //maxExponent: 308,
+      //minExponent: -324,
+      precision: 2,
+      roundMode: 'up',
+      scale: 'SI',
+      unit: '',
+      recursive: 0
     };
-  }
+    /* @private */
+    var defaultOptionsKeys = Object.keys(defaultOptions);
+    /**
+     * All known scales
+     *
+     * @namespace
+     * @private
+     * @property {Object}  SI        International System of Units (https://en.wikipedia.org/wiki/International_System_of_Units)
+     * @property {Object}  time      Time Unit scale
+     * @property {object}  IEEE1541  IEEE 1541 Units for bytes measurements
+     */
+    var knownScales = {
+      SI: buildScale({
+        'y': 1e-24,
+        'z': 1e-21,
+        'a': 1e-18,
+        'f': 1e-15,
+        'p': 1e-12,
+        'n': 1e-9,
+        'µ': 1e-6,
+        'm': 1e-3,
+        '': 1,
+        'k': 1e3,
+        'M': 1e6,
+        'G': 1e9,
+        'T': 1e12,
+        'P': 1e15,
+        'E': 1e18,
+        'Z': 1e21,
+        'Y': 1e24
+      }, 1),
+      time: buildScale({
+        'ns': 1e-9,
+        'ms': 1e-3,
+        's': 1,
+        'm': 60,
+        'h': 3600, // 60*60
+        'd': 86400 // 60*60*24
+      }, 1),
+      IEEE1541: buildScale({
+        '': 1,
+        'Ki': 1e3,
+        'Mi': 1e6,
+        'Gi': 1e9,
+        'Ti': 1e12,
+        'Pi': 1e15,
+        'Ei': 1e18,
+        'Zi': 1e21,
+        'Yi': 1e24
+      }, 0)
+    };
 
-  /**
-   * Binary search to find the greatest index which has a value <=.
-   *
-   * @function findPrefix
-   * @private
-   * @param {Array} list      the scale's units list
-   * @param {Number} value    a numeric value
-   * @returns {Array}         the found list item
-   */
-  function findPrefix(list, value) {
-    /* jshint bitwise: false */
 
-    var low = 0;
-    var high = list.length - 1;
+    /**
+     * Return an object with all the required options filled out.
+     * Any omitted values will be fetched from the default options
+     *
+     * @see defaultOptions
+     * @param {Object} options
+     * @returns {Object}
+     */
+    function mergeDefaults(options) {
+      var i;
+      var iLen;
 
-    var mid, current;
-    while (low !== high) {
-      mid = (low + high + 1) >> 1;
-      current = list[mid][1];
+      options = options || {};
 
-      if (current > value) {
-        high = mid - 1;
+      for (i = 0, iLen = defaultOptionsKeys.length; i < iLen; ++i) {
+        if (!(defaultOptionsKeys[i] in options)) {
+          options[defaultOptionsKeys[i]] = defaultOptions[defaultOptionsKeys[i]];
+        }
+      }
+
+      return options;
+    }
+
+    /**
+     * Make sure str does not contain any regex expressions
+     *
+     * @function escapeRegexp
+     * @private
+     * @param {string} str
+     * @returns {string}
+     */
+    function escapeRegexp(str) {
+      return str.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+    }
+
+    /**
+     * Round the given value, considering it as a negative, or positive one.
+     *
+     * The function will round to the next 'even', or 'odd' number, or will round
+     * 'down', or 'up' to any next integer. For any other value, a default mathematical
+     * rounding will be performed (i.e. round to the nearest integer, half up)
+     *
+     * @function round
+     * @private
+     * @param {string} mode    one of 'even', 'odd', 'up', 'down', or any other value
+     * @param {boolean} neg    if the value should considered as negative
+     * @param {Number} value   a value to round (i.e. with decimals)
+     * @returns {Number}       the value rounded
+     */
+    function round(mode, neg, value) {
+      var i = value | 0;
+
+      if (neg) {
+        i = -i;
+        value = -value;
+      }
+
+      //console.log("??? ROUND", mode, neg, value, i, i & 1);
+
+      if (mode === 'even') {
+        if (!neg && (i > value) || (i & 1)) {  // odd
+          value = i + 1;
+        } else {
+          value = i;
+        }
+      } else if (mode === 'odd') {
+        if (!neg && (i > value) || (i & 1)) {  // odd
+          value = i;
+        } else {
+          value = i + 1;
+        }
+      } else if (mode === 'up') {
+        value = Math.ceil(value);
+      } else if (mode === 'down') {
+        value = Math.floor(value);
       } else {
-        low = mid;
+        value = Math.round(value);
       }
+
+      return neg ? Math.abs(value) : value;
     }
 
-    return list[low];
-  }
+    /**
+     * Make sure a decimal value contains the specified precision.
+     * Ignore any integer value.
+     *
+     * @function formatPrecision
+     * @private
+     * @param {Number} value
+     * @param {Number} precision
+     * @returns {string}
+     */
+    function formatPrecision(value, precision) {
+      var i = value | 0;
 
-  /**
-   * Format the given value according to a scale and return it
-   *
-   * @function numberScale
-   * @see defaultOptions
-   * @param {Number} num         the number to format to scale
-   * @param {Object} options     the options
-   * @returns {string}           the scaled number
-   */
-  function numberScale(num, options) {
-    var neg;
-    var scale;
-    var prefix;
-    var roundModifier;
-    var value;
-    var reminder;
-
-    options = mergeDefaults(options);
-
-    // Ensures `value` is a number (or NaN).
-    value = Number(num);
-    scale = knownScales[options.scale];
-
-    // If `value` is 0 or NaN.
-    if (!value) {
-      return '0' + scale.base + options.unit;
-    }
-
-    neg = value < 0;
-    value = Math.abs(value);
-
-    prefix = findPrefix(scale.list, value);
-    roundModifier = +('1e' + Math.max(options.precision, 0));
-
-    value = round(options.roundMode, neg, value * roundModifier / prefix[1]) / roundModifier;
-
-    if (options.recursive) {
-      --options.recursive;
-
-      value = value | 0;
-      reminder = Math.abs(num) - (value * prefix[1]);
-
-      value = String(value);
-    } else {
-      value = formatPrecision(value, options.precision);
-    }
-
-    if (neg) {
-      if (value !== '0') {
-        value = '-' + value;
-      }
-      reminder = -reminder;
-    }
-
-    value = value + prefix[0] + options.unit;
-
-    if (reminder && prefix !== scale.list[0]) {
-
-      reminder = numberScale(reminder, options);
-
-      if (Array.isArray(reminder)) {
-        value = [value].concat(reminder);
+      if ((i !== value) && Math.max(precision, 0)) {
+        return Number(value).toFixed(precision);
       } else {
-        value = [value, reminder];
+        return String(value);
       }
     }
 
-    return value;
-  }
+    /**
+     * Build a scale and prepare it to be used by the formatter and parser
+     *
+     * @function buildScale
+     * @private
+     * @param {Object} prefixes       a key-value object which keys are scale units and values it's base value
+     * @param {Number} baseUnitValue  the base value, or scale pivot point
+     * @return {Object}
+     */
+    function buildScale(prefixes, baseUnitValue) {
+      var list = [];  // Lists prefixes and their factor in ascending order.
+      var map = {};   // Maps from prefixes to their factor.
+      var re;         // Regex to parse a value and its associated unit.
+      var unitBase;   // the base unit for this scale
+      var unitTmpValue = Number.MAX_VALUE;
+      var tmp = [];
 
-  /**
-   * Parse this value and return a number, or NaN if value is invalid
-   *
-   * @function parseScale
-   * @see defaultOptions
-   * @param {(Array|Number)} value     a value as returned by numberScale()
-   * @param {Object} options           the options. Same as numberScale()'s options
-   * @return {(Number|NaN)}            the parsed value as a number
-   */
-  function parseScale(value, options) {
-    var scale;
-    var matches;
+      baseUnitValue = baseUnitValue || 0;
 
-    if (Array.isArray(value)) {
-      return value.reduce(function (prev, val) {
-        return prev + parseScale(val, options);
-      }, 0);
+      Object.keys(prefixes).forEach(function (prefix) {
+        var name = prefix;
+        var value = prefixes[prefix];
+
+        list.push([name, value]);
+
+        map[name] = value;
+
+        tmp.push(escapeRegexp(name));
+
+        if (Math.abs(baseUnitValue - value) < Math.abs(baseUnitValue - unitTmpValue)) {
+          unitBase = name;
+          unitTmpValue = value;
+        }
+      });
+
+      list.sort(function (a, b) {
+        return (a[1] - b[1]);
+      });
+
+      tmp = tmp.sort(function (a, b) {
+        return b.length - a.length; // Matches longest first.
+      }).join('|');
+      re = new RegExp('^\\s*((?:-)?\\d+(?:\\.\\d+)?)\\s*(' + tmp + ').*?$', 'i');
+
+      return {
+        list: list,
+        map: map,
+        re: re,
+        base: unitBase
+      };
     }
 
-    options = mergeDefaults(options);
+    /**
+     * Binary search to find the greatest index which has a value <=.
+     *
+     * @function findPrefix
+     * @private
+     * @param {Array} list      the scale's units list
+     * @param {Number} value    a numeric value
+     * @returns {Array}         the found list item
+     */
+    function findPrefix(list, value) {
+      /* jshint bitwise: false */
 
-    scale = knownScales[options.scale];
+      var low = 0;
+      var high = list.length - 1;
 
-    matches = String(value).match(scale.re);
+      var mid, current;
+      while (low !== high) {
+        mid = (low + high + 1) >> 1;
+        current = list[mid][1];
 
-    if (matches) {
-      if (!matches[2]) {
-        matches[2] = scale.base;
+        if (current > value) {
+          high = mid - 1;
+        } else {
+          low = mid;
+        }
       }
 
-      value = matches[1] * scale.map[matches[2]];
-    } else {
-      value = NaN;
+      return list[low];
     }
 
-    return value;
-  }
+    /**
+     * Format the given value according to a scale and return it
+     *
+     * @function numberScale
+     * @see defaultOptions
+     * @param {Number} num         the number to format to scale
+     * @param {Object} options     the options
+     * @returns {string}           the scaled number
+     */
+    function numberScale(num, options) {
+      var neg;
+      var scale;
+      var prefix;
+      var roundModifier;
+      var value;
+      var reminder;
 
-  /**
-   * Define and bind a new scale, or ovrride an existing one
-   *
-   * @function defineScale
-   * @param {string} name          the scale name
-   * @param {Object} prefixes      the prefixes definitions
-   * @param {Number} baseUnitValue the base value, or scale pivot point
-   */
-  function defineScale(name, prefixes, baseUnitValue) {
-    knownScales[name] = buildScale(prefixes, baseUnitValue);
-    numberScale.scales[name] = name;
-  }
+      options = mergeDefaults(options);
 
+      // Ensures `value` is a number (or NaN).
+      value = Number(num);
+      scale = knownScales[options.scale];
 
-  // Scale Aliasses
-  knownScales['IEEE-1541'] = knownScales.IEEE1541;
-
-
-  /**
-   * expose (readonly) API
-   *
-   * @namespace numberScale
-   * @borrows defineScale as defineScale
-   * @borrows parseScale as scale
-   *
-   * @property {Object} options.default     default options
-   * @property {Object} scales              all known scales
-   * @property {Function} defineScale
-   * @property {Function} parse
-   */
-  Object.defineProperties(numberScale, {
-    options: {
-      configurable: false,
-      enumerable: true,
-      writable: false,
-      value: {
-        default: defaultOptions
+      // If `value` is 0 or NaN.
+      if (!value) {
+        return '0' + scale.base + options.unit;
       }
-    },
-    scales: {
-      configurable: false,
-      enumerable: true,
-      writable: false,
-      value: Object.keys(knownScales).reduce(function (scales, scale) {
-        scales[scale] = scale;
-        return scales;
-      }, {})
-    },
-    defineScale: {
-      configurable: false,
-      enumerable: true,
-      writable: false,
-      value: defineScale
-    },
-    parse: {
-      configurable: false,
-      enumerable: true,
-      writable: false,
-      value: parseScale
+
+      neg = value < 0;
+      value = Math.abs(value);
+
+      prefix = findPrefix(scale.list, value);
+      roundModifier = +('1e' + Math.max(options.precision, 0));
+
+      value = round(options.roundMode, neg, value * roundModifier / prefix[1]) / roundModifier;
+
+      if (options.recursive) {
+        --options.recursive;
+
+        value = value | 0;
+        reminder = Math.abs(num) - (value * prefix[1]);
+
+        value = String(value);
+      } else {
+        value = formatPrecision(value, options.precision);
+      }
+
+      if (neg) {
+        if (value !== '0') {
+          value = '-' + value;
+        }
+        reminder = -reminder;
+      }
+
+      value = value + prefix[0] + options.unit;
+
+      if (reminder && prefix !== scale.list[0]) {
+
+        reminder = numberScale(reminder, options);
+
+        if (Array.isArray(reminder)) {
+          value = [value].concat(reminder);
+        } else {
+          value = [value, reminder];
+        }
+      }
+
+      return value;
     }
+
+    /**
+     * Parse this value and return a number, or NaN if value is invalid
+     *
+     * @function parseScale
+     * @see defaultOptions
+     * @param {(Array|Number)} value     a value as returned by numberScale()
+     * @param {Object} options           the options. Same as numberScale()'s options
+     * @return {(Number|NaN)}            the parsed value as a number
+     */
+    function parseScale(value, options) {
+      var scale;
+      var matches;
+
+      if (Array.isArray(value)) {
+        return value.reduce(function (prev, val) {
+          return prev + parseScale(val, options);
+        }, 0);
+      }
+
+      options = mergeDefaults(options);
+
+      scale = knownScales[options.scale];
+
+      matches = String(value).match(scale.re);
+
+      if (matches) {
+        if (!matches[2]) {
+          matches[2] = scale.base;
+        }
+
+        value = matches[1] * scale.map[matches[2]];
+      } else {
+        value = NaN;
+      }
+
+      return value;
+    }
+
+    /**
+     * Define and bind a new scale, or ovrride an existing one
+     *
+     * @function defineScale
+     * @param {string} name          the scale name
+     * @param {Object} prefixes      the prefixes definitions
+     * @param {Number} baseUnitValue the base value, or scale pivot point
+     */
+    function defineScale(name, prefixes, baseUnitValue) {
+      knownScales[name] = buildScale(prefixes, baseUnitValue);
+      numberScale.scales[name] = name;
+    }
+
+
+    // Scale Aliasses
+    knownScales['IEEE-1541'] = knownScales.IEEE1541;
+
+
+    /**
+     * expose (readonly) API
+     *
+     * @namespace numberScale
+     * @borrows defineScale as defineScale
+     * @borrows parseScale as scale
+     *
+     * @property {Object} options.default     default options
+     * @property {Object} scales              all known scales
+     * @property {Function} defineScale
+     * @property {Function} parse
+     */
+    Object.defineProperties(numberScale, {
+      options: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: {
+          default: defaultOptions
+        }
+      },
+      scales: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: Object.keys(knownScales).reduce(function (scales, scale) {
+          scales[scale] = scale;
+          return scales;
+        }, {})
+      },
+      defineScale: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: defineScale
+      },
+      parse: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: parseScale
+      }
+    });
+
+    return numberScale;
   });
-
-  return numberScale;
-});
 });
 
 function _defineProperty(obj, key, value) {
@@ -531,7 +531,7 @@ function isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () { }));
     return true;
   } catch (e) {
     return false;
@@ -1075,37 +1075,37 @@ function invariant(condition, message) {
  */
 
 var StructError =
-/*#__PURE__*/
-function (_TypeError) {
-  _inheritsLoose(StructError, _TypeError);
+  /*#__PURE__*/
+  function (_TypeError) {
+    _inheritsLoose(StructError, _TypeError);
 
-  function StructError(failures) {
-    var _this;
+    function StructError(failures) {
+      var _this;
 
-    invariant(failures.length > 0, "StructError requires being passed a failure, but received: " + failures);
-    var first = failures[0];
+      invariant(failures.length > 0, "StructError requires being passed a failure, but received: " + failures);
+      var first = failures[0];
 
-    var path = first.path,
+      var path = first.path,
         value = first.value,
         type = first.type,
         branch = first.branch,
         rest = _objectWithoutPropertiesLoose(first, ["path", "value", "type", "branch"]);
 
-    var message = "Expected a value of type `" + type + "`" + (path.length ? " for `" + path.join('.') + "`" : '') + " but received `" + JSON.stringify(value) + "`.";
-    _this = _TypeError.call(this, message) || this;
-    _this.type = type;
-    _this.value = value;
-    Object.assign(_assertThisInitialized(_this), rest);
-    _this.path = path;
-    _this.branch = branch;
-    _this.failures = failures;
-    _this.stack = new Error().stack;
-    _this.__proto__ = StructError.prototype;
-    return _this;
-  }
+      var message = "Expected a value of type `" + type + "`" + (path.length ? " for `" + path.join('.') + "`" : '') + " but received `" + JSON.stringify(value) + "`.";
+      _this = _TypeError.call(this, message) || this;
+      _this.type = type;
+      _this.value = value;
+      Object.assign(_assertThisInitialized(_this), rest);
+      _this.path = path;
+      _this.branch = branch;
+      _this.failures = failures;
+      _this.stack = new Error().stack;
+      _this.__proto__ = StructError.prototype;
+      return _this;
+    }
 
-  return StructError;
-}(_wrapNativeSuper(TypeError));
+    return StructError;
+  }(_wrapNativeSuper(TypeError));
 
 /**
  * A symbol to set on `Struct` objects to test them against later.
@@ -1145,15 +1145,15 @@ var createStruct = function createStruct(props) {
 
   Struct.test = function (value) {
     var _Struct$check = Struct.check(value, [value], []),
-        failures = _Struct$check[0];
+      failures = _Struct$check[0];
 
     return !failures;
   };
 
   Struct.assert = function (value) {
     var _Struct$check2 = Struct.check(value, [value], []),
-        failures = _Struct$check2[0],
-        result = _Struct$check2[1];
+      failures = _Struct$check2[0],
+      result = _Struct$check2[1];
 
     if (failures) {
       throw new Error(failures);
@@ -1164,8 +1164,8 @@ var createStruct = function createStruct(props) {
 
   Struct.validate = function (value) {
     var _Struct$check3 = Struct.check(value, [value], []),
-        failures = _Struct$check3[0],
-        result = _Struct$check3[1];
+      failures = _Struct$check3[0],
+      result = _Struct$check3[1];
 
     if (failures) {
       return [new Error(failures)];
@@ -1226,8 +1226,8 @@ var createArray = function createArray(schema, defaults, struct) {
       var v = value[i];
 
       var _Element$check = Element.check(v, branch.concat(v), path.concat(i)),
-          efs = _Element$check[0],
-          er = _Element$check[1];
+        efs = _Element$check[0],
+        er = _Element$check[1];
 
       if (efs) {
         failures.push.apply(failures, efs);
@@ -1307,7 +1307,7 @@ var createFunction = function createFunction(schema, defaults, struct) {
         path: path
       }));
     } else if (Array.isArray(result) && result.length > 0) {
-      for (var _iterator = result, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+      for (var _iterator = result, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
         var _ref;
 
         if (_isArray) {
@@ -1390,7 +1390,7 @@ var createInterface = function createInterface(schema, defaults, struct) {
       var v = value[k];
 
       var _Prop$check = Prop.check(v, branch.concat(v), path.concat(k)),
-          pfs = _Prop$check[0];
+        pfs = _Prop$check[0];
 
       if (pfs) {
         failures.push.apply(failures, pfs);
@@ -1425,7 +1425,7 @@ var createIntersection = function createIntersection(schema, defaults, struct) {
 
     var result = value;
 
-    for (var _iterator = Structs, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    for (var _iterator = Structs, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
       var _ref;
 
       if (_isArray) {
@@ -1440,8 +1440,8 @@ var createIntersection = function createIntersection(schema, defaults, struct) {
       var _struct = _ref;
 
       var _struct$check = _struct.check(value, branch, path),
-          fs = _struct$check[0],
-          v = _struct$check[1];
+        fs = _struct$check[0],
+        v = _struct$check[1];
 
       if (fs) {
         return [[Struct.fail({
@@ -1482,7 +1482,7 @@ var createSize = function createSize(schema, defaults, struct) {
     return typeof n === 'number';
   }), "Size structs must be defined as an array with two number elements, but you passed: " + schema);
   var min = schema[0],
-      max = schema[1];
+    max = schema[1];
 
   var validator = function validator(value) {
     return value != null && typeof value.length === 'number' && value.length >= min && value.length <= max;
@@ -1543,7 +1543,7 @@ var createObject = function createObject(schema, defaults, struct) {
     var failures = [];
     var keys = new Set(Object.keys(Props).concat(Object.keys(value)));
 
-    for (var _iterator = keys, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    for (var _iterator = keys, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
       var _ref;
 
       if (_isArray) {
@@ -1576,8 +1576,8 @@ var createObject = function createObject(schema, defaults, struct) {
       }
 
       var _Prop$check = Prop.check(v, b, p),
-          pfs = _Prop$check[0],
-          pr = _Prop$check[1];
+        pfs = _Prop$check[0],
+        pr = _Prop$check[1];
 
       if (pfs) {
         failures.push.apply(failures, pfs);
@@ -1629,7 +1629,7 @@ var createPartial = function createPartial(schema, defaults, struct) {
     var result = {};
     var failures = [];
 
-    for (var _iterator = value, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    for (var _iterator = value, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
       var _ref;
 
       if (_isArray) {
@@ -1662,8 +1662,8 @@ var createPartial = function createPartial(schema, defaults, struct) {
       }
 
       var _Prop$check = Prop.check(v, b, p),
-          pfs = _Prop$check[0],
-          pr = _Prop$check[1];
+        pfs = _Prop$check[0],
+        pr = _Prop$check[1];
 
       if (pfs) {
         failures.push.apply(failures, pfs);
@@ -1726,8 +1726,8 @@ var createPick = function createPick(schema, defaults, struct) {
       }
 
       var _Prop$check = Prop.check(v, b, p),
-          pfs = _Prop$check[0],
-          pr = _Prop$check[1];
+        pfs = _Prop$check[0],
+        pr = _Prop$check[1];
 
       if (pfs) {
         failures.push.apply(failures, pfs);
@@ -1777,15 +1777,15 @@ var createRecord = function createRecord(schema, defaults, struct) {
       var b = branch.concat(v);
 
       var _Key$check = Key.check(k, b, p),
-          kfs = _Key$check[0],
-          kr = _Key$check[1];
+        kfs = _Key$check[0],
+        kr = _Key$check[1];
 
       if (kfs) {
         failures.push.apply(failures, kfs);
       } else {
         var _Value$check = Value.check(v, b, p),
-            vfs = _Value$check[0],
-            vr = _Value$check[1];
+          vfs = _Value$check[0],
+          vr = _Value$check[1];
 
         if (vfs) {
           failures.push.apply(failures, vfs);
@@ -1819,7 +1819,7 @@ var createShorthand = function createShorthand(schema, defaults, struct) {
   if (Array.isArray(schema)) {
     if (schema.length === 1) {
       var _schema = schema,
-          first = _schema[0];
+        first = _schema[0];
       return struct.array([first], defaults);
     } else if (schema.length > 1) {
       return struct.tuple(schema, defaults);
@@ -1910,8 +1910,8 @@ var createTuple = function createTuple(schema, defaults, struct) {
         }));
       } else {
         var _Element$check = Element.check(v, b, p),
-            efs = _Element$check[0],
-            er = _Element$check[1];
+          efs = _Element$check[0],
+          er = _Element$check[1];
 
         if (efs) {
           failures.push.apply(failures, efs);
@@ -1947,7 +1947,7 @@ var createUnion = function createUnion(schema, defaults, struct) {
       value = Struct.default();
     }
 
-    for (var _iterator = Structs, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    for (var _iterator = Structs, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
       var _ref;
 
       if (_isArray) {
@@ -1962,8 +1962,8 @@ var createUnion = function createUnion(schema, defaults, struct) {
       var _struct = _ref;
 
       var _struct$check = _struct.check(value, branch, path),
-          fs = _struct$check[0],
-          v = _struct$check[1];
+        fs = _struct$check[0],
+        v = _struct$check[1];
 
       if (!fs) {
         return [undefined, v];
@@ -2088,35 +2088,35 @@ const pending = new Map();
 const callbacks = new Map();
 
 const createWorker = (workerPath, workerName, workerMsgId) => {
-  const worker = new Worker(workerPath, {name:workerName});
+  const worker = new Worker(workerPath, { name: workerName });
 
-  worker.addEventListener('message', ({data}) => {
-  if (data) {
-    const workerMsg = data[0];
-    const id = data[1];
-    const value = data[2];
+  worker.addEventListener('message', ({ data }) => {
+    if (data) {
+      const workerMsg = data[0];
+      const id = data[1];
+      const value = data[2];
 
-    if (workerMsg === workerMsgId) {
-    const err = data[3];
-    const [resolve, reject, callbackIds] = pending.get(id);
-    pending.delete(id);
+      if (workerMsg === workerMsgId) {
+        const err = data[3];
+        const [resolve, reject, callbackIds] = pending.get(id);
+        pending.delete(id);
 
-    if (err) {
-      reject(err);
-    } else {
-      if (callbackIds) {
-      callbackIds.forEach(id => callbacks.delete(id));
+        if (err) {
+          reject(err);
+        } else {
+          if (callbackIds) {
+            callbackIds.forEach(id => callbacks.delete(id));
+          }
+          resolve(value);
+        }
+      } else if (workerMsg === workerMsgId + '.cb') {
+        try {
+          callbacks.get(id)(...value);
+        } catch (e) {
+          console.error(e);
+        }
       }
-      resolve(value);
     }
-    } else if (workerMsg === workerMsgId + '.cb') {
-    try {
-      callbacks.get(id)(...value);
-    } catch (e) {
-      console.error(e);
-    }
-    }
-  }
   });
 
   return worker;
@@ -2124,31 +2124,31 @@ const createWorker = (workerPath, workerName, workerMsgId) => {
 
 const createWorkerProxy = (worker, workerMsgId, exportedMethod) => (
   (...args) => new Promise((resolve, reject) => {
-  let pendingId = pendingIds++;
-  let i = 0;
-  let argLen = args.length;
-  let mainData = [resolve, reject];
-  pending.set(pendingId, mainData);
+    let pendingId = pendingIds++;
+    let i = 0;
+    let argLen = args.length;
+    let mainData = [resolve, reject];
+    pending.set(pendingId, mainData);
 
-  for (; i < argLen; i++) {
-    if (typeof args[i] === 'function') {
-    const callbackId = callbackIds++;
-    callbacks.set(callbackId, args[i]);
-    args[i] = [workerMsgId + '.cb', callbackId];
-    (mainData[2] = mainData[2] || []).push(callbackId);
+    for (; i < argLen; i++) {
+      if (typeof args[i] === 'function') {
+        const callbackId = callbackIds++;
+        callbacks.set(callbackId, args[i]);
+        args[i] = [workerMsgId + '.cb', callbackId];
+        (mainData[2] = mainData[2] || []).push(callbackId);
+      }
     }
-  }
-  const postMessage = (w) => (
-    w.postMessage(
-    [workerMsgId, pendingId, exportedMethod, args],
-    args.filter(a => a instanceof ArrayBuffer)
-    )
-  );
-  if (worker.then) {
-    worker.then(postMessage);
-  } else {
-    postMessage(worker);
-  }
+    const postMessage = (w) => (
+      w.postMessage(
+        [workerMsgId, pendingId, exportedMethod, args],
+        args.filter(a => a instanceof ArrayBuffer)
+      )
+    );
+    if (worker.then) {
+      worker.then(postMessage);
+    } else {
+      postMessage(worker);
+    }
   })
 );
 
@@ -2162,23 +2162,23 @@ const jmespath = /*@__PURE__*/createWorkerProxy(worker, workerMsgId, 'jmespath')
 // import { jqSearch } from '../workers/jq.worker';
 // tslint:disable: object-literal-sort-keys
 numberScale.defineScale('genome', {
-    base: 1,
-    k: 1e3,
-    M: 1e6,
-    G: 1e9,
-    T: 1e12,
-    P: 1e15,
-    E: 1e18,
-    Z: 1e21,
-    Y: 1e24,
+  base: 1,
+  k: 1e3,
+  M: 1e6,
+  G: 1e9,
+  T: 1e12,
+  P: 1e15,
+  E: 1e18,
+  Z: 1e21,
+  Y: 1e24,
 }, 1);
 numberScale.defineScale('filesize', {
-    '': 1024 ** 0,
-    k: 1024 ** 1,
-    M: 1024 ** 2,
-    G: 1024 ** 3,
-    T: 1024 ** 4,
-    P: 1024 ** 5,
+  '': 1024 ** 0,
+  k: 1024 ** 1,
+  M: 1024 ** 2,
+  G: 1024 ** 3,
+  T: 1024 ** 4,
+  P: 1024 ** 5,
 }, 1);
 // tslint:enable: object-literal-sort-keys
 const CoordinateTuple = struct(['number', 'number']);
@@ -2186,139 +2186,139 @@ const Coordinate = struct({ x: 'number', y: 'number' });
 const RawHistogram = struct([CoordinateTuple]);
 const Histogram = struct([Coordinate]);
 const validateArray = (arrayIn) => {
-    if (!Array.isArray(arrayIn))
-        return arrayIn;
-    try {
-        RawHistogram(arrayIn);
-        return arrayIn.map(([x, y]) => ({ x, y }));
-    }
-    catch (ignore) {
-        // ignore
-    }
-    try {
-        Histogram(arrayIn);
-        const arrayOut = Object.entries(arrayIn.reduce((mergedCoordinates, { x, y }) => {
-            if (y === 0)
-                return mergedCoordinates;
-            const xDefined = mergedCoordinates[x];
-            mergedCoordinates[x] = xDefined ? mergedCoordinates[x] + y : y;
-            return mergedCoordinates;
-        }, {})).map(coords => ({ x: +coords[0], y: coords[1] }));
-        return arrayOut;
-    }
-    catch (ignore) {
-        // ignore
-    }
+  if (!Array.isArray(arrayIn))
     return arrayIn;
+  try {
+    RawHistogram(arrayIn);
+    return arrayIn.map(([x, y]) => ({ x, y }));
+  }
+  catch (ignore) {
+    // ignore
+  }
+  try {
+    Histogram(arrayIn);
+    const arrayOut = Object.entries(arrayIn.reduce((mergedCoordinates, { x, y }) => {
+      if (y === 0)
+        return mergedCoordinates;
+      const xDefined = mergedCoordinates[x];
+      mergedCoordinates[x] = xDefined ? mergedCoordinates[x] + y : y;
+      return mergedCoordinates;
+    }, {})).map(coords => ({ x: +coords[0], y: coords[1] }));
+    return arrayOut;
+  }
+  catch (ignore) {
+    // ignore
+  }
+  return arrayIn;
 };
 const transformValue = async (value, data) => {
-    const isArrayValue = Array.isArray(value);
-    if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || isArrayValue) {
-        return isArrayValue ? value : [value];
-    }
-    return Promise.all(Object.entries(value).map(async ([func, val]) => {
-        return applyFunction(func, val, data);
-    }));
+  const isArrayValue = Array.isArray(value);
+  if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' || isArrayValue) {
+    return isArrayValue ? value : [value];
+  }
+  return Promise.all(Object.entries(value).map(async ([func, val]) => {
+    return applyFunction(func, val, data);
+  }));
 };
 const applyFunction = async (func, val, data) => {
-    let result;
-    let arg;
-    let precision;
-    let unit;
-    let dividend;
-    let divisor;
-    switch (func) {
-        case 'fn:sum':
-            result = (await transformValue(val, data))[0] || [];
-            return result.reduce((a, b) => a + b, 0);
-        case 'fn:divide':
-            [dividend, divisor] = val;
-            dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
-            divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
-            return dividend / divisor;
-        case 'fn:mod':
-            [dividend, divisor] = val;
-            dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
-            divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
-            return dividend % divisor;
-        case 'fn:formatNumber':
-            [arg, precision, unit] = val;
-            result = (await transformValue(arg, data))[0] || 0.0;
-            const formattedNumber = numberScale(result, {
-                precision,
-                recursive: 0,
-                scale: 'SI',
-                unit: unit || '',
-            });
-            const hasOne = (/[\d\.]+/g.exec(formattedNumber) || [''])[0] === '1';
-            return `${formattedNumber}${hasOne ? '' : 's'}`;
-        case 'fn:toFixed':
-            [arg, precision, unit] = val;
-            result = (await transformValue(arg, data))[0] || 0.0;
-            return `${Number.parseFloat(result).toFixed(precision)}${unit || ''}`;
-        case 'fn:mode':
-            [arg, precision] = val;
-            result = (await transformValue(arg, data))[0] || 0.0;
-            result = result
-                .sort((a, b) => a - b)
-                .reduce((valueCount, newValue) => {
-                const valueKey = Number.parseFloat(newValue).toFixed(precision);
-                valueCount[valueKey] = (valueCount[valueKey] || 0) + 1;
-                if (valueCount[valueKey] >= valueCount.modeCount) {
-                    valueCount.mode = newValue;
-                    valueCount.modeCount = valueCount[valueKey];
-                }
-                return valueCount;
-            }, { mode: 0, modeCount: 0 });
-            return result.mode;
-        case 'fn:uniq':
-            result = (await transformValue(val, data))[0] || [];
-            return result.reduce((a, b) => {
-                !a.includes(b) && a.push(b);
-                return a;
-            }, []);
-        case 'fn:map':
-            return Promise.all(val.map(async (v) => {
-                return Object.assign({}, ...(await Promise.all(Object.entries(v).map(async ([mapKey, mapVal]) => {
-                    const returnVal = await transformValue(mapVal, data);
-                    return { [mapKey]: typeof returnVal === 'string' ? returnVal : returnVal[0] };
-                }))));
-            }));
-        case 'fn:round':
-            return Math.round((await transformValue(val, data))[0] || 0);
-        // return (await transformValue(val, data))[0].reduce((a, b) => a + b, 0)
-        case 'fn:count':
-            return (await transformValue(val, data))[0].length;
-        case 'fn:average':
-            const averages = (await transformValue(val, data))[0] || [];
-            return averages.reduce((a, b) => a + b, 0) / (averages.length || 1);
-        case 'fn:jmespath':
-            // console.info('JMESPATH', val, data, await jmespath(val, data))
-            return jmespath(val, data);
-        // case 'fn:jq':
-        //   // console.info('JQ', val, data, jqSearch(data, val));
-        //   return jqSearch(data, val);
-        default:
-            break;
-    }
-    return { [func]: val };
+  let result;
+  let arg;
+  let precision;
+  let unit;
+  let dividend;
+  let divisor;
+  switch (func) {
+    case 'fn:sum':
+      result = (await transformValue(val, data))[0] || [];
+      return result.reduce((a, b) => a + b, 0);
+    case 'fn:divide':
+      [dividend, divisor] = val;
+      dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
+      divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
+      return dividend / divisor;
+    case 'fn:mod':
+      [dividend, divisor] = val;
+      dividend = typeof dividend === 'number' ? dividend : (await transformValue(dividend, data))[0] || 0;
+      divisor = typeof divisor === 'number' ? divisor : (await transformValue(divisor, data))[0] || 0;
+      return dividend % divisor;
+    case 'fn:formatNumber':
+      [arg, precision, unit] = val;
+      result = (await transformValue(arg, data))[0] || 0.0;
+      const formattedNumber = numberScale(result, {
+        precision,
+        recursive: 0,
+        scale: 'SI',
+        unit: unit || '',
+      });
+      const hasOne = (/[\d\.]+/g.exec(formattedNumber) || [''])[0] === '1';
+      return `${formattedNumber}${hasOne ? '' : 's'}`;
+    case 'fn:toFixed':
+      [arg, precision, unit] = val;
+      result = (await transformValue(arg, data))[0] || 0.0;
+      return `${Number.parseFloat(result).toFixed(precision)}${unit || ''}`;
+    case 'fn:mode':
+      [arg, precision] = val;
+      result = (await transformValue(arg, data))[0] || 0.0;
+      result = result
+        .sort((a, b) => a - b)
+        .reduce((valueCount, newValue) => {
+          const valueKey = Number.parseFloat(newValue).toFixed(precision);
+          valueCount[valueKey] = (valueCount[valueKey] || 0) + 1;
+          if (valueCount[valueKey] >= valueCount.modeCount) {
+            valueCount.mode = newValue;
+            valueCount.modeCount = valueCount[valueKey];
+          }
+          return valueCount;
+        }, { mode: 0, modeCount: 0 });
+      return result.mode;
+    case 'fn:uniq':
+      result = (await transformValue(val, data))[0] || [];
+      return result.reduce((a, b) => {
+        !a.includes(b) && a.push(b);
+        return a;
+      }, []);
+    case 'fn:map':
+      return Promise.all(val.map(async (v) => {
+        return Object.assign({}, ...(await Promise.all(Object.entries(v).map(async ([mapKey, mapVal]) => {
+          const returnVal = await transformValue(mapVal, data);
+          return { [mapKey]: typeof returnVal === 'string' ? returnVal : returnVal[0] };
+        }))));
+      }));
+    case 'fn:round':
+      return Math.round((await transformValue(val, data))[0] || 0);
+    // return (await transformValue(val, data))[0].reduce((a, b) => a + b, 0)
+    case 'fn:count':
+      return (await transformValue(val, data))[0].length;
+    case 'fn:average':
+      const averages = (await transformValue(val, data))[0] || [];
+      return averages.reduce((a, b) => a + b, 0) / (averages.length || 1);
+    case 'fn:jmespath':
+      // console.info('JMESPATH', val, data, await jmespath(val, data))
+      return jmespath(val, data);
+    // case 'fn:jq':
+    //   // console.info('JQ', val, data, jqSearch(data, val));
+    //   return jqSearch(data, val);
+    default:
+      break;
+  }
+  return { [func]: val };
 };
 const processValue = async (data, value) => {
-    if (typeof value === 'string')
-        return value;
-    const [result] = await transformValue(value, data);
-    if (Array.isArray(result)) {
-        return validateArray(result);
-    }
-    if (typeof result === 'number') {
-        return result.toLocaleString();
-    }
-    return result;
+  if (typeof value === 'string')
+    return value;
+  const [result] = await transformValue(value, data);
+  if (Array.isArray(result)) {
+    return validateArray(result);
+  }
+  if (typeof result === 'number') {
+    return result.toLocaleString();
+  }
+  return result;
 };
 const mapAttributesToProps = async (attributes, data) => {
-    return Object.assign({}, ...(await Promise.all(Object.entries(attributes)
-        .filter(([key]) => key.startsWith('@'))
-        .map(async ([key, value]) => ({ [key.substr(1)]: await processValue(data, value) })))));
+  return Object.assign({}, ...(await Promise.all(Object.entries(attributes)
+    .filter(([key]) => key.startsWith('@'))
+    .map(async ([key, value]) => ({ [key.substr(1)]: await processValue(data, value) })))));
 };
 
 export { mapAttributesToProps as m, processValue as p };

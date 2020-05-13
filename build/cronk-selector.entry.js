@@ -1,5 +1,5 @@
 import { r as registerInstance, h, H as Host } from './index-c35d3352.js';
-import { c as createCommonjsModule } from './_commonjsHelpers-cc66c86a.js';
+import { c as createCommonjsModule } from './commonjsHelpers-cc66c86a.js';
 import { i as isObject, b as baseGetTag, r as root, S as Symbol, a as isObjectLike, f as freeGlobal, c as isSymbol } from './isSymbol-fff4b964.js';
 
 /**
@@ -91,7 +91,7 @@ var splice = arrayProto.splice;
  */
 function listCacheDelete(key) {
   var data = this.__data__,
-      index = _assocIndexOf(data, key);
+    index = _assocIndexOf(data, key);
 
   if (index < 0) {
     return false;
@@ -119,7 +119,7 @@ var _listCacheDelete = listCacheDelete;
  */
 function listCacheGet(key) {
   var data = this.__data__,
-      index = _assocIndexOf(data, key);
+    index = _assocIndexOf(data, key);
 
   return index < 0 ? undefined : data[index][1];
 }
@@ -153,7 +153,7 @@ var _listCacheHas = listCacheHas;
  */
 function listCacheSet(key, value) {
   var data = this.__data__,
-      index = _assocIndexOf(data, key);
+    index = _assocIndexOf(data, key);
 
   if (index < 0) {
     ++this.size;
@@ -175,7 +175,7 @@ var _listCacheSet = listCacheSet;
  */
 function ListCache(entries) {
   var index = -1,
-      length = entries == null ? 0 : entries.length;
+    length = entries == null ? 0 : entries.length;
 
   this.clear();
   while (++index < length) {
@@ -218,7 +218,7 @@ var _stackClear = stackClear;
  */
 function stackDelete(key) {
   var data = this.__data__,
-      result = data['delete'](key);
+    result = data['delete'](key);
 
   this.size = data.size;
   return result;
@@ -258,9 +258,9 @@ var _stackHas = stackHas;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    proxyTag = '[object Proxy]';
+  funcTag = '[object Function]',
+  genTag = '[object GeneratorFunction]',
+  proxyTag = '[object Proxy]';
 
 /**
  * Checks if `value` is classified as a `Function` object.
@@ -297,7 +297,7 @@ var coreJsData = root['__core-js_shared__'];
 var _coreJsData = coreJsData;
 
 /** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
+var maskSrcKey = (function () {
   var uid = /[^.]+$/.exec(_coreJsData && _coreJsData.keys && _coreJsData.keys.IE_PROTO || '');
   return uid ? ('Symbol(src)_1.' + uid) : '';
 }());
@@ -332,10 +332,10 @@ function toSource(func) {
   if (func != null) {
     try {
       return funcToString.call(func);
-    } catch (e) {}
+    } catch (e) { }
     try {
       return (func + '');
-    } catch (e) {}
+    } catch (e) { }
   }
   return '';
 }
@@ -353,7 +353,7 @@ var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
 /** Used for built-in method references. */
 var funcProto$1 = Function.prototype,
-    objectProto = Object.prototype;
+  objectProto = Object.prototype;
 
 /** Used to resolve the decompiled source of functions. */
 var funcToString$1 = funcProto$1.toString;
@@ -364,7 +364,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 /** Used to detect if a method is native. */
 var reIsNative = RegExp('^' +
   funcToString$1.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 );
 
 /**
@@ -538,7 +538,7 @@ var _hashSet = hashSet;
  */
 function Hash(entries) {
   var index = -1,
-      length = entries == null ? 0 : entries.length;
+    length = entries == null ? 0 : entries.length;
 
   this.clear();
   while (++index < length) {
@@ -666,7 +666,7 @@ var _mapCacheHas = mapCacheHas;
  */
 function mapCacheSet(key, value) {
   var data = _getMapData(this, key),
-      size = data.size;
+    size = data.size;
 
   data.set(key, value);
   this.size += data.size == size ? 0 : 1;
@@ -684,7 +684,7 @@ var _mapCacheSet = mapCacheSet;
  */
 function MapCache(entries) {
   var index = -1,
-      length = entries == null ? 0 : entries.length;
+    length = entries == null ? 0 : entries.length;
 
   this.clear();
   while (++index < length) {
@@ -799,7 +799,7 @@ var _setCacheHas = setCacheHas;
  */
 function SetCache(values) {
   var index = -1,
-      length = values == null ? 0 : values.length;
+    length = values == null ? 0 : values.length;
 
   this.__data__ = new _MapCache;
   while (++index < length) {
@@ -825,7 +825,7 @@ var _SetCache = SetCache;
  */
 function arraySome(array, predicate) {
   var index = -1,
-      length = array == null ? 0 : array.length;
+    length = array == null ? 0 : array.length;
 
   while (++index < length) {
     if (predicate(array[index], index, array)) {
@@ -853,7 +853,7 @@ var _cacheHas = cacheHas;
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
-    COMPARE_UNORDERED_FLAG = 2;
+  COMPARE_UNORDERED_FLAG = 2;
 
 /**
  * A specialized version of `baseIsEqualDeep` for arrays with support for
@@ -870,8 +870,8 @@ var COMPARE_PARTIAL_FLAG = 1,
  */
 function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
   var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
-      arrLength = array.length,
-      othLength = other.length;
+    arrLength = array.length,
+    othLength = other.length;
 
   if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
     return false;
@@ -882,8 +882,8 @@ function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
     return stacked == other;
   }
   var index = -1,
-      result = true,
-      seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new _SetCache : undefined;
+    result = true,
+    seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new _SetCache : undefined;
 
   stack.set(array, other);
   stack.set(other, array);
@@ -891,7 +891,7 @@ function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
   // Ignore non-index properties.
   while (++index < arrLength) {
     var arrValue = array[index],
-        othValue = other[index];
+      othValue = other[index];
 
     if (customizer) {
       var compared = isPartial
@@ -907,19 +907,19 @@ function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
     }
     // Recursively compare arrays (susceptible to call stack limits).
     if (seen) {
-      if (!_arraySome(other, function(othValue, othIndex) {
-            if (!_cacheHas(seen, othIndex) &&
-                (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
-              return seen.push(othIndex);
-            }
-          })) {
+      if (!_arraySome(other, function (othValue, othIndex) {
+        if (!_cacheHas(seen, othIndex) &&
+          (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+          return seen.push(othIndex);
+        }
+      })) {
         result = false;
         break;
       }
     } else if (!(
-          arrValue === othValue ||
-            equalFunc(arrValue, othValue, bitmask, customizer, stack)
-        )) {
+      arrValue === othValue ||
+      equalFunc(arrValue, othValue, bitmask, customizer, stack)
+    )) {
       result = false;
       break;
     }
@@ -945,9 +945,9 @@ var _Uint8Array = Uint8Array;
  */
 function mapToArray(map) {
   var index = -1,
-      result = Array(map.size);
+    result = Array(map.size);
 
-  map.forEach(function(value, key) {
+  map.forEach(function (value, key) {
     result[++index] = [key, value];
   });
   return result;
@@ -964,9 +964,9 @@ var _mapToArray = mapToArray;
  */
 function setToArray(set) {
   var index = -1,
-      result = Array(set.size);
+    result = Array(set.size);
 
-  set.forEach(function(value) {
+  set.forEach(function (value) {
     result[++index] = value;
   });
   return result;
@@ -976,25 +976,25 @@ var _setToArray = setToArray;
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG$1 = 1,
-    COMPARE_UNORDERED_FLAG$1 = 2;
+  COMPARE_UNORDERED_FLAG$1 = 2;
 
 /** `Object#toString` result references. */
 var boolTag = '[object Boolean]',
-    dateTag = '[object Date]',
-    errorTag = '[object Error]',
-    mapTag = '[object Map]',
-    numberTag = '[object Number]',
-    regexpTag = '[object RegExp]',
-    setTag = '[object Set]',
-    stringTag = '[object String]',
-    symbolTag = '[object Symbol]';
+  dateTag = '[object Date]',
+  errorTag = '[object Error]',
+  mapTag = '[object Map]',
+  numberTag = '[object Number]',
+  regexpTag = '[object RegExp]',
+  setTag = '[object Set]',
+  stringTag = '[object String]',
+  symbolTag = '[object Symbol]';
 
 var arrayBufferTag = '[object ArrayBuffer]',
-    dataViewTag = '[object DataView]';
+  dataViewTag = '[object DataView]';
 
 /** Used to convert symbols to primitives and strings. */
 var symbolProto = Symbol ? Symbol.prototype : undefined,
-    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+  symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
 
 /**
  * A specialized version of `baseIsEqualDeep` for comparing objects of
@@ -1017,7 +1017,7 @@ function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
   switch (tag) {
     case dataViewTag:
       if ((object.byteLength != other.byteLength) ||
-          (object.byteOffset != other.byteOffset)) {
+        (object.byteOffset != other.byteOffset)) {
         return false;
       }
       object = object.buffer;
@@ -1025,7 +1025,7 @@ function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
 
     case arrayBufferTag:
       if ((object.byteLength != other.byteLength) ||
-          !equalFunc(new _Uint8Array(object), new _Uint8Array(other))) {
+        !equalFunc(new _Uint8Array(object), new _Uint8Array(other))) {
         return false;
       }
       return true;
@@ -1090,8 +1090,8 @@ var _equalByTag = equalByTag;
  */
 function arrayPush(array, values) {
   var index = -1,
-      length = values.length,
-      offset = array.length;
+    length = values.length,
+    offset = array.length;
 
   while (++index < length) {
     array[offset + index] = values[index];
@@ -1157,9 +1157,9 @@ var _baseGetAllKeys = baseGetAllKeys;
  */
 function arrayFilter(array, predicate) {
   var index = -1,
-      length = array == null ? 0 : array.length,
-      resIndex = 0,
-      result = [];
+    length = array == null ? 0 : array.length,
+    resIndex = 0,
+    result = [];
 
   while (++index < length) {
     var value = array[index];
@@ -1212,12 +1212,12 @@ var nativeGetSymbols = Object.getOwnPropertySymbols;
  * @param {Object} object The object to query.
  * @returns {Array} Returns the array of symbols.
  */
-var getSymbols = !nativeGetSymbols ? stubArray_1 : function(object) {
+var getSymbols = !nativeGetSymbols ? stubArray_1 : function (object) {
   if (object == null) {
     return [];
   }
   object = Object(object);
-  return _arrayFilter(nativeGetSymbols(object), function(symbol) {
+  return _arrayFilter(nativeGetSymbols(object), function (symbol) {
     return propertyIsEnumerable.call(object, symbol);
   });
 };
@@ -1235,7 +1235,7 @@ var _getSymbols = getSymbols;
  */
 function baseTimes(n, iteratee) {
   var index = -1,
-      result = Array(n);
+    result = Array(n);
 
   while (++index < n) {
     result[index] = iteratee(index);
@@ -1288,7 +1288,7 @@ var propertyIsEnumerable$1 = objectProto$4.propertyIsEnumerable;
  * _.isArguments([1, 2, 3]);
  * // => false
  */
-var isArguments = _baseIsArguments(function() { return arguments; }()) ? _baseIsArguments : function(value) {
+var isArguments = _baseIsArguments(function () { return arguments; }()) ? _baseIsArguments : function (value) {
   return isObjectLike(value) && hasOwnProperty$3.call(value, 'callee') &&
     !propertyIsEnumerable$1.call(value, 'callee');
 };
@@ -1315,41 +1315,41 @@ function stubFalse() {
 var stubFalse_1 = stubFalse;
 
 var isBuffer_1 = createCommonjsModule(function (module, exports) {
-/** Detect free variable `exports`. */
-var freeExports = 'object' == 'object' && exports && !exports.nodeType && exports;
+  /** Detect free variable `exports`. */
+  var freeExports = 'object' == 'object' && exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+  /** Detect free variable `module`. */
+  var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+  /** Detect the popular CommonJS extension `module.exports`. */
+  var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined;
+  /** Built-in value references. */
+  var Buffer = moduleExports ? root.Buffer : undefined;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
 
-/**
- * Checks if `value` is a buffer.
- *
- * @static
- * @memberOf _
- * @since 4.3.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
- * @example
- *
- * _.isBuffer(new Buffer(2));
- * // => true
- *
- * _.isBuffer(new Uint8Array(2));
- * // => false
- */
-var isBuffer = nativeIsBuffer || stubFalse_1;
+  /**
+   * Checks if `value` is a buffer.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.3.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+   * @example
+   *
+   * _.isBuffer(new Buffer(2));
+   * // => true
+   *
+   * _.isBuffer(new Uint8Array(2));
+   * // => false
+   */
+  var isBuffer = nativeIsBuffer || stubFalse_1;
 
-module.exports = isBuffer;
+  module.exports = isBuffer;
 });
 
 /** Used as references for various `Number` constants. */
@@ -1373,7 +1373,7 @@ function isIndex(value, length) {
   return !!length &&
     (type == 'number' ||
       (type != 'symbol' && reIsUint.test(value))) &&
-        (value > -1 && value % 1 == 0 && value < length);
+    (value > -1 && value % 1 == 0 && value < length);
 }
 
 var _isIndex = isIndex;
@@ -1416,46 +1416,46 @@ var isLength_1 = isLength;
 
 /** `Object#toString` result references. */
 var argsTag$1 = '[object Arguments]',
-    arrayTag = '[object Array]',
-    boolTag$1 = '[object Boolean]',
-    dateTag$1 = '[object Date]',
-    errorTag$1 = '[object Error]',
-    funcTag$1 = '[object Function]',
-    mapTag$1 = '[object Map]',
-    numberTag$1 = '[object Number]',
-    objectTag = '[object Object]',
-    regexpTag$1 = '[object RegExp]',
-    setTag$1 = '[object Set]',
-    stringTag$1 = '[object String]',
-    weakMapTag = '[object WeakMap]';
+  arrayTag = '[object Array]',
+  boolTag$1 = '[object Boolean]',
+  dateTag$1 = '[object Date]',
+  errorTag$1 = '[object Error]',
+  funcTag$1 = '[object Function]',
+  mapTag$1 = '[object Map]',
+  numberTag$1 = '[object Number]',
+  objectTag = '[object Object]',
+  regexpTag$1 = '[object RegExp]',
+  setTag$1 = '[object Set]',
+  stringTag$1 = '[object String]',
+  weakMapTag = '[object WeakMap]';
 
 var arrayBufferTag$1 = '[object ArrayBuffer]',
-    dataViewTag$1 = '[object DataView]',
-    float32Tag = '[object Float32Array]',
-    float64Tag = '[object Float64Array]',
-    int8Tag = '[object Int8Array]',
-    int16Tag = '[object Int16Array]',
-    int32Tag = '[object Int32Array]',
-    uint8Tag = '[object Uint8Array]',
-    uint8ClampedTag = '[object Uint8ClampedArray]',
-    uint16Tag = '[object Uint16Array]',
-    uint32Tag = '[object Uint32Array]';
+  dataViewTag$1 = '[object DataView]',
+  float32Tag = '[object Float32Array]',
+  float64Tag = '[object Float64Array]',
+  int8Tag = '[object Int8Array]',
+  int16Tag = '[object Int16Array]',
+  int32Tag = '[object Int32Array]',
+  uint8Tag = '[object Uint8Array]',
+  uint8ClampedTag = '[object Uint8ClampedArray]',
+  uint16Tag = '[object Uint16Array]',
+  uint32Tag = '[object Uint32Array]';
 
 /** Used to identify `toStringTag` values of typed arrays. */
 var typedArrayTags = {};
 typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
-typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
-typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
-typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
-typedArrayTags[uint32Tag] = true;
+  typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+  typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+  typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+  typedArrayTags[uint32Tag] = true;
 typedArrayTags[argsTag$1] = typedArrayTags[arrayTag] =
-typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] =
-typedArrayTags[dataViewTag$1] = typedArrayTags[dateTag$1] =
-typedArrayTags[errorTag$1] = typedArrayTags[funcTag$1] =
-typedArrayTags[mapTag$1] = typedArrayTags[numberTag$1] =
-typedArrayTags[objectTag] = typedArrayTags[regexpTag$1] =
-typedArrayTags[setTag$1] = typedArrayTags[stringTag$1] =
-typedArrayTags[weakMapTag] = false;
+  typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] =
+  typedArrayTags[dataViewTag$1] = typedArrayTags[dateTag$1] =
+  typedArrayTags[errorTag$1] = typedArrayTags[funcTag$1] =
+  typedArrayTags[mapTag$1] = typedArrayTags[numberTag$1] =
+  typedArrayTags[objectTag] = typedArrayTags[regexpTag$1] =
+  typedArrayTags[setTag$1] = typedArrayTags[stringTag$1] =
+  typedArrayTags[weakMapTag] = false;
 
 /**
  * The base implementation of `_.isTypedArray` without Node.js optimizations.
@@ -1479,7 +1479,7 @@ var _baseIsTypedArray = baseIsTypedArray;
  * @returns {Function} Returns the new capped function.
  */
 function baseUnary(func) {
-  return function(value) {
+  return function (value) {
     return func(value);
   };
 }
@@ -1487,34 +1487,34 @@ function baseUnary(func) {
 var _baseUnary = baseUnary;
 
 var _nodeUtil = createCommonjsModule(function (module, exports) {
-/** Detect free variable `exports`. */
-var freeExports = 'object' == 'object' && exports && !exports.nodeType && exports;
+  /** Detect free variable `exports`. */
+  var freeExports = 'object' == 'object' && exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+  /** Detect free variable `module`. */
+  var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+  /** Detect the popular CommonJS extension `module.exports`. */
+  var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Detect free variable `process` from Node.js. */
-var freeProcess = moduleExports && freeGlobal.process;
+  /** Detect free variable `process` from Node.js. */
+  var freeProcess = moduleExports && freeGlobal.process;
 
-/** Used to access faster Node.js helpers. */
-var nodeUtil = (function() {
-  try {
-    // Use `util.types` for Node.js 10+.
-    var types = freeModule && freeModule.require && freeModule.require('util').types;
+  /** Used to access faster Node.js helpers. */
+  var nodeUtil = (function () {
+    try {
+      // Use `util.types` for Node.js 10+.
+      var types = freeModule && freeModule.require && freeModule.require('util').types;
 
-    if (types) {
-      return types;
-    }
+      if (types) {
+        return types;
+      }
 
-    // Legacy `process.binding('util')` for Node.js < 10.
-    return freeProcess && freeProcess.binding && freeProcess.binding('util');
-  } catch (e) {}
-}());
+      // Legacy `process.binding('util')` for Node.js < 10.
+      return freeProcess && freeProcess.binding && freeProcess.binding('util');
+    } catch (e) { }
+  }());
 
-module.exports = nodeUtil;
+  module.exports = nodeUtil;
 });
 
 /* Node.js helper references. */
@@ -1557,25 +1557,25 @@ var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
  */
 function arrayLikeKeys(value, inherited) {
   var isArr = isArray_1(value),
-      isArg = !isArr && isArguments_1(value),
-      isBuff = !isArr && !isArg && isBuffer_1(value),
-      isType = !isArr && !isArg && !isBuff && isTypedArray_1(value),
-      skipIndexes = isArr || isArg || isBuff || isType,
-      result = skipIndexes ? _baseTimes(value.length, String) : [],
-      length = result.length;
+    isArg = !isArr && isArguments_1(value),
+    isBuff = !isArr && !isArg && isBuffer_1(value),
+    isType = !isArr && !isArg && !isBuff && isTypedArray_1(value),
+    skipIndexes = isArr || isArg || isBuff || isType,
+    result = skipIndexes ? _baseTimes(value.length, String) : [],
+    length = result.length;
 
   for (var key in value) {
     if ((inherited || hasOwnProperty$4.call(value, key)) &&
-        !(skipIndexes && (
-           // Safari 9 has enumerable `arguments.length` in strict mode.
-           key == 'length' ||
-           // Node.js 0.10 has enumerable non-index properties on buffers.
-           (isBuff && (key == 'offset' || key == 'parent')) ||
-           // PhantomJS 2 has enumerable non-index properties on typed arrays.
-           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
-           // Skip index properties.
-           _isIndex(key, length)
-        ))) {
+      !(skipIndexes && (
+        // Safari 9 has enumerable `arguments.length` in strict mode.
+        key == 'length' ||
+        // Node.js 0.10 has enumerable non-index properties on buffers.
+        (isBuff && (key == 'offset' || key == 'parent')) ||
+        // PhantomJS 2 has enumerable non-index properties on typed arrays.
+        (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+        // Skip index properties.
+        _isIndex(key, length)
+      ))) {
       result.push(key);
     }
   }
@@ -1596,7 +1596,7 @@ var objectProto$6 = Object.prototype;
  */
 function isPrototype(value) {
   var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$6;
+    proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$6;
 
   return value === proto;
 }
@@ -1612,7 +1612,7 @@ var _isPrototype = isPrototype;
  * @returns {Function} Returns the new function.
  */
 function overArg(func, transform) {
-  return function(arg) {
+  return function (arg) {
     return func(transform(arg));
   };
 }
@@ -1754,10 +1754,10 @@ var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
  */
 function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
   var isPartial = bitmask & COMPARE_PARTIAL_FLAG$2,
-      objProps = _getAllKeys(object),
-      objLength = objProps.length,
-      othProps = _getAllKeys(other),
-      othLength = othProps.length;
+    objProps = _getAllKeys(object),
+    objLength = objProps.length,
+    othProps = _getAllKeys(other),
+    othLength = othProps.length;
 
   if (objLength != othLength && !isPartial) {
     return false;
@@ -1782,7 +1782,7 @@ function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
   while (++index < objLength) {
     key = objProps[index];
     var objValue = object[key],
-        othValue = other[key];
+      othValue = other[key];
 
     if (customizer) {
       var compared = isPartial
@@ -1791,9 +1791,9 @@ function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
     }
     // Recursively compare objects (susceptible to call stack limits).
     if (!(compared === undefined
-          ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))
-          : compared
-        )) {
+      ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))
+      : compared
+    )) {
       result = false;
       break;
     }
@@ -1801,13 +1801,13 @@ function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
   }
   if (result && !skipCtor) {
     var objCtor = object.constructor,
-        othCtor = other.constructor;
+      othCtor = other.constructor;
 
     // Non `Object` object instances with different constructors are not equal.
     if (objCtor != othCtor &&
-        ('constructor' in object && 'constructor' in other) &&
-        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
-          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+      ('constructor' in object && 'constructor' in other) &&
+      !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+        typeof othCtor == 'function' && othCtor instanceof othCtor)) {
       result = false;
     }
   }
@@ -1840,19 +1840,19 @@ var _WeakMap = WeakMap;
 
 /** `Object#toString` result references. */
 var mapTag$2 = '[object Map]',
-    objectTag$1 = '[object Object]',
-    promiseTag = '[object Promise]',
-    setTag$2 = '[object Set]',
-    weakMapTag$1 = '[object WeakMap]';
+  objectTag$1 = '[object Object]',
+  promiseTag = '[object Promise]',
+  setTag$2 = '[object Set]',
+  weakMapTag$1 = '[object WeakMap]';
 
 var dataViewTag$2 = '[object DataView]';
 
 /** Used to detect maps, sets, and weakmaps. */
 var dataViewCtorString = _toSource(_DataView),
-    mapCtorString = _toSource(_Map),
-    promiseCtorString = _toSource(_Promise),
-    setCtorString = _toSource(_Set),
-    weakMapCtorString = _toSource(_WeakMap);
+  mapCtorString = _toSource(_Map),
+  promiseCtorString = _toSource(_Promise),
+  setCtorString = _toSource(_Set),
+  weakMapCtorString = _toSource(_WeakMap);
 
 /**
  * Gets the `toStringTag` of `value`.
@@ -1865,14 +1865,14 @@ var getTag = baseGetTag;
 
 // Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
 if ((_DataView && getTag(new _DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
-    (_Map && getTag(new _Map) != mapTag$2) ||
-    (_Promise && getTag(_Promise.resolve()) != promiseTag) ||
-    (_Set && getTag(new _Set) != setTag$2) ||
-    (_WeakMap && getTag(new _WeakMap) != weakMapTag$1)) {
-  getTag = function(value) {
+  (_Map && getTag(new _Map) != mapTag$2) ||
+  (_Promise && getTag(_Promise.resolve()) != promiseTag) ||
+  (_Set && getTag(new _Set) != setTag$2) ||
+  (_WeakMap && getTag(new _WeakMap) != weakMapTag$1)) {
+  getTag = function (value) {
     var result = baseGetTag(value),
-        Ctor = result == objectTag$1 ? value.constructor : undefined,
-        ctorString = Ctor ? _toSource(Ctor) : '';
+      Ctor = result == objectTag$1 ? value.constructor : undefined,
+      ctorString = Ctor ? _toSource(Ctor) : '';
 
     if (ctorString) {
       switch (ctorString) {
@@ -1894,8 +1894,8 @@ var COMPARE_PARTIAL_FLAG$3 = 1;
 
 /** `Object#toString` result references. */
 var argsTag$2 = '[object Arguments]',
-    arrayTag$1 = '[object Array]',
-    objectTag$2 = '[object Object]';
+  arrayTag$1 = '[object Array]',
+  objectTag$2 = '[object Object]';
 
 /** Used for built-in method references. */
 var objectProto$9 = Object.prototype;
@@ -1919,16 +1919,16 @@ var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
  */
 function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
   var objIsArr = isArray_1(object),
-      othIsArr = isArray_1(other),
-      objTag = objIsArr ? arrayTag$1 : _getTag(object),
-      othTag = othIsArr ? arrayTag$1 : _getTag(other);
+    othIsArr = isArray_1(other),
+    objTag = objIsArr ? arrayTag$1 : _getTag(object),
+    othTag = othIsArr ? arrayTag$1 : _getTag(other);
 
   objTag = objTag == argsTag$2 ? objectTag$2 : objTag;
   othTag = othTag == argsTag$2 ? objectTag$2 : othTag;
 
   var objIsObj = objTag == objectTag$2,
-      othIsObj = othTag == objectTag$2,
-      isSameTag = objTag == othTag;
+    othIsObj = othTag == objectTag$2,
+    isSameTag = objTag == othTag;
 
   if (isSameTag && isBuffer_1(object)) {
     if (!isBuffer_1(other)) {
@@ -1945,11 +1945,11 @@ function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
   }
   if (!(bitmask & COMPARE_PARTIAL_FLAG$3)) {
     var objIsWrapped = objIsObj && hasOwnProperty$7.call(object, '__wrapped__'),
-        othIsWrapped = othIsObj && hasOwnProperty$7.call(other, '__wrapped__');
+      othIsWrapped = othIsObj && hasOwnProperty$7.call(other, '__wrapped__');
 
     if (objIsWrapped || othIsWrapped) {
       var objUnwrapped = objIsWrapped ? object.value() : object,
-          othUnwrapped = othIsWrapped ? other.value() : other;
+        othUnwrapped = othIsWrapped ? other.value() : other;
 
       stack || (stack = new _Stack);
       return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
@@ -1992,7 +1992,7 @@ var _baseIsEqual = baseIsEqual;
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG$4 = 1,
-    COMPARE_UNORDERED_FLAG$2 = 2;
+  COMPARE_UNORDERED_FLAG$2 = 2;
 
 /**
  * The base implementation of `_.isMatch` without support for iteratee shorthands.
@@ -2006,8 +2006,8 @@ var COMPARE_PARTIAL_FLAG$4 = 1,
  */
 function baseIsMatch(object, source, matchData, customizer) {
   var index = matchData.length,
-      length = index,
-      noCustomizer = !customizer;
+    length = index,
+    noCustomizer = !customizer;
 
   if (object == null) {
     return !length;
@@ -2016,17 +2016,17 @@ function baseIsMatch(object, source, matchData, customizer) {
   while (index--) {
     var data = matchData[index];
     if ((noCustomizer && data[2])
-          ? data[1] !== object[data[0]]
-          : !(data[0] in object)
-        ) {
+      ? data[1] !== object[data[0]]
+      : !(data[0] in object)
+    ) {
       return false;
     }
   }
   while (++index < length) {
     data = matchData[index];
     var key = data[0],
-        objValue = object[key],
-        srcValue = data[1];
+      objValue = object[key],
+      srcValue = data[1];
 
     if (noCustomizer && data[2]) {
       if (objValue === undefined && !(key in object)) {
@@ -2038,9 +2038,9 @@ function baseIsMatch(object, source, matchData, customizer) {
         var result = customizer(objValue, srcValue, key, object, source, stack);
       }
       if (!(result === undefined
-            ? _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$4 | COMPARE_UNORDERED_FLAG$2, customizer, stack)
-            : result
-          )) {
+        ? _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$4 | COMPARE_UNORDERED_FLAG$2, customizer, stack)
+        : result
+      )) {
         return false;
       }
     }
@@ -2073,11 +2073,11 @@ var _isStrictComparable = isStrictComparable;
  */
 function getMatchData(object) {
   var result = keys_1(object),
-      length = result.length;
+    length = result.length;
 
   while (length--) {
     var key = result[length],
-        value = object[key];
+      value = object[key];
 
     result[length] = [key, value, _isStrictComparable(value)];
   }
@@ -2096,7 +2096,7 @@ var _getMatchData = getMatchData;
  * @returns {Function} Returns the new spec function.
  */
 function matchesStrictComparable(key, srcValue) {
-  return function(object) {
+  return function (object) {
     if (object == null) {
       return false;
     }
@@ -2119,7 +2119,7 @@ function baseMatches(source) {
   if (matchData.length == 1 && matchData[0][2]) {
     return _matchesStrictComparable(matchData[0][0], matchData[0][1]);
   }
-  return function(object) {
+  return function (object) {
     return object === source || _baseIsMatch(object, source, matchData);
   };
 }
@@ -2128,7 +2128,7 @@ var _baseMatches = baseMatches;
 
 /** Used to match property names within property paths. */
 var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
-    reIsPlainProp = /^\w*$/;
+  reIsPlainProp = /^\w*$/;
 
 /**
  * Checks if `value` is a property name and not a property path.
@@ -2144,7 +2144,7 @@ function isKey(value, object) {
   }
   var type = typeof value;
   if (type == 'number' || type == 'symbol' || type == 'boolean' ||
-      value == null || isSymbol(value)) {
+    value == null || isSymbol(value)) {
     return true;
   }
   return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
@@ -2204,10 +2204,10 @@ function memoize(func, resolver) {
   if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
     throw new TypeError(FUNC_ERROR_TEXT);
   }
-  var memoized = function() {
+  var memoized = function () {
     var args = arguments,
-        key = resolver ? resolver.apply(this, args) : args[0],
-        cache = memoized.cache;
+      key = resolver ? resolver.apply(this, args) : args[0],
+      cache = memoized.cache;
 
     if (cache.has(key)) {
       return cache.get(key);
@@ -2237,7 +2237,7 @@ var MAX_MEMOIZE_SIZE = 500;
  * @returns {Function} Returns the new memoized function.
  */
 function memoizeCapped(func) {
-  var result = memoize_1(func, function(key) {
+  var result = memoize_1(func, function (key) {
     if (cache.size === MAX_MEMOIZE_SIZE) {
       cache.clear();
     }
@@ -2263,12 +2263,12 @@ var reEscapeChar = /\\(\\)?/g;
  * @param {string} string The string to convert.
  * @returns {Array} Returns the property path array.
  */
-var stringToPath = _memoizeCapped(function(string) {
+var stringToPath = _memoizeCapped(function (string) {
   var result = [];
   if (string.charCodeAt(0) === 46 /* . */) {
     result.push('');
   }
-  string.replace(rePropName, function(match, number, quote, subString) {
+  string.replace(rePropName, function (match, number, quote, subString) {
     result.push(quote ? subString.replace(reEscapeChar, '$1') : (number || match));
   });
   return result;
@@ -2287,8 +2287,8 @@ var _stringToPath = stringToPath;
  */
 function arrayMap(array, iteratee) {
   var index = -1,
-      length = array == null ? 0 : array.length,
-      result = Array(length);
+    length = array == null ? 0 : array.length,
+    result = Array(length);
 
   while (++index < length) {
     result[index] = iteratee(array[index], index, array);
@@ -2303,7 +2303,7 @@ var INFINITY = 1 / 0;
 
 /** Used to convert symbols to primitives and strings. */
 var symbolProto$1 = Symbol ? Symbol.prototype : undefined,
-    symbolToString = symbolProto$1 ? symbolProto$1.toString : undefined;
+  symbolToString = symbolProto$1 ? symbolProto$1.toString : undefined;
 
 /**
  * The base implementation of `_.toString` which doesn't convert nullish
@@ -2407,7 +2407,7 @@ function baseGet(object, path) {
   path = _castPath(path, object);
 
   var index = 0,
-      length = path.length;
+    length = path.length;
 
   while (object != null && index < length) {
     object = object[_toKey(path[index++])];
@@ -2476,8 +2476,8 @@ function hasPath(object, path, hasFunc) {
   path = _castPath(path, object);
 
   var index = -1,
-      length = path.length,
-      result = false;
+    length = path.length,
+    result = false;
 
   while (++index < length) {
     var key = _toKey(path[index]);
@@ -2530,7 +2530,7 @@ var hasIn_1 = hasIn;
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG$5 = 1,
-    COMPARE_UNORDERED_FLAG$3 = 2;
+  COMPARE_UNORDERED_FLAG$3 = 2;
 
 /**
  * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
@@ -2544,7 +2544,7 @@ function baseMatchesProperty(path, srcValue) {
   if (_isKey(path) && _isStrictComparable(srcValue)) {
     return _matchesStrictComparable(_toKey(path), srcValue);
   }
-  return function(object) {
+  return function (object) {
     var objValue = get_1(object, path);
     return (objValue === undefined && objValue === srcValue)
       ? hasIn_1(object, path)
@@ -2584,7 +2584,7 @@ var identity_1 = identity;
  * @returns {Function} Returns the new accessor function.
  */
 function baseProperty(key) {
-  return function(object) {
+  return function (object) {
     return object == null ? undefined : object[key];
   };
 }
@@ -2599,7 +2599,7 @@ var _baseProperty = baseProperty;
  * @returns {Function} Returns the new accessor function.
  */
 function basePropertyDeep(path) {
-  return function(object) {
+  return function (object) {
     return _baseGet(object, path);
   };
 }
@@ -2673,7 +2673,7 @@ var _baseIteratee = baseIteratee;
  */
 function baseFindIndex(array, predicate, fromIndex, fromRight) {
   var length = array.length,
-      index = fromIndex + (fromRight ? 1 : -1);
+    index = fromIndex + (fromRight ? 1 : -1);
 
   while ((fromRight ? index-- : ++index < length)) {
     if (predicate(array[index], index, array)) {
@@ -2710,7 +2710,7 @@ var _baseIsNaN = baseIsNaN;
  */
 function strictIndexOf(array, value, fromIndex) {
   var index = fromIndex - 1,
-      length = array.length;
+    length = array.length;
 
   while (++index < length) {
     if (array[index] === value) {
@@ -2766,7 +2766,7 @@ var _arrayIncludes = arrayIncludes;
  */
 function arrayIncludesWith(array, value, comparator) {
   var index = -1,
-      length = array == null ? 0 : array.length;
+    length = array == null ? 0 : array.length;
 
   while (++index < length) {
     if (comparator(value, array[index])) {
@@ -2806,7 +2806,7 @@ var INFINITY$2 = 1 / 0;
  * @param {Array} values The values to add to the set.
  * @returns {Object} Returns the new set.
  */
-var createSet = !(_Set && (1 / _setToArray(new _Set([,-0]))[1]) == INFINITY$2) ? noop_1 : function(values) {
+var createSet = !(_Set && (1 / _setToArray(new _Set([, -0]))[1]) == INFINITY$2) ? noop_1 : function (values) {
   return new _Set(values);
 };
 
@@ -2826,11 +2826,11 @@ var LARGE_ARRAY_SIZE$1 = 200;
  */
 function baseUniq(array, iteratee, comparator) {
   var index = -1,
-      includes = _arrayIncludes,
-      length = array.length,
-      isCommon = true,
-      result = [],
-      seen = result;
+    includes = _arrayIncludes,
+    length = array.length,
+    isCommon = true,
+    result = [],
+    seen = result;
 
   if (comparator) {
     isCommon = false;
@@ -2851,7 +2851,7 @@ function baseUniq(array, iteratee, comparator) {
   outer:
   while (++index < length) {
     var value = array[index],
-        computed = iteratee ? iteratee(value) : value;
+      computed = iteratee ? iteratee(value) : value;
 
     value = (comparator || value !== 0) ? value : 0;
     if (isCommon && computed === computed) {
@@ -2910,87 +2910,89 @@ var uniqBy_1 = uniqBy;
 const cronkSelectorCss = "cronk-selector ion-checkbox{--checkmark-color:#fff;margin:0 0.5rem}cronk-selector ion-item{--min-height:2.5rem}cronk-selector ion-progress-bar{height:1.5rem}cronk-selector span{margin:0 1rem}cronk-selector span.counts{font-weight:bold;white-space:nowrap}cronk-selector span.percent{color:var(--cronk-color-medium);font-size:100%;font-family:monospace;white-space:nowrap}cronk-selector span.label{text-transform:uppercase;white-space:nowrap;min-width:7.5rem;display:inline-block;text-align:right}cronk-selector.thing-selector table{width:96%;margin:20px auto;margin-right:4%;table-layout:auto;text-align:right}cronk-selector.thing-selector table.fixed{table-layout:fixed}cronk-selector.thing-selector table,cronk-selector.thing-selector table td,cronk-selector.thing-selector table th{border-collapse:collapse;text-align:right}cronk-selector.thing-selector table tr{height:1.5rem}cronk-selector.thing-selector table th,cronk-selector.thing-selector table .select-label{font-weight:800;font-size:smaller;color:var(--cronk-color-medium)}cronk-selector.thing-selector table th,cronk-selector.thing-selector table td{padding:0;text-align:right}cronk-selector.thing-selector table th:nth-child(3),cronk-selector.thing-selector table td:nth-child(3){width:5rem}cronk-selector.thing-selector table th:nth-child(4),cronk-selector.thing-selector table td:nth-child(4){width:4rem}cronk-selector.thing-selector table th:nth-child(1),cronk-selector.thing-selector table td:nth-child(1){width:12rem}cronk-selector.thing-selector table th:nth-child(4){text-align:center}cronk-selector.thing-selector table td:nth-child(4){color:var(--cronk-color-medium);font-size:100%;font-family:monospace}cronk-selector .select-all-things{--ion-safe-area-left:0}";
 
 const CronkSelector = class {
-    constructor(hostRef) {
-        registerInstance(this, hostRef);
-        this.activeSelection = {};
-        this.referenceTotal = 0;
-        this.heading = '';
-        this.selectList = [];
-    }
-    async updateSelectList() {
-        const newReference = uniqBy_1(this.selectList, 'select').map(s => {
-            s.label = s.label.replace(/(.{5}).+(.{5})/g, '$1...$2');
-            return s;
-        });
-        if (this.reference === undefined || newReference.length > this.reference.length) {
-            this.reference = newReference;
-            this.referenceTotal = newReference.reduce((newTotal, newRef) => newTotal + (newRef.count || 0), 0);
-            const active = Object.assign({}, ...newReference.map((selection) => {
-                return {
-                    [selection.select]: this.activeSelection[selection.select] === undefined ? true : this.activeSelection[selection.select],
-                };
-            }));
-            this.activeSelection = active;
-        }
-    }
-    selectAllThings(event) {
-        if (!this.reference)
-            return;
-        const el = event.target;
-        if (el && !el.checked) {
-            el.checked = true;
-            return;
-        }
-        const allActive = Object.assign({}, ...this.reference.map((selection) => {
-            return {
-                [selection.select]: true,
-            };
-        }));
-        this.activeSelection = allActive;
-        this.selectThingHandler();
-    }
-    toggleThingSelection(event, { select }) {
-        const el = event.target;
-        const entries = Object.entries(this.activeSelection);
-        const currentSelections = entries.filter(([_, selected]) => selected);
-        const alreadySelected = select in this.activeSelection && this.activeSelection[select];
-        if (el && currentSelections.length === 1 && alreadySelected) {
-            el.checked = true;
-            return;
-        }
-        this.activeSelection = Object.assign(Object.assign({}, this.activeSelection), { [select]: !this.activeSelection[select] });
-        this.selectThingHandler();
-    }
-    selectThingHandler() {
-        const selectedThings = Object.entries(this.activeSelection)
-            .filter(([_, selected]) => selected)
-            .map(([thing]) => thing);
-        if (!selectedThings.length)
-            return; // Minimum one selected
-        const newFilter = (blob) => {
-            if (this.selector in blob) {
-                return selectedThings.includes(blob[this.selector]);
-            }
-            return true; // Only filter if it has what you're looking for
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.activeSelection = {};
+    this.referenceTotal = 0;
+    this.heading = '';
+    this.selectList = [];
+  }
+  async updateSelectList() {
+    const newReference = uniqBy_1(this.selectList, 'select').map(s => {
+      s.label = s.label.replace(/(.{5}).+(.{5})/g, '$1...$2');
+      return s;
+    });
+    if (this.reference === undefined || newReference.length > this.reference.length) {
+      this.reference = newReference;
+      this.referenceTotal = newReference.reduce((newTotal, newRef) => newTotal + (newRef.count || 0), 0);
+      const active = Object.assign({}, ...newReference.map((selection) => {
+        return {
+          [selection.select]: this.activeSelection[selection.select] === undefined ? true : this.activeSelection[selection.select],
         };
-        document.querySelectorAll('.cronk-filtered-datastream').forEach((stream) => {
-            stream.addFilter(this.selector, newFilter);
-        });
+      }));
+      this.activeSelection = active;
     }
-    render() {
-        if (this.reference === undefined)
-            return null;
-        const selectedThings = Object.values(this.activeSelection).filter(x => !!x);
-        return (h(Host, { class: `${this.selector}-selector thing-selector` }, this.heading ? h("h5", null, this.heading) : null, h("table", { class: "fixed" }, h("thead", null, h("tr", null, h("th", null, h("ion-item", { lines: "none", class: `select-all-things select-all-${this.selector}` }, this.reference.length > 1 && (h("ion-checkbox", { onClick: (e) => this.selectAllThings(e), value: "selectall", checked: this.reference.length === selectedThings.length, indeterminate: this.reference.length > selectedThings.length, color: "secondary", slot: "start" })), h("span", { class: "select-label" }, `${this.reference.length > 1 ? 'SELECT ' : ''}`))), h("th", null), h("th", null, "READS"), h("th", null, "%"))), h("tbody", null, this.reference &&
-            this.reference.map((b) => {
-                const { select, label, count } = b;
-                const proportion = count / this.referenceTotal;
-                return (h("tr", { key: select }, h("td", null, h("ion-item", { lines: "none" }, this.reference && this.reference.length > 1 && (h("ion-checkbox", { onClick: (e) => this.toggleThingSelection(e, b), checked: select in this.activeSelection && this.activeSelection[select], value: select, slot: "start", color: "secondary" })), h("ion-label", null, label))), h("td", null, h("ion-progress-bar", { value: proportion })), h("td", null, count), h("td", null, "(", (proportion * 100).toFixed(1), "%)")));
-            })))));
+  }
+  selectAllThings(event) {
+    if (!this.reference)
+      return;
+    const el = event.target;
+    if (el && !el.checked) {
+      el.checked = true;
+      return;
     }
-    static get watchers() { return {
-        "selectList": ["updateSelectList"]
-    }; }
+    const allActive = Object.assign({}, ...this.reference.map((selection) => {
+      return {
+        [selection.select]: true,
+      };
+    }));
+    this.activeSelection = allActive;
+    this.selectThingHandler();
+  }
+  toggleThingSelection(event, { select }) {
+    const el = event.target;
+    const entries = Object.entries(this.activeSelection);
+    const currentSelections = entries.filter(([_, selected]) => selected);
+    const alreadySelected = select in this.activeSelection && this.activeSelection[select];
+    if (el && currentSelections.length === 1 && alreadySelected) {
+      el.checked = true;
+      return;
+    }
+    this.activeSelection = Object.assign(Object.assign({}, this.activeSelection), { [select]: !this.activeSelection[select] });
+    this.selectThingHandler();
+  }
+  selectThingHandler() {
+    const selectedThings = Object.entries(this.activeSelection)
+      .filter(([_, selected]) => selected)
+      .map(([thing]) => thing);
+    if (!selectedThings.length)
+      return; // Minimum one selected
+    const newFilter = (blob) => {
+      if (this.selector in blob) {
+        return selectedThings.includes(blob[this.selector]);
+      }
+      return true; // Only filter if it has what you're looking for
+    };
+    document.querySelectorAll('.cronk-filtered-datastream').forEach((stream) => {
+      stream.addFilter(this.selector, newFilter);
+    });
+  }
+  render() {
+    if (this.reference === undefined)
+      return null;
+    const selectedThings = Object.values(this.activeSelection).filter(x => !!x);
+    return (h(Host, { class: `${this.selector}-selector thing-selector` }, this.heading ? h("h5", null, this.heading) : null, h("table", { class: "fixed" }, h("thead", null, h("tr", null, h("th", null, h("ion-item", { lines: "none", class: `select-all-things select-all-${this.selector}` }, this.reference.length > 1 && (h("ion-checkbox", { onClick: (e) => this.selectAllThings(e), value: "selectall", checked: this.reference.length === selectedThings.length, indeterminate: this.reference.length > selectedThings.length, color: "secondary", slot: "start" })), h("span", { class: "select-label" }, `${this.reference.length > 1 ? 'SELECT ' : ''}`))), h("th", null), h("th", null, "READS"), h("th", null, "%"))), h("tbody", null, this.reference &&
+      this.reference.map((b) => {
+        const { select, label, count } = b;
+        const proportion = count / this.referenceTotal;
+        return (h("tr", { key: select }, h("td", null, h("ion-item", { lines: "none" }, this.reference && this.reference.length > 1 && (h("ion-checkbox", { onClick: (e) => this.toggleThingSelection(e, b), checked: select in this.activeSelection && this.activeSelection[select], value: select, slot: "start", color: "secondary" })), h("ion-label", null, label))), h("td", null, h("ion-progress-bar", { value: proportion })), h("td", null, count), h("td", null, "(", (proportion * 100).toFixed(1), "%)")));
+      })))));
+  }
+  static get watchers() {
+    return {
+      "selectList": ["updateSelectList"]
+    };
+  }
 };
 CronkSelector.style = cronkSelectorCss;
 
