@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
@@ -83,6 +83,7 @@
   "dependencies": {
     "@metrichor/ui-components": "1.0.1-3157558",
     "ajv": "6.12.2",
+    "jmespath": "0.15.0",
     "lodash": "4.17.15",
     "number-scale": "0.0.9",
     "rxjs": "6.5.5",
