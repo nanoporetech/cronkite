@@ -20,7 +20,7 @@
     cronk-app {
       display: block;
       padding-bottom: 90px;
-    }</style> </head> <body> <ion-toolbar> <ion-buttons slot="primary"> <ion-label class="toolbar-label">PAGE DEMO</ion-label> <ion-select id="report-select" value="hello-world" ok-text="Okay" cancel-text="Dismiss"> <ion-select-option value="hello-world">Hello world</ion-select-option> <ion-select-option value="pychopper">Pychopper</ion-select-option> <ion-select-option value="component-nesting">Nested components</ion-select-option> <ion-select-option value="socketio-demo">Socket.io Demo</ion-select-option> <ion-select-option value="invalid">Invalid pageConfig</ion-select-option> <ion-select-option value="invalid-component">Invalid component definition</ion-select-option> </ion-select> <ion-item> <ion-label class="toolbar-label">VIEW CONFIG</ion-label> <ion-toggle slot="end" onionchange="toggleShowConfig"></ion-toggle> </ion-item> </ion-buttons> <ion-title>Cronkite demo</ion-title> </ion-toolbar> <cronk-app report="hello-world"></cronk-app> <script>document.addEventListener('ionChange', (e) => {
+    }</style> </head> <body> <ion-toolbar> <ion-buttons slot="primary"> <ion-label class="toolbar-label">PAGE DEMO</ion-label> <ion-select id="report-select" value="pychopper" ok-text="Okay" cancel-text="Dismiss"> <ion-select-option value="hello-world">Hello world</ion-select-option> <ion-select-option value="pychopper">Pychopper</ion-select-option> <ion-select-option value="wimp-summary">WIMP summary</ion-select-option> <ion-select-option value="component-nesting">Nested components</ion-select-option> <ion-select-option value="socketio-demo">Socket.io Demo</ion-select-option> <ion-select-option value="invalid">Invalid pageConfig</ion-select-option> <ion-select-option value="invalid-component">Invalid component definition</ion-select-option> </ion-select> <ion-item> <ion-label class="toolbar-label">VIEW CONFIG</ion-label> <ion-toggle slot="end" onionchange="toggleShowConfig"></ion-toggle> </ion-item> </ion-buttons> <ion-title>Cronkite demo</ion-title> </ion-toolbar> <cronk-app report="pychopper"></cronk-app> <script>document.addEventListener('ionChange', (e) => {
       let source = e.target.tagName.toLowerCase()
       if (source === 'ion-select') {
         document.querySelector("cronk-app").report = e.detail.value;
@@ -31,4 +31,11 @@
     })
     function toggleShowConfig(e) {
       console.info('toggleShowConfig', e)
-    }</script> </body></html>
+    }</script> <script>if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  // auto-unregister service worker during dev mode
+  navigator.serviceWorker.getRegistration().then(function(registration) {
+  if (registration) {
+    registration.unregister().then(function() { location.reload(true) });
+  }
+  });
+}</script></body></html>

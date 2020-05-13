@@ -7,17 +7,6 @@
       "@value": "Hello World!"
     },
     {
-      "element": "epi-headlinevalue",
-      "@label": "Native DOM events",
-      "@value": {
-        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
-      },
-      "listen": "mousemove",
-      "layout": {
-        "width": 2
-      }
-    },
-    {
       "element": "epi-checkmark",
       "@message": {
         "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
@@ -25,18 +14,42 @@
       "@fail": {
         "fn:jmespath": "clientX>`500`"
       },
-      "@size": {
-        "fn:divide": [
-          {
-            "fn:jmespath": "clientY"
-          },
-          4
-        ]
-      },
       "listen": "mousemove",
       "layout": {
-        "width": 2
+        "width": 3
       }
+    },
+    {
+      "element": "div",
+      "components": [
+        {
+          "element": "epi-headlinevalue",
+          "@label": "DOM events - JMESPath transform",
+          "@value": {
+            "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+          },
+          "listen": "mousemove"
+        }
+      ],
+      "layout": {
+        "width": 1
+      }
+    },
+    {
+      "element": "cronk-simple-grid",
+      "@headers": [
+        [
+          "Title",
+          "Authors",
+          "Year"
+        ]
+      ],
+      "@data": {
+        "fn:jmespath": "([][join('', ['<a href=\"https://doi.org/', doi, '\">' , title, '</a>']), authorString, pubYear])[0:2]"
+      },
+      "@ordered": true,
+      "@label": "Query string",
+      "listen": "hello:world:results"
     },
     {
       "element": "div",
@@ -60,10 +73,11 @@
           "listen": "hello:world:event"
         },
         {
-          "element": "ol",
-          "@innerHTML": {
-            "fn:jmespath": "join(``, [].join(``,['<li><a href=\\'',@.id,'\\'>',@.title,'</a>']))"
+          "element": "cronk-list",
+          "@items": {
+            "fn:jmespath": "[].join(``,['<a href=\"https://doi.org/', @.doi, '\">' , @.title, '</a>'])"
           },
+          "@ordered": true,
           "@label": "Query string",
           "listen": "hello:world:results"
         }

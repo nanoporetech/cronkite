@@ -1,0 +1,332 @@
+{
+  "data": [
+    {
+      "taxid": "287",
+      "count": 90,
+      "label": "Pseudomonas aeruginosa",
+      "proportion": 0.09090909090909091
+    },
+    {
+      "taxid": "543",
+      "count": 10,
+      "label": "Enterobacteriaceae",
+      "proportion": 0.010101010101010102
+    },
+    {
+      "taxid": "562",
+      "count": 100,
+      "label": "Escherichia coli",
+      "proportion": 0.10101010101010101
+    },
+    {
+      "taxid": "620",
+      "count": 2,
+      "label": "Shigella",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1280",
+      "count": 114,
+      "label": "Staphylococcus aureus",
+      "proportion": 0.11515151515151516
+    },
+    {
+      "taxid": "1350",
+      "count": 2,
+      "label": "Enterococcus",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1351",
+      "count": 100,
+      "label": "Enterococcus faecalis",
+      "proportion": 0.10101010101010101
+    },
+    {
+      "taxid": "1423",
+      "count": 2,
+      "label": "Bacillus subtilis",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1578",
+      "count": 2,
+      "label": "Lactobacillus",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1613",
+      "count": 82,
+      "label": "Lactobacillus fermentum",
+      "proportion": 0.08282828282828283
+    },
+    {
+      "taxid": "1639",
+      "count": 96,
+      "label": "Listeria monocytogenes",
+      "proportion": 0.09696969696969697
+    },
+    {
+      "taxid": "28150",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Senftenberg",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "28901",
+      "count": 40,
+      "label": "Salmonella enterica",
+      "proportion": 0.04040404040404041
+    },
+    {
+      "taxid": "46170",
+      "count": 18,
+      "label": "Staphylococcus aureus subsp. aureus",
+      "proportion": 0.01818181818181818
+    },
+    {
+      "taxid": "54388",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Paratyphi A",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "59201",
+      "count": 34,
+      "label": "Salmonella enterica subsp. enterica",
+      "proportion": 0.03434343434343434
+    },
+    {
+      "taxid": "59204",
+      "count": 2,
+      "label": "Salmonella enterica subsp. diarizonae",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "61648",
+      "count": 2,
+      "label": "Kluyvera intermedia",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "81852",
+      "count": 2,
+      "label": "Enterococcaceae",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "83334",
+      "count": 2,
+      "label": "Escherichia coli O157:H7",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "90371",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Typhimurium",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "119912",
+      "count": 30,
+      "label": "Salmonella enterica subsp. enterica serovar Choleraesuis",
+      "proportion": 0.030303030303030304
+    },
+    {
+      "taxid": "226185",
+      "count": 4,
+      "label": "Enterococcus faecalis V583",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "235443",
+      "count": 30,
+      "label": "Cryptococcus neoformans var. grubii H99",
+      "proportion": 0.030303030303030304
+    },
+    {
+      "taxid": "272626",
+      "count": 2,
+      "label": "Listeria innocua Clip11262",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "321314",
+      "count": 4,
+      "label": "Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "334390",
+      "count": 4,
+      "label": "Lactobacillus fermentum IFO 3956",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "474186",
+      "count": 4,
+      "label": "Enterococcus faecalis OG1RF",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "476213",
+      "count": 10,
+      "label": "Salmonella enterica subsp. enterica serovar Paratyphi C str. RKS4594",
+      "proportion": 0.010101010101010102
+    },
+    {
+      "taxid": "548473",
+      "count": 8,
+      "label": "Staphylococcus aureus subsp. aureus TCH60",
+      "proportion": 0.00808080808080808
+    },
+    {
+      "taxid": "559292",
+      "count": 22,
+      "label": "Saccharomyces cerevisiae S288C",
+      "proportion": 0.022222222222222223
+    },
+    {
+      "taxid": "595494",
+      "count": 2,
+      "label": "Tolumonas auensis DSM 9187",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "655816",
+      "count": 110,
+      "label": "Bacillus subtilis subsp. spizizenii str. W23",
+      "proportion": 0.1111111111111111
+    },
+    {
+      "taxid": "712938",
+      "count": 4,
+      "label": "Lactobacillus fermentum CECT 5716",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "879089",
+      "count": 2,
+      "label": "Listeria monocytogenes SLCC2540",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "913070",
+      "count": 4,
+      "label": "Salmonella enterica subsp. enterica serovar Gaminara",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "941187",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Inverness str. ATCC 10720",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "941193",
+      "count": 2,
+      "label": "Pseudomonas aeruginosa M18",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "984237",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Mbandaka str. ATCC 51958",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "985006",
+      "count": 2,
+      "label": "Staphylococcus aureus subsp. aureus LGA251",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1192196",
+      "count": 2,
+      "label": "Bacillus subtilis subsp. subtilis str. BSP1",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1193501",
+      "count": 2,
+      "label": "Pseudomonas aeruginosa SJTD-1",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1201292",
+      "count": 2,
+      "label": "Enterococcus faecalis ATCC 29212",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1206105",
+      "count": 4,
+      "label": "Enterococcus faecalis D32",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "1209926",
+      "count": 2,
+      "label": "Colletotrichum orchidophilum",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1242101",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Johannesburg str. ST203",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1242107",
+      "count": 2,
+      "label": "Salmonella enterica subsp. enterica serovar Macclesfield str. S-1643",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1261557",
+      "count": 2,
+      "label": "Enterococcus faecalis str. Symbioflor 1",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1279008",
+      "count": 4,
+      "label": "Pseudomonas aeruginosa PA1R",
+      "proportion": 0.00404040404040404
+    },
+    {
+      "taxid": "1287066",
+      "count": 6,
+      "label": "Enterococcus faecalis DENG1",
+      "proportion": 0.006060606060606061
+    },
+    {
+      "taxid": "1381115",
+      "count": 2,
+      "label": "Staphylococcus aureus subsp. aureus Tager 104",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1381124",
+      "count": 2,
+      "label": "Lactobacillus fermentum 3872",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1411700",
+      "count": 2,
+      "label": "Pseudomonas aeruginosa DHS01",
+      "proportion": 0.00202020202020202
+    },
+    {
+      "taxid": "1415629",
+      "count": 2,
+      "label": "Pseudomonas aeruginosa MTB-1",
+      "proportion": 0.00202020202020202
+    }
+  ],
+  "totals": {
+    "classified": 990,
+    "unclassified": 10
+  }
+}

@@ -1,1 +1,0 @@
-System.register([],(function(e){"use strict";return{execute:function(){var t=e("C",["#01738f","#53b8b1","#fbc64d","#ed5565","#999999"])}}}));

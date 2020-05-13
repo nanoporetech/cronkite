@@ -1,0 +1,28 @@
+{
+  "averageQualityScore": 11.790120000000003,
+  "averageSequenceLength": 2648.344,
+  "data": [
+    {
+      "barcode": "NO BARCODE",
+      "count": 900,
+      "proportion": 0.9
+    },
+    {
+      "barcode": "BC01",
+      "count": 70,
+      "proportion": 0.07
+    },
+    {
+      "barcode": "BC16",
+      "count": 20,
+      "proportion": 0.02
+    },
+    {
+      "barcode": "BC04",
+      "count": 10,
+      "proportion": 0.01
+    }
+  ],
+  "totalBases": 2648344,
+  "totalReads": 1000
+}

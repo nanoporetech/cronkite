@@ -132,7 +132,7 @@
       "@label-x-left": "",
       "@label-x-right": "",
       "@data": {
-        "fn:jmespath": "[?exit_status == 'Classified'].$seqlen[*].{x: @[0],y: @[1]} | @[]"
+        "fn:jmespath": "[?exit_status == 'Classified'].\"$seqlen\"[*].{x: @[0],y: @[1]} | @[]"
       },
       "element": "epi-coverageplot",
       "listen": "pychopper:datastream:reads",
@@ -165,7 +165,7 @@
       "@label-x-left": "",
       "@label-x-right": "",
       "@data": {
-        "fn:jmespath": "[].$tlen[*].{x: @[0],y: @[1]} | @[]"
+        "fn:jmespath": "[].\"$tlen\"[*].{x: @[0],y: @[1]} | @[]"
       },
       "element": "epi-coverageplot",
       "listen": "pychopper:datastream:transcripts",
@@ -187,7 +187,7 @@
   "streams": [
     {
       "element": "cronk-poll-datastream",
-      "@url": "https://nanoporetech.github.io/cronkite/examples/data/pychopper.json",
+      "@url": "http://localhost:3333/cronkite/examples/data/pychopper.json",
       "@poll-frequency": 25000,
       "@credentials": "omit",
       "@acceptsFilters": true,

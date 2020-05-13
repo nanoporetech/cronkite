@@ -90,7 +90,7 @@
     {
       "@label": "AVG QUALITY SCORE",
       "@value": {
-        "fn:tofixed": [
+        "fn:toFixed": [
           {
             "fn:average": {
               "fn:jmespath": "data[?exit_status == 'Workflow successful'].mean_qscore.avg"
