@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
