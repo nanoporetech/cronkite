@@ -89,13 +89,7 @@
           ],
           "@label": "TOTAL YIELD",
           "@value": {
-            "fn:formatNumber": [
-              {
-                "fn:jmespath": "totalBases"
-              },
-              2,
-              "base"
-            ]
+            "fn:jmespath": "formatNumber(totalBases,`2`,'base')"
           },
           "element": "epi-headlinevalue",
           "layout": {
@@ -106,12 +100,7 @@
         {
           "@label": "AVG QUALITY SCORE",
           "@value": {
-            "fn:toFixed": [
-              {
-                "fn:jmespath": "averageQualityScore"
-              },
-              2
-            ]
+            "fn:jmespath": "toFixed(averageQualityScore,`2`)"
           },
           "element": "epi-headlinevalue",
           "layout": {
@@ -125,13 +114,7 @@
           ],
           "@label": "AVG SEQUENCE LENGTH",
           "@value": {
-            "fn:formatNumber": [
-              {
-                "fn:jmespath": "averageSequenceLength"
-              },
-              0,
-              "base"
-            ]
+            "fn:jmespath": "formatNumber(averageSequenceLength,`0`,'base')"
           },
           "element": "epi-headlinevalue",
           "layout": {

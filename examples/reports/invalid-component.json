@@ -10,7 +10,7 @@
       "element": "epi-headlinevalue",
       "@label": "Native DOM events",
       "@value": {
-        "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_strinlientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+        "fn:jmespath": "format('Client X: ${0}, Client Y: ${1}', [clientX, clientY])"
       },
       "listen": "mousemove",
       "layout": {
@@ -26,12 +26,7 @@
         "fn:jmespath": "clientX>`500`"
       },
       "@size": {
-        "fn:divide": [
-          {
-            "fn:jmespath": "clientY"
-          },
-          4
-        ]
+        "fn:jmespath": "divide(clientY,`4`)"
       },
       "listen": "mousemove",
       "layout": {
