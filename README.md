@@ -181,6 +181,7 @@ In the example above we use the format function to generate a new string from a 
 - `split` - Splits a string on a given pattern
 - `entries` - Lists entries in a map
 - `format` - Formats in put source given a template
+- `flatMapValues` - Flatten objects into `Array<key,value>` where any iterable values are also decomposed
 
 
 ### 5. PAYLOAD TRANSFORMS (JMESPath extensions)

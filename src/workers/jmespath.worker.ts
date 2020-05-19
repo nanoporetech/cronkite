@@ -130,6 +130,21 @@ registerFunction(
   [{ types: [TYPE_STRING] }, { types: [TYPE_OBJECT, TYPE_ARRAY] }],
 );
 
+registerFunction(
+  'flatMapValues',
+  ([inputObject]) => {
+    return Object.entries(inputObject).reduce((flattened, entry) => {
+      const [key, value]: [string, any] = entry;
+
+      if (Array.isArray(value)) {
+        return [...flattened, ...value.map(v => [key, v])];
+      }
+      return [...flattened, [key, value]];
+    }, [] as any[]);
+  },
+  [{ types: [TYPE_OBJECT, TYPE_ARRAY] }],
+);
+
 export const query = async (path: string, json: any) => {
   return search(json, path);
 };

@@ -287,4 +287,43 @@ describe('Dashboard utils', () => {
     const returnValue = await applyFunction('fn:unsupported', [[0, 1, 2]], {});
     expect(returnValue).toStrictEqual({ 'fn:unsupported': [[0, 1, 2]] });
   });
+
+  it('handles `flatMapValues` JMESPath function extension', async () => {
+    // Calculate the most common value
+    let returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', { a: [1, 3, 5], b: [2, 4, 6] });
+    expect(returnValue).toStrictEqual([
+      ['a', 1],
+      ['a', 3],
+      ['a', 5],
+      ['b', 2],
+      ['b', 4],
+      ['b', 6],
+    ]);
+
+    returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', {
+      a: [true, { x: 3 }, null, 1234, ['XXX']],
+      b: { x: 2 },
+    });
+    expect(returnValue).toStrictEqual([
+      ['a', true],
+      ['a', { x: 3 }],
+      ['a', null],
+      ['a', 1234],
+      ['a', ['XXX']],
+      ['b', { x: 2 }],
+    ]);
+
+    returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', [
+      [1, 3, 5],
+      [2, 4, 6],
+    ]);
+    expect(returnValue).toStrictEqual([
+      ['0', 1],
+      ['0', 3],
+      ['0', 5],
+      ['1', 2],
+      ['1', 4],
+      ['1', 6],
+    ]);
+  });
 });
