@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
@@ -42,7 +42,7 @@
     "@types/jest": "24.9.1",
     "@types/lodash": "4.14.150",
     "@types/puppeteer": "2.0.1",
-    "@types/socket.io-client": "1.4.32",
+    "@types/socket.io-client": "1.4.33",
     "@types/uuid": "7.0.3",
     "husky": "4.2.5",
     "jest": "26.0.1",
@@ -81,6 +81,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
+    "@metrichor/jmespath": "0.1.1",
     "@metrichor/ui-components": "1.0.1-3157558",
     "ajv": "6.12.2",
     "lodash": "4.17.15",

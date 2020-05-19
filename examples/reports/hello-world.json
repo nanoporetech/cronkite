@@ -26,7 +26,7 @@
           "element": "epi-headlinevalue",
           "@label": "DOM events - JMESPath transform",
           "@value": {
-            "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+            "fn:jmespath": "format('Client X: ${0}, Client Y: ${1}', [clientX, clientY])"
           },
           "listen": "mousemove"
         }
@@ -45,7 +45,7 @@
         ]
       ],
       "@data": {
-        "fn:jmespath": "([][join('', ['<a href=\"https://doi.org/', doi, '\">' , title, '</a>']), authorString, pubYear])[0:2]"
+        "fn:jmespath": "([][format('<a href=\"https://doi.org/${doi}\">${title}</a>', @), authorString, pubYear])[0:2]"
       },
       "@ordered": true,
       "@label": "Query string",
@@ -75,7 +75,7 @@
         {
           "element": "cronk-list",
           "@items": {
-            "fn:jmespath": "[].join(``,['<a href=\"https://doi.org/', @.doi, '\">' , @.title, '</a>'])"
+            "fn:jmespath": "[].format('<a href=\"https://doi.org/${doi}\">${title}</a>', @)"
           },
           "@ordered": true,
           "@label": "Query string",

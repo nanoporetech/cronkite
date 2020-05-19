@@ -130,12 +130,65 @@ describe('Dashboard utils', () => {
 
   it('applies the `mode` function', async () => {
     // Calculate the most common value
-    const returnValue = await applyFunction(
+    let returnValue = await applyFunction(
       'fn:mode',
       [[[-1, 2.21, -3.2, 4.2, 5.2, 2.2, 3.3, 4.11, 1.33, 5.1, 2.234, 3.2, 1.11, 5.67]], 1],
       {},
     );
     expect(returnValue).toStrictEqual(2.234);
+
+    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [
+      -1,
+      2.21,
+      -3.2,
+      4.2,
+      5.2,
+      2.21,
+      3.3,
+      4.11,
+      1.33,
+      5.1,
+      2.21,
+      3.2,
+      1.11,
+      5.67,
+    ]);
+    expect(returnValue).toStrictEqual([2.21]);
+    returnValue = await applyFunction('fn:jmespath', 'mode(@)', []);
+    expect(returnValue).toStrictEqual(null);
+    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [1, 2, 3]);
+    expect(returnValue).toStrictEqual(null);
+    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [8, 9, 10, 10, 10, 11, 11, 11, 12, 13]);
+    expect(returnValue).toStrictEqual([10, 11]);
+  });
+
+  it('applies the `median` function', async () => {
+    // Calculate the most common value
+    let returnValue = await applyFunction('fn:jmespath', 'median(@)', [
+      -1,
+      2.21,
+      -3.2,
+      4.2,
+      5.2,
+      2.21,
+      3.3,
+      4.11,
+      1.33,
+      5.1,
+      2.21,
+      3.2,
+      1.11,
+      5.67,
+    ]);
+    expect(returnValue).toStrictEqual(2.705);
+    returnValue = await applyFunction('fn:jmespath', 'median(@)', []);
+    expect(returnValue).toStrictEqual(null);
+    returnValue = await applyFunction('fn:jmespath', 'median(@)', [2, 1, 3]);
+    expect(returnValue).toStrictEqual(2);
+    returnValue = await applyFunction('fn:jmespath', 'median(@)', [4, 2, 1, 3]);
+    expect(returnValue).toStrictEqual(2.5);
+    returnValue = await applyFunction('fn:jmespath', 'median(@)', [8, 9, 10, 10, 10, 11, 11, 11, 12, 13]);
+    expect(returnValue).toStrictEqual(10.5);
   });
 
   it('applies the `mod` function', async () => {
@@ -209,6 +262,12 @@ describe('Dashboard utils', () => {
     // Calculate the most common value
     const returnValue = await applyFunction('fn:average', [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], {});
     expect(returnValue).toStrictEqual(4.5);
+  });
+
+  it('applies the `mean` function', async () => {
+    // Load when there's nothing but ID given
+    const returnValue = await applyFunction('fn:jmespath', 'mean(@)', [13, 18, 13, 14, 13, 16, 14, 21, 13]);
+    expect(returnValue).toStrictEqual(15);
   });
 
   it('handles nested functions', async () => {

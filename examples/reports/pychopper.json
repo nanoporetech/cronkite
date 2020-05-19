@@ -34,6 +34,9 @@
           "listen": "pychopper:datastream",
           "layout": {
             "width": 2
+          },
+          "style": {
+            "minWidth": "max-content"
           }
         },
         {
@@ -45,6 +48,9 @@
           "listen": "pychopper:datastream:reads",
           "layout": {
             "width": 2
+          },
+          "style": {
+            "minWidth": "max-content"
           }
         },
         {
@@ -54,24 +60,14 @@
             true
           ],
           "@value": {
-            "fn:formatNumber": [
-              {
-                "fn:divide": [
-                  {
-                    "fn:jmespath": "sum([?exit_status=='Classified']._stats.seqlen)"
-                  },
-                  {
-                    "fn:jmespath": "sum([?exit_status=='Classified']._stats.count)"
-                  }
-                ]
-              },
-              0,
-              "base"
-            ]
+            "fn:jmespath": "formatNumber(divide(sum([?exit_status=='Classified']._stats.seqlen), sum([?exit_status=='Classified']._stats.count)), `0`, 'base')"
           },
           "listen": "pychopper:datastream:reads",
           "layout": {
             "width": 2
+          },
+          "style": {
+            "minWidth": "max-content"
           }
         },
         {
@@ -81,24 +77,14 @@
             true
           ],
           "@value": {
-            "fn:formatNumber": [
-              {
-                "fn:divide": [
-                  {
-                    "fn:jmespath": "sum([*]._stats.tlen)"
-                  },
-                  {
-                    "fn:jmespath": "sum([*]._stats.count)"
-                  }
-                ]
-              },
-              0,
-              "base"
-            ]
+            "fn:jmespath": "formatNumber(divide(sum([*]._stats.tlen),sum([*]._stats.count)), `0`, 'base')"
           },
           "listen": "pychopper:datastream:transcripts",
           "layout": {
             "width": 2
+          },
+          "style": {
+            "minWidth": "max-content"
           }
         }
       ],
@@ -138,6 +124,9 @@
       "listen": "pychopper:datastream:reads",
       "layout": {
         "width": 2
+      },
+      "style": {
+        "minWidth": "25rem"
       }
     },
     {
@@ -171,12 +160,15 @@
       "listen": "pychopper:datastream:transcripts",
       "layout": {
         "width": 2
+      },
+      "style": {
+        "minWidth": "25rem"
       }
     },
     {
       "element": "cronk-version",
       "@innerHTML": {
-        "fn:jmespath": "join(`REPORT VERSION: `, [``, to_string(version)])"
+        "fn:jmespath": "format(`REPORT VERSION: ${0}`, [version])"
       },
       "layout": {
         "position": "footer"

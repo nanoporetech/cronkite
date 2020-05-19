@@ -1,6 +1,7 @@
 cronk-page-panel {
   /* Component styles go here */
   display: inline-block;
+  padding: 0.5rem;
 
   &.panel-hidden {
     display: none;

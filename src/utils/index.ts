@@ -1,6 +1,6 @@
 import numberScale from 'number-scale';
 import { struct } from 'superstruct';
-import { jmespath } from '../workers/jmespath.worker';
+import { query } from '../workers/jmespath.worker';
 // import { jqSearch } from '../workers/jq.worker';
 // tslint:disable: object-literal-sort-keys
 numberScale.defineScale(
@@ -160,7 +160,7 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
       return averages.reduce((a: number, b: number) => a + b, 0) / (averages.length || 1);
     case 'fn:jmespath':
       // console.info('JMESPATH', val, data, await jmespath(val, data))
-      return jmespath(val, data);
+      return query(val, data);
     // case 'fn:jq':
     //   // console.info('JQ', val, data, jqSearch(data, val));
     //   return jqSearch(data, val);

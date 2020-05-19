@@ -127,20 +127,63 @@ and the X/Y coordinates would continue to change dynamically as the mouse is mov
 
 Using the jmespath `[clientX, clientY]` we pull out the clientX and clientY from the payload root cor current node `@` and project them into a new array containing both coordinates. NOTE: `[clientX, clientY]` and `[@.clientX, @.clientY]` are equivalent because both queries operate on the "current node" which is the event payload.
 
-To demonstrate a more advanced JMESPath we could have set the `@innerText` value to `"Client X: NNN, Client Y: NNN"` with the following JMESPath config:
+To demonstrate a more advanced JMESPath we could have set the `@innerText` value to `"Client X: NNN, Client Y: NNN"` with the following JMESPath expression:
 
 ```javascript
 {
-    "fn:jmespath": "join(`, `, [join(`Client X: `, [``, to_string(clientX)]), join(`Client Y: `, [``, to_string(clientY)])])"
+    "fn:jmespath": "format('Client X: ${0}, Client Y: ${1}', [clientX, clientY])"
 }
 ```
 
 Payloads can be arbitrarily nested and this is supported in the JMESPath spec.
 We won't go into explaining the JMESPath above but if you're interested in finding out more then check out the [specification page](http://jmespath.org/specification.html).
 
+#### 3.1 LISTENER OPTIONS
+
+Listeners can optionally be fine tunes with options to window over event streams or debounce  busy streams. In the example above `mousemove` generates **LOADS** of events and hence payloads. We can do better that processing every payload by debouncing the stream. To do that the configuration can be changed to:
+
+```javascript
+{
+    "components": [
+        {
+            "element": "div",
+            "@innerText": {
+                "fn:jmespath": "[clientX, clientY]"
+            },
+            "listen": {
+              "stream": "mousemove",
+              "debounce": 300,
+              "cache": 1 // Not required as this is the default
+            }
+        }
+    ],
+    "streams" : []
+}
+```
+> ### What's going on
+>
+> We're still listening to the `mousemove` event stream but now payloads are debounced to 300ms and although we've set the cache to 1 (the default) we could increase that number to collect a window of the last N `mousemove` payloads. This is particularly useful when you want to maintain a history of previous events as in the Socket.io demo.
+
 <hr />
 
-### 4. PAYLOAD TRANSFORMS (BUILTIN FUNCTIONS)
+### 4. JMESPATH EXTENSIONS
+
+In the example above we use the format function to generate a new string from a template and input source. This is one of many extensions to the JMESPath spec that are available in the expressions. JMESPath expressions in Cronkite include the [standard built-in functions from the spec](https://jmespath.org/specification.html#built-in-functions) as well as the following extra functions to help with payload reshaping:
+
+
+- `mean` - Calculate the mean of `Array<number>`
+- `mode` - Calculate the mean of `Array<number>`
+- `median` - Calculate the mean of `Array<number>`
+- `toFixed` - Fixes the precision of a number to a given number decimals
+- `formatNumber` - Formats numbers given a precision and unit
+- `uniq` - De-duplicates a list of values
+- `divide` - Divides two numbers
+- `split` - Splits a string on a given pattern
+- `entries` - Lists entries in a map
+- `format` - Formats in put source given a template
+
+
+### 5. PAYLOAD TRANSFORMS (JMESPath extensions)
 
 You have already been introduced to your first payload transform `fn:jmespath` which fishes out values from any JSON blobs provided as a payload to `Event`. Transforms are `object` types and are identified by keys with the `fn:xxxxxx` prefix. The Cronkite transforms are provided as an escape hatch when the jmespath spec lacks operations necessary to reshape the payloads or perform unsupported operations. At the time of writing the following transforms were supported
 
@@ -168,8 +211,7 @@ You have already been introduced to your first payload transform `fn:jmespath` w
 Streams are a special type of component in that they __*do not*__ render any UI elements. They do however, emit events (usually `CustomEvent` types) with corresponding payloads that can be consumed by `components` via `listen` as described above.
 
 There are (at the time of writing) three configurable data stream components available in Cronkite:
-  1.  [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
-  2. [epi-workflow-instance-datastream](src/components/epi-workflow-instance-datastream/readme.md)
+  1. [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
   3. [cronk-socketio-datastream](src/components/cronk-socketio-datastream/readme.md) - very much a prototype
 
 ### 1. [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)

@@ -23,7 +23,7 @@
       "element": "cronk-list",
       "@bullets": false,
       "@items": {
-        "fn:jmespath": "[].join('', ['<b style=\"font-size:1.5rem\">', @.username || '',':</b> ', @.message || '', '</b>'])"
+        "fn:jmespath": "[].format('<b style=\"font-size:1.5rem\">${username}:</b> <span>${message}</span>', @)"
       },
       "listen": {
         "stream": "socketio:newmessage",

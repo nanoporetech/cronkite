@@ -90,13 +90,14 @@ export class CronkPagePanel {
     const ReportPanel = this.panelEl;
     const colSpan = (this.panelConfig.layout && this.panelConfig.layout.width) || 4;
     const hasComponents = this.panelConfig.components && this.panelConfig.components.length;
-
     return (
       <Host
         class={`component-panel ${this.panelConfig.hidden ? 'panel-hidden' : ''}`}
         data-grid={this.panelConfig.layout}
         style={{
-          gridColumnStart: `span ${colSpan}`,
+          flex: `${colSpan} auto`,
+          minWidth: `20rem`,
+          width: `${(colSpan / 4) * 100}%`,
           ...(this.panelConfig.style || {}),
         }}
       >

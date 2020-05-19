@@ -4,7 +4,9 @@ cronk-page-components {
   margin: 0.5rem;
 
   & .components-content {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     grid-gap: 0.5rem;
   }
 }
