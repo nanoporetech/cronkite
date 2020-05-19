@@ -1,13 +1,65 @@
-import { registerFunction, search, TYPE_ARRAY, TYPE_NUMBER, TYPE_OBJECT, TYPE_STRING } from '@metrichor/jmespath';
+import {
+  registerFunction,
+  search,
+  TYPE_ARRAY,
+  TYPE_ARRAY_NUMBER,
+  TYPE_NUMBER,
+  TYPE_OBJECT,
+  TYPE_STRING,
+} from '@metrichor/jmespath';
 import numberScale from 'number-scale';
 
 /*
   TODO:
     fn:round
-    fn:average
-    fn:mode
     fn:mod
 */
+
+registerFunction(
+  'mean',
+  ([vector]: [number[]]) => {
+    return vector.reduce((a, b) => a + b, 0) / vector.length;
+  },
+  [{ types: [TYPE_ARRAY_NUMBER] }],
+);
+
+registerFunction(
+  'mode',
+  ([vector]: [number[]]) => {
+    if (!vector.length) return null;
+    const modeTracker = vector
+      .sort((a: number, b: number) => a - b)
+      .reduce((valueCount: { [mode: number]: [number, number] }, newValue: any) => {
+        const valueKey = Number.parseFloat(newValue);
+        valueCount[valueKey] = valueCount[valueKey]
+          ? [valueCount[valueKey][0] + 1, valueCount[valueKey][1]]
+          : [1, newValue];
+        return valueCount;
+      }, {});
+    const maxOccurrence = Math.max(...Object.values(modeTracker).map(x => x[0]));
+    if (maxOccurrence === 1 && vector.length > 1) {
+      return null;
+    }
+    return Object.values(modeTracker)
+      .filter(([occurrence]) => occurrence === maxOccurrence)
+      .map(v => v[1]);
+  },
+  [{ types: [TYPE_ARRAY_NUMBER] }],
+);
+
+registerFunction(
+  'median',
+  ([vector]: [number[]]) => {
+    if (!vector.length) return null;
+    const sorted = vector.sort((a: number, b: number) => a - b);
+    const halfway = vector.length / 2;
+    if (vector.length % 2 === 0) {
+      return (sorted[halfway - 1] + sorted[halfway]) / 2;
+    }
+    return sorted[Math.floor(halfway)];
+  },
+  [{ types: [TYPE_ARRAY_NUMBER] }],
+);
 
 registerFunction(
   'toFixed',
