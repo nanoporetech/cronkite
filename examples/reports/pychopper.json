@@ -14,7 +14,7 @@
       "element": "cronk-funnel",
       "listen": "pychopper:datastream:reads",
       "@statsList": {
-        "fn:jmespath": "[].{label: @.exit_status , count: @._stats.count}"
+        "fn:jmespath": "[].{label: exit_status , count: _stats.count}"
       },
       "style": {
         "alignSelf": "center"
@@ -77,7 +77,7 @@
             true
           ],
           "@value": {
-            "fn:jmespath": "formatNumber(divide(sum([*]._stats.tlen),sum([*]._stats.count)), `0`, 'base')"
+            "fn:jmespath": "formatNumber(divide(sum([*]._stats.tlen), sum([*]._stats.count)), `0`, 'base')"
           },
           "listen": "pychopper:datastream:transcripts",
           "layout": {
@@ -97,7 +97,7 @@
       "element": "cronk-selector",
       "heading": "SELECT BARCODE",
       "@selectList": {
-        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: @.barcode, count: @._stats.count}"
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: barcode | starts_with(@, 'BC') && @ || 'NO BARCODE' , select: barcode, count: _stats.count}"
       },
       "@selector": [
         "barcode"
@@ -118,7 +118,7 @@
       "@label-x-left": "",
       "@label-x-right": "",
       "@data": {
-        "fn:jmespath": "[?exit_status == 'Classified'].\"$seqlen\"[*].{x: @[0],y: @[1]} | @[]"
+        "fn:jmespath": "[?exit_status == 'Classified'].\"$seqlen\"[*].{x: [0],y: [1]} | @[]"
       },
       "element": "epi-coverageplot",
       "listen": "pychopper:datastream:reads",
@@ -133,7 +133,7 @@
       "element": "cronk-selector",
       "heading": "SELECT RUNID",
       "@selectList": {
-        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: @.runid, select: @.runid, count: @._stats.count}"
+        "fn:jmespath": "data.reads[?exit_status=='Classified'].{label: runid, select: runid, count: _stats.count}"
       },
       "@selector": [
         "runid"
@@ -154,7 +154,7 @@
       "@label-x-left": "",
       "@label-x-right": "",
       "@data": {
-        "fn:jmespath": "[].\"$tlen\"[*].{x: @[0],y: @[1]} | @[]"
+        "fn:jmespath": "[].\"$tlen\"[*].{x: [0], y: [1]} | @[]"
       },
       "element": "epi-coverageplot",
       "listen": "pychopper:datastream:transcripts",
