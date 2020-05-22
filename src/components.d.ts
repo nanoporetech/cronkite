@@ -39,6 +39,15 @@ export namespace Components {
         "ordered": boolean;
         "reverse": boolean;
     }
+    interface CronkManagedDatastream {
+        "acceptsFilters": boolean;
+        "addFilter": (fnKey: string, filterFn: CronkDataStream.IFilterFn) => Promise<void>;
+        "channels": CronkDataStream.IChannelShape[];
+        "data": CronkDataStream.JSONValue;
+        "listFilters": () => Promise<{}>;
+        "resendBroadcast": () => Promise<void>;
+        "type": string;
+    }
     interface CronkPage {
         "loadConfig": (newConfig: any) => Promise<void>;
         "pageConfig"?: CronkJSONTypes.ReportDefinition | undefined;
@@ -142,6 +151,12 @@ declare global {
         prototype: HTMLCronkListElement;
         new (): HTMLCronkListElement;
     };
+    interface HTMLCronkManagedDatastreamElement extends Components.CronkManagedDatastream, HTMLStencilElement {
+    }
+    var HTMLCronkManagedDatastreamElement: {
+        prototype: HTMLCronkManagedDatastreamElement;
+        new (): HTMLCronkManagedDatastreamElement;
+    };
     interface HTMLCronkPageElement extends Components.CronkPage, HTMLStencilElement {
     }
     var HTMLCronkPageElement: {
@@ -221,6 +236,7 @@ declare global {
         "cronk-event-stream": HTMLCronkEventStreamElement;
         "cronk-funnel": HTMLCronkFunnelElement;
         "cronk-list": HTMLCronkListElement;
+        "cronk-managed-datastream": HTMLCronkManagedDatastreamElement;
         "cronk-page": HTMLCronkPageElement;
         "cronk-page-components": HTMLCronkPageComponentsElement;
         "cronk-page-panel": HTMLCronkPagePanelElement;
@@ -261,6 +277,12 @@ declare namespace LocalJSX {
         "items"?: any[];
         "ordered"?: boolean;
         "reverse"?: boolean;
+    }
+    interface CronkManagedDatastream {
+        "acceptsFilters"?: boolean;
+        "channels"?: CronkDataStream.IChannelShape[];
+        "data"?: CronkDataStream.JSONValue;
+        "type"?: string;
     }
     interface CronkPage {
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
@@ -330,6 +352,7 @@ declare namespace LocalJSX {
         "cronk-event-stream": CronkEventStream;
         "cronk-funnel": CronkFunnel;
         "cronk-list": CronkList;
+        "cronk-managed-datastream": CronkManagedDatastream;
         "cronk-page": CronkPage;
         "cronk-page-components": CronkPageComponents;
         "cronk-page-panel": CronkPagePanel;
@@ -354,6 +377,7 @@ declare module "@stencil/core" {
             "cronk-event-stream": LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;
             "cronk-funnel": LocalJSX.CronkFunnel & JSXBase.HTMLAttributes<HTMLCronkFunnelElement>;
             "cronk-list": LocalJSX.CronkList & JSXBase.HTMLAttributes<HTMLCronkListElement>;
+            "cronk-managed-datastream": LocalJSX.CronkManagedDatastream & JSXBase.HTMLAttributes<HTMLCronkManagedDatastreamElement>;
             "cronk-page": LocalJSX.CronkPage & JSXBase.HTMLAttributes<HTMLCronkPageElement>;
             "cronk-page-components": LocalJSX.CronkPageComponents & JSXBase.HTMLAttributes<HTMLCronkPageComponentsElement>;
             "cronk-page-panel": LocalJSX.CronkPagePanel & JSXBase.HTMLAttributes<HTMLCronkPagePanelElement>;
