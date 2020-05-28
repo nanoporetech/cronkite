@@ -1,14 +1,17 @@
 import {
   registerFunction,
   search,
+  TYPE_ANY,
   TYPE_ARRAY,
   TYPE_ARRAY_NUMBER,
+  TYPE_EXPREF,
   TYPE_NUMBER,
   TYPE_OBJECT,
   TYPE_STRING,
 } from '@metrichor/jmespath';
+import { ExpressionNodeTree, JSONObject } from '@metrichor/jmespath/dist/types/typings';
+import * as lodash from 'lodash';
 import numberScale from 'number-scale';
-
 /*
   TODO:
     fn:round
@@ -144,6 +147,101 @@ registerFunction(
   },
   [{ types: [TYPE_OBJECT, TYPE_ARRAY] }],
 );
+
+registerFunction(
+  'toUpperCase',
+  ([inputString]: [string]) => {
+    return inputString.toLocaleUpperCase();
+  },
+  [{ types: [TYPE_STRING] }],
+);
+
+registerFunction(
+  'toLowerCase',
+  ([inputString]: [string]) => {
+    return inputString.toLocaleLowerCase();
+  },
+  [{ types: [TYPE_STRING] }],
+);
+
+registerFunction(
+  'trim',
+  ([inputString]: [string]) => {
+    return inputString.trim();
+  },
+  [{ types: [TYPE_STRING] }],
+);
+
+registerFunction(
+  'groupBy',
+  function (this: any, [memberList, exprefNode]: [JSONObject[], ExpressionNodeTree | string]) {
+    if (!this._interpreter) return {};
+
+    if (typeof exprefNode === 'string') {
+      return memberList.reduce((grouped, member) => {
+        if (exprefNode in member) {
+          const key = member[exprefNode] as string;
+          const currentMembers = (grouped[key] as any[]) || [];
+          grouped[key] = [...currentMembers, member];
+        }
+        return grouped;
+      }, {});
+    }
+    const interpreter = this._interpreter;
+    const requiredType = Array.from(new Set(memberList.map(member => this.getTypeName(member))));
+    const onlyObjects = requiredType.every(x => x === TYPE_OBJECT);
+    if (!onlyObjects) {
+      throw new Error(
+        `TypeError: unexpected type. Expected Array<object> but received Array<${requiredType
+          .map(type => this.TYPE_NAME_TABLE[type])
+          .join(' | ')}>`,
+      );
+    }
+
+    return memberList.reduce((grouped, member) => {
+      const key = interpreter.visit(exprefNode, member) as string;
+      const currentMembers = (grouped[key] as any[]) || [];
+      grouped[key] = [...currentMembers, member];
+      return grouped;
+    }, {});
+  },
+  [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF, TYPE_STRING] }],
+);
+
+registerFunction(
+  'combine',
+  ([resolvedArgs]: [JSONObject[]]) => {
+    let merged = {};
+    for (let i = 0; i < resolvedArgs.length; i += 1) {
+      const current = resolvedArgs[i];
+      merged = Array.isArray(current) ? Object.assign(merged, ...current) : Object.assign(merged, current);
+    }
+    return merged;
+  },
+  [
+    {
+      types: [TYPE_OBJECT, TYPE_ARRAY],
+      variadic: true,
+    },
+  ],
+);
+
+for (const key of Object.keys(lodash)) {
+  if (['_', 'default', 'VERSION'].includes(key)) continue;
+
+  registerFunction(
+    `_${key}`,
+    (resolvedArgs: any) => {
+      return resolvedArgs.length > 1 ? lodash[key](...resolvedArgs) : lodash[key](resolvedArgs[0]);
+    },
+    [
+      {
+        types: [TYPE_ANY],
+        variadic: true,
+      },
+    ],
+  );
+}
 
 export const query = async (path: string, json: any) => {
   return search(json, path);

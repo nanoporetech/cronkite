@@ -170,6 +170,24 @@ Listeners can optionally be fine tunes with options to window over event streams
 
 In the example above we use the format function to generate a new string from a template and input source. This is one of many extensions to the JMESPath spec that are available in the expressions. JMESPath expressions in Cronkite include the [standard built-in functions from the spec](https://jmespath.org/specification.html#built-in-functions) as well as the following extra functions to help with payload reshaping:
 
+#### LODASH EXTENSIONS TO JMESPATH EXPRESSIONS
+
+All of lodash functions are included in JMESPath expressions and are prefixed with an `_` e.g:
+
+to use `lodash.fromPairs()` you would write your expression like
+```javascript
+it('calls lodash.fromPairs with `_fromPairs` in JMESPath function expression', async () => {
+    const returnValue = search('_fromPairs(@)', [
+      ['a', 1],
+      ['b', 2],
+    ]);
+    expect(returnValue).toStrictEqual({ a: 1, b: 2 });
+  });
+
+```
+> This is caveated by the fact that some lodash functions require a predicate which is a function. These will obviously not work in JMESPath as there is no way to describe a function literal.
+
+#### CRONKITE EXTENSIONS TO JMESPATH EXPRESSIONS
 
 - `mean` - Calculate the mean of `Array<number>`
 - `mode` - Calculate the mean of `Array<number>`
@@ -182,7 +200,11 @@ In the example above we use the format function to generate a new string from a 
 - `entries` - Lists entries in a map
 - `format` - Formats in put source given a template
 - `flatMapValues` - Flatten objects into `Array<key,value>` where any iterable values are also decomposed
-
+- `toUpperCase` - Upercase all characters in a string
+- `toLowerCase` - Lowercase all characters in a string
+- `trim` - Trim whitespace off the beginning and end of a string
+- `groupBy` - Group an `Array<object>` on a key or expression
+- `combine` - A better merge
 
 ### 5. PAYLOAD TRANSFORMS (JMESPath extensions)
 

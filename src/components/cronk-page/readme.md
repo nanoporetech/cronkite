@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property     | Attribute     | Description | Type                            | Default     |
-| ------------ | ------------- | ----------- | ------------------------------- | ----------- |
-| `pageConfig` | --            |             | `ReportDefinition \| undefined` | `undefined` |
-| `showConfig` | `show-config` |             | `boolean`                       | `false`     |
+| Property            | Attribute            | Description | Type                                      | Default     |
+| ------------------- | -------------------- | ----------- | ----------------------------------------- | ----------- |
+| `pageConfig`        | `page-config`        |             | `ReportDefinition \| string \| undefined` | `undefined` |
+| `showConfig`        | `show-config`        |             | `boolean`                                 | `false`     |
+| `validationEnabled` | `validation-enabled` |             | `boolean`                                 | `true`      |
 
 
 ## Events

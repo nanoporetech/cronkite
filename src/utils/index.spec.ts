@@ -326,4 +326,142 @@ describe('Dashboard utils', () => {
       ['1', 6],
     ]);
   });
+
+  it('handles `toUpperCase` JMESPath function extension', async () => {
+    // Calculate the most common value
+    const returnValue = await applyFunction('fn:jmespath', 'toUpperCase(@)', `Foo bar`);
+    expect(returnValue).toStrictEqual('FOO BAR');
+  });
+
+  it('handles `toLowerCase` JMESPath function extension', async () => {
+    // Calculate the most common value
+    const returnValue = await applyFunction('fn:jmespath', 'toLowerCase(@)', `Foo bar`);
+    expect(returnValue).toStrictEqual('foo bar');
+  });
+
+  it('handles `trim` JMESPath function extension', async () => {
+    // Calculate the most common value
+    const returnValue = await applyFunction('fn:jmespath', 'trim(@)', `\n  Foo bar \r`);
+    expect(returnValue).toStrictEqual('Foo bar');
+  });
+
+  it('handles `groupBy` JMESPath function extension', async () => {
+    let returnValue = await applyFunction('fn:jmespath', 'groupBy(@, `a`)', [
+      { a: 1, b: 2 },
+      { a: 1, b: 3 },
+      { a: 2, b: 2 },
+      { a: null, b: 999 },
+    ]);
+    expect(returnValue).toStrictEqual({
+      1: [
+        { a: 1, b: 2 },
+        { a: 1, b: 3 },
+      ],
+      2: [{ a: 2, b: 2 }],
+      null: [{ a: null, b: 999 }],
+    });
+
+    returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
+      { a: 1, b: 2 },
+      { a: 1, b: 3 },
+      { a: 2, b: 2 },
+      { a: null, b: 999 },
+    ]);
+    expect(returnValue).toStrictEqual({
+      1: [
+        { a: 1, b: 2 },
+        { a: 1, b: 3 },
+      ],
+      2: [{ a: 2, b: 2 }],
+      null: [{ a: null, b: 999 }],
+    });
+
+    returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
+      { a: 1, b: 2 },
+      { a: 1, b: 3 },
+      { b: 4 },
+      { a: null, b: 999 },
+    ]);
+    expect(returnValue).toStrictEqual({
+      1: [
+        { a: 1, b: 2 },
+        { a: 1, b: 3 },
+      ],
+      null: [{ b: 4 }, { a: null, b: 999 }],
+    });
+
+    try {
+      returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
+        { a: 1, b: 2 },
+        `{ a: 1, b: 3 }`,
+        { b: 4 },
+        1234,
+      ]);
+    } catch (error) {
+      expect(error.message).toEqualText(
+        'TypeError: unexpected type. Expected Array<object> but received Array<object | string | number>',
+      );
+    }
+  });
+
+  it('handles `combine` JMESPath function extension', async () => {
+    // Calculate the most common value
+    const returnValue = await applyFunction('fn:jmespath', 'combine(@)', [
+      {
+        category_1: [
+          {
+            count: 10,
+            name: 'medium',
+          },
+        ],
+      },
+      {
+        category_2: [
+          {
+            count: 40,
+            name: 'high',
+          },
+        ],
+      },
+    ]);
+    expect(returnValue).toStrictEqual({
+      category_1: [{ count: 10, name: 'medium' }],
+      category_2: [{ count: 40, name: 'high' }],
+    });
+  });
+
+  it('handles `_` JMESPath function extension', async () => {
+    const returnValue = await applyFunction('fn:jmespath', '@._zip([0], [1])', [
+      [1, 3, 5],
+      [2, 4, 6],
+    ]);
+    expect(returnValue).toStrictEqual([
+      [1, 2],
+      [3, 4],
+      [5, 6],
+    ]);
+  });
+
+  it('handles `_fromPairs` JMESPath function extension', async () => {
+    const returnValue = await applyFunction('fn:jmespath', '_fromPairs(@)', [
+      ['a', 1],
+      ['b', 2],
+    ]);
+    expect(returnValue).toStrictEqual({ a: 1, b: 2 });
+  });
+
+  it('handles `_groupBy` JMESPath function extension', async () => {
+    const returnValue = await applyFunction('fn:jmespath', '_groupBy(@, `length`)', ['one', 'two', 'three']);
+    expect(returnValue).toStrictEqual({
+      3: ['one', 'two'],
+      5: ['three'],
+    });
+  });
+
+  it('handles `_maxBy` JMESPath function extension', async () => {
+    const returnValue = await applyFunction('fn:jmespath', '_maxBy(@, `n`)', [{ n: 1 }, { n: 2 }]);
+    expect(returnValue).toStrictEqual({
+      n: 2,
+    });
+  });
 });
