@@ -20,36 +20,34 @@ export class CronkPage {
 
   @Event({ bubbles: false, cancelable: true }) cronkPageReady!: EventEmitter<void>;
 
-  @State() _pageConfig: any;
+  @State() _pageConfig: CronkJSONTypes.ReportDefinition | undefined;
   @State() _schemaError = '';
 
   @Prop() showConfig = false;
+  @Prop({ reflect: true }) validationEnabled = true;
 
-  @Prop() pageConfig?: CronkJSONTypes.ReportDefinition | undefined;
+  @Prop({ reflect: true, mutable: true }) pageConfig?: CronkJSONTypes.ReportDefinition | string | undefined;
   @Watch('pageConfig')
   async watchHandler(newConfig: any) {
-    // async watchHandler(newConfig: any, oldConfig: any) {
-    if (await this.validateConfig(newConfig)) {
-      this._pageConfig = newConfig;
+    const sanitized = this.coerceCronkiteConfig(newConfig);
+    if ((await this.validateConfig(sanitized)) || !this.validationEnabled || newConfig === null) {
       this._schemaError = '';
       return;
     }
-    /**
-     * ? Should we keep the old config if we're showing the schema
-     * ? validation error of something new. The error could offer to
-     * ? restore previous config - might be nice
-     */
-    // this._pageConfig = oldConfig;
     this._schemaError = this.stringifyAjvError();
   }
 
   @Method()
   async validateConfig(configIn: any) {
+    if (!configIn) return false;
     let isValid = false;
+    const alarm = (this.validationEnabled && 'error') || 'warn';
     try {
       isValid = this.isValidConfig(configIn);
       if (!isValid) {
-        console.error(`Cronkite schema validation error: ${this.stringifyAjvError()}`);
+        console[alarm](
+          `Cronkite schema validation ${alarm === 'error' ? alarm : 'warning'}: ${this.stringifyAjvError()}`,
+        );
       }
     } catch (error) {
       console.error(error);
@@ -59,9 +57,7 @@ export class CronkPage {
 
   @Method()
   async loadConfig(newConfig: any): Promise<void> {
-    if (await this.validateConfig(newConfig)) {
-      this.pageConfig = newConfig;
-    }
+    this.pageConfig = newConfig;
   }
 
   @Listen('componentsLoaded')
@@ -75,6 +71,20 @@ export class CronkPage {
     document.querySelector('cronk-datastreams')?.reload();
   }, 0);
 
+  coerceCronkiteConfig = (config: CronkJSONTypes.ReportDefinition | string): CronkJSONTypes.ReportDefinition | null => {
+    let coercedConfig = config;
+    if (typeof coercedConfig === 'string') {
+      try {
+        coercedConfig = JSON.parse(coercedConfig);
+      } catch (error) {
+        this._schemaError = error.message;
+        return null;
+      }
+    }
+    if (!coercedConfig) return null;
+    return coercedConfig as CronkJSONTypes.ReportDefinition;
+  };
+
   stringifyAjvError() {
     return JSON.stringify(this.ajv.errors, null, 2);
   }
@@ -84,22 +94,38 @@ export class CronkPage {
     return this.ajv.validate(reportSchema, configIn) as boolean;
   }
 
+  updatePageConfigState() {
+    if (typeof this.pageConfig === 'string') {
+      const coercedConfig = this.coerceCronkiteConfig(this.pageConfig);
+      if (coercedConfig !== null) {
+        this._pageConfig = coercedConfig;
+        return;
+      }
+    }
+    this._pageConfig = (this.pageConfig && (this.pageConfig as CronkJSONTypes.ReportDefinition)) || undefined;
+  }
+
   componentWillUpdate() {
-    this._pageConfig = this.pageConfig;
+    this.updatePageConfigState();
+  }
+
+  componentWillLoad() {
+    this.updatePageConfigState();
   }
 
   render() {
     const hasConfig = this._pageConfig !== undefined;
-    const isValidConfig = hasConfig && this.isValidConfig(this._pageConfig);
-    const classes = { 'empty-page-config': !hasConfig, 'valid-page-config': isValidConfig };
+    const isValidConfig =
+      (hasConfig && this.validationEnabled && this.isValidConfig(this._pageConfig)) || !this.validationEnabled;
+    const classes = { 'empty-page-config': !hasConfig, 'valid-page-config': isValidConfig && this.validationEnabled };
 
-    const { id, components, streams } = (isValidConfig && this._pageConfig) || {};
+    const { id, components, streams } = (isValidConfig && (this._pageConfig as CronkJSONTypes.ReportDefinition)) || {};
 
     const hasStreams = streams !== undefined && streams.length > 0;
 
     const streamsKey =
       (hasStreams &&
-        streams
+        (streams as CronkJSONTypes.Stream[])
           .reduce(
             (previousStreams: any, currentStream: any) => {
               return [...previousStreams, ...currentStream['@channels'].map((channel: any) => channel.channel)];
@@ -141,7 +167,7 @@ export class CronkPage {
         )) ||
           null}
         {/* RENDER SCHEMA VALIDATION ERRORS */}
-        {(this._schemaError && <pre>{this._schemaError}</pre>) || null}
+        {(this.validationEnabled && this._schemaError && <pre>{this._schemaError}</pre>) || null}
       </Host>
     );
   }

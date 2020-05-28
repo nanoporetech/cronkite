@@ -50,9 +50,10 @@ export namespace Components {
     }
     interface CronkPage {
         "loadConfig": (newConfig: any) => Promise<void>;
-        "pageConfig"?: CronkJSONTypes.ReportDefinition | undefined;
+        "pageConfig"?: CronkJSONTypes.ReportDefinition | string | undefined;
         "showConfig": boolean;
         "validateConfig": (configIn: any) => Promise<boolean>;
+        "validationEnabled": boolean;
     }
     interface CronkPageComponents {
     }
@@ -286,8 +287,9 @@ declare namespace LocalJSX {
     }
     interface CronkPage {
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
-        "pageConfig"?: CronkJSONTypes.ReportDefinition | undefined;
+        "pageConfig"?: CronkJSONTypes.ReportDefinition | string | undefined;
         "showConfig"?: boolean;
+        "validationEnabled"?: boolean;
     }
     interface CronkPageComponents {
         "onComponentsLoaded"?: (event: CustomEvent<void>) => void;
