@@ -34,7 +34,7 @@ describe('cronk-page', () => {
 
     it('has no Page config to start', () => {
       expect(new CronkPage().pageConfig).toBeFalsy();
-      expect(rootEl).toEqualHtml('<cronk-page class="empty-page-config"></cronk-page>');
+      expect(rootEl).toEqualHtml('<cronk-page class="empty-page-config" validation-enabled></cronk-page>');
     });
   });
 
