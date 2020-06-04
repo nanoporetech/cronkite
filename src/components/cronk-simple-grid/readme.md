@@ -10,7 +10,7 @@
 | Property  | Attribute | Description | Type               | Default  |
 | --------- | --------- | ----------- | ------------------ | -------- |
 | `data`    | --        |             | `any[]`            | `[]`     |
-| `display` | `display` |             | `"auto" \| "grid"` | `'auto'` |
+| `display` | `display` |             | `"auto" or "grid"` | `'auto'` |
 | `headers` | --        |             | `string[]`         | `[]`     |
 
 

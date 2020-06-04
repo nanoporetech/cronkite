@@ -9,7 +9,7 @@
 
 | Property            | Attribute            | Description | Type                                      | Default     |
 | ------------------- | -------------------- | ----------- | ----------------------------------------- | ----------- |
-| `pageConfig`        | `page-config`        |             | `ReportDefinition \| string \| undefined` | `undefined` |
+| `pageConfig`        | `page-config`        |             | `ReportDefinition or string or undefined` | `undefined` |
 | `showConfig`        | `show-config`        |             | `boolean`                                 | `false`     |
 | `validationEnabled` | `validation-enabled` |             | `boolean`                                 | `true`      |
 
