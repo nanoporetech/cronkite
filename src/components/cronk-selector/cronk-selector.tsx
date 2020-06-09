@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
-import uniqBy from 'lodash/uniqBy';
+import { uniqBy } from '../../utils';
 
 interface ISelectListMember {
   label: string;
@@ -17,8 +17,11 @@ export class CronkSelector {
   @State() referenceTotal = 0;
 
   @Prop() heading = '';
+  @Prop() label = 'COUNT';
   @Prop() selector: any;
   @Prop() selectList: ISelectListMember[] = [];
+  @Prop() selectAllOnLoad = true;
+  @Prop() minimumSelection = 0;
 
   @Watch('selectList')
   async updateSelectList() {
@@ -32,6 +35,8 @@ export class CronkSelector {
         (newTotal: number, newRef: ISelectListMember) => newTotal + (newRef.count || 0),
         0,
       );
+      if (!this.selectAllOnLoad) return;
+
       const active = Object.assign(
         {},
         ...newReference.map((selection: ISelectListMember) => {
@@ -45,36 +50,36 @@ export class CronkSelector {
     }
   }
 
-  selectAllThings(event: Event) {
-    if (!this.reference) return;
-
-    const el = event.target as HTMLIonCheckboxElement;
-    if (el && !el.checked) {
-      el.checked = true;
-      return;
-    }
-    const allActive = Object.assign(
+  unsetAllActive(reference: ISelectListMember[]) {
+    return Object.assign(
       {},
-      ...this.reference.map((selection: ISelectListMember) => {
+      ...reference.map((selection: ISelectListMember) => {
+        return {
+          [selection.select]: false,
+        };
+      }),
+    );
+  }
+
+  setAllActive(reference: ISelectListMember[]) {
+    return Object.assign(
+      {},
+      ...reference.map((selection: ISelectListMember) => {
         return {
           [selection.select]: true,
         };
       }),
     );
-    this.activeSelection = allActive;
+  }
+
+  selectAllThings(event: Event) {
+    if (!this.reference) return;
+    const el = event.target as HTMLIonCheckboxElement;
+    this.activeSelection = el && !el.checked ? this.unsetAllActive(this.reference) : this.setAllActive(this.reference);
     this.selectThingHandler();
   }
 
-  toggleThingSelection(event: Event, { select }: ISelectListMember) {
-    const el = event.target as HTMLIonCheckboxElement;
-    const entries = Object.entries(this.activeSelection);
-    const currentSelections = entries.filter(([_, selected]) => selected);
-    const alreadySelected = select in this.activeSelection && this.activeSelection[select];
-
-    if (el && currentSelections.length === 1 && alreadySelected) {
-      el.checked = true;
-      return;
-    }
+  toggleThingSelection(_: Event, { select }: ISelectListMember) {
     this.activeSelection = { ...this.activeSelection, [select]: !this.activeSelection[select] };
     this.selectThingHandler();
   }
@@ -83,9 +88,6 @@ export class CronkSelector {
     const selectedThings = Object.entries(this.activeSelection)
       .filter(([_, selected]) => selected)
       .map(([thing]) => thing);
-
-    if (!selectedThings.length) return; // Minimum one selected
-
     const newFilter = (blob: any) => {
       if (this.selector in blob) {
         return selectedThings.includes(blob[this.selector]);
@@ -101,7 +103,7 @@ export class CronkSelector {
   render() {
     if (this.reference === undefined) return null;
 
-    const selectedThings = Object.values(this.activeSelection).filter(x => !!x);
+    const selectedThingsLength = Object.values(this.activeSelection).filter(x => !!x).length;
     return (
       <Host class={`${this.selector}-selector thing-selector`}>
         {this.heading ? <h5>{this.heading}</h5> : null}
@@ -114,8 +116,8 @@ export class CronkSelector {
                     <ion-checkbox
                       onClick={(e: Event) => this.selectAllThings(e)}
                       value="selectall"
-                      checked={this.reference.length === selectedThings.length}
-                      indeterminate={this.reference.length > selectedThings.length}
+                      checked={this.reference.length === selectedThingsLength}
+                      indeterminate={this.reference.length > selectedThingsLength && selectedThingsLength > 0}
                       color="secondary"
                       slot="start"
                     />
@@ -124,7 +126,7 @@ export class CronkSelector {
                 </ion-item>
               </th>
               <th />
-              <th>READS</th>
+              <th>{this.label}</th>
               <th>%</th>
             </tr>
           </thead>

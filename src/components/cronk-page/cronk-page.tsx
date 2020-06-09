@@ -3,10 +3,10 @@ import '@ionic/core';
 import '@metrichor/ui-components';
 import { Component, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import Ajv from 'ajv';
-import debounce from 'lodash/debounce';
 import { v4 as uuidv4 } from 'uuid';
 import reportSchema from '../../cronkite.schema.json';
 import { CronkJSONTypes } from '../../types/report-json';
+import { debounce } from '../../utils';
 
 const DEFAULT_LAYOUT = {};
 

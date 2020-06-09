@@ -81,6 +81,9 @@ export namespace Components {
     }
     interface CronkSelector {
         "heading": string;
+        "label": string;
+        "minimumSelection": number;
+        "selectAllOnLoad": boolean;
         "selectList": ISelectListMember[];
         "selector": any;
     }
@@ -315,6 +318,9 @@ declare namespace LocalJSX {
     }
     interface CronkSelector {
         "heading"?: string;
+        "label"?: string;
+        "minimumSelection"?: number;
+        "selectAllOnLoad"?: boolean;
         "selectList"?: ISelectListMember[];
         "selector"?: any;
     }
