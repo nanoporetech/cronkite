@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
-import uniqBy from 'lodash/uniqBy';
+import { uniqBy } from '../../utils';
 
 interface ISelectListMember {
   label: string;
