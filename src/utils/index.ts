@@ -38,6 +38,39 @@ export const Coordinate = struct({ x: 'number', y: 'number' });
 export const RawHistogram = struct([CoordinateTuple]);
 export const Histogram = struct([Coordinate]);
 
+export const debounce = (func: any, wait: number, immediate?: boolean) => {
+  let timeout: any;
+  return function (this: any) {
+    // tslint:disable-next-line: no-this-assignment
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    }, wait);
+    if (immediate && !timeout) func.apply(context, args);
+  };
+};
+
+export const uniqBy = (arr: any[], predicate: any) => {
+  if (!Array.isArray(arr)) {
+    return [];
+  }
+  const cb = typeof predicate === 'function' ? predicate : (o: any) => o[predicate];
+  const pickedObjects = arr
+    .filter(item => item)
+    .reduce((map, item) => {
+      const key = cb(item);
+      if (!key) {
+        return map;
+      }
+      return map.has(key) ? map : map.set(key, item);
+    }, new Map())
+    .values();
+  return [...pickedObjects];
+};
+
 export const validateArray = (arrayIn: any) => {
   if (!Array.isArray(arrayIn)) return arrayIn;
   try {

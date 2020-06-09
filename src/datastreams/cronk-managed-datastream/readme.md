@@ -11,7 +11,7 @@
 | ---------------- | ----------------- | ----------- | ---------------------------------------------------------------------------------------- | ------------------ |
 | `acceptsFilters` | `accepts-filters` |             | `boolean`                                                                                | `false`            |
 | `channels`       | --                |             | `IChannelShape[]`                                                                        | `DEFAULT_CHANNELS` |
-| `data`           | `data`            |             | `JSONValue[] \| boolean \| null \| number \| string \| { [member: string]: JSONValue; }` | `null`             |
+| `data`           | `data`            |             | `JSONValue[] or boolean or null or number or string or { [member: string]: JSONValue; }` | `null`             |
 | `type`           | `type`            |             | `string`                                                                                 | `'data'`           |
 
 

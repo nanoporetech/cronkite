@@ -58,7 +58,7 @@ describe('cronk-selector', () => {
               </th>
               <th></th>
               <th>
-                READS
+                COUNT
               </th>
               <th>
                 %
