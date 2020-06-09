@@ -1,9 +1,9 @@
-import { compile, TreeInterpreter } from '@metrichor/jmespath-plus';
+import jmespath, { TreeInterpreter } from '@metrichor/jmespath-plus';
 
 const EXPRESSION_CACHE = {};
 export const query = async (path: string, json: any) => {
   if (!(path in EXPRESSION_CACHE)) {
-    EXPRESSION_CACHE[path] = compile(path);
+    EXPRESSION_CACHE[path] = jmespath.compile(path);
   }
   return TreeInterpreter.search(EXPRESSION_CACHE[path], json);
 };
