@@ -7,11 +7,14 @@
 
 ## Properties
 
-| Property     | Attribute  | Description | Type                  | Default     |
-| ------------ | ---------- | ----------- | --------------------- | ----------- |
-| `heading`    | `heading`  |             | `string`              | `''`        |
-| `selectList` | --         |             | `ISelectListMember[]` | `[]`        |
-| `selector`   | `selector` |             | `any`                 | `undefined` |
+| Property           | Attribute            | Description | Type                  | Default     |
+| ------------------ | -------------------- | ----------- | --------------------- | ----------- |
+| `heading`          | `heading`            |             | `string`              | `''`        |
+| `label`            | `label`              |             | `string`              | `'COUNT'`   |
+| `minimumSelection` | `minimum-selection`  |             | `number`              | `0`         |
+| `selectAllOnLoad`  | `select-all-on-load` |             | `boolean`             | `true`      |
+| `selectList`       | --                   |             | `ISelectListMember[]` | `[]`        |
+| `selector`         | `selector`           |             | `any`                 | `undefined` |
 
 
 ## Dependencies
