@@ -16,12 +16,7 @@ export class CronkPageComponents {
     return (
       <Host>
         <slot name="header"></slot>
-        <div
-          class="components-content"
-          style={{
-            gridTemplateColumns: `repeat(${4}, auto)`,
-          }}
-        >
+        <div class="components-content">
           <slot></slot>
         </div>
         <slot name="footer"></slot>

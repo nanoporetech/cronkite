@@ -23,7 +23,19 @@ describe('cronk-simple-grid', () => {
 
   describe('rendering', () => {
     it('renders nothing to start', async () => {
-      expect(rootEl).toEqualLightHtml(`<cronk-simple-grid></cronk-simple-grid>`);
+      expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
+      <ion-content style="height: calc(3.04rem + (10 * 3.04rem));">
+        <table>
+          <thead>
+            <tr></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <ion-infinite-scroll id="infinite-scroll" threshold="100px">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    </cronk-simple-grid>`);
     });
 
     it('renders anything in a list (WITHOUT headers)', async () => {
@@ -33,51 +45,70 @@ describe('cronk-simple-grid', () => {
       ];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <table>
-        <thead>
-          <tr></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span></span>
-              <div>
-                not the correct data
-              </div>
-            </td>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-            <td>
-              <span></span>
-              <div>
-                <a href=\"#\">
-                  LINKED
-                </a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+        <table>
+          <thead>
+            <tr></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div>
+                  not the correct data
+                </div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div>
+                  <a href=\"#\">
+                    LINKED
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
+          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
     </cronk-simple-grid>`);
     });
 
@@ -86,49 +117,56 @@ describe('cronk-simple-grid', () => {
       rootEl.data = [['not the correct data', true, 1234, null]];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <table>
-        <thead>
-          <tr>
-            <th>
-              One
-            </th>
-            <th>
-              Two
-            </th>
-            <th>
-              Three
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span>
+      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+        <table>
+          <thead>
+            <tr>
+              <th class=\"cronk-grid-header-colour dark\">
                 One
-              </span>
-              <div>
-                not the correct data
-              </div>
-            </td>
-            <td>
-              <span>
+              </th>
+              <th class=\"cronk-grid-header-colour dark\">
                 Two
-              </span>
-              <div></div>
-            </td>
-            <td>
-              <span>
+              </th>
+              <th class=\"cronk-grid-header-colour dark\">
                 Three
-              </span>
-              <div></div>
-            </td>
-            <td>
-              <span></span>
-              <div></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span>
+                  One
+                </span>
+                <div>
+                  not the correct data
+                </div>
+              </td>
+              <td>
+                <span>
+                  Two
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  Three
+                </span>
+                <div></div>
+              </td>
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
+          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
     </cronk-simple-grid>`);
     });
     it('renders grid style', async () => {
@@ -136,21 +174,181 @@ describe('cronk-simple-grid', () => {
       rootEl.display = 'grid';
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <table>
-        <thead>
-          <tr class=\"grid\"></tr>
-        </thead>
-        <tbody>
-          <tr class=\"grid\">
-            <td>
-              <span></span>
-              <div>
-                not the correct data
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+        <table>
+          <thead>
+            <tr class=\"grid\"></tr>
+          </thead>
+          <tbody>
+            <tr class=\"grid\">
+              <td>
+                <span>
+                  undefined
+                </span>
+                <div>
+                  not the correct data
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
+          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    </cronk-simple-grid>`);
+    });
+
+    it('renders grid style', async () => {
+      rootEl.headers = ['LENGTH', 'NAME'];
+      rootEl.data = [
+        ['0', 1234],
+        ['2', 234],
+        ['4', 1234],
+        ['6', 15123],
+        ['8', 1235],
+        ['10', 13216],
+        ['12', 1344],
+      ];
+      rootEl.rows = 3;
+      rootEl.headerColour = 'primary';
+      rootEl.sort = [
+        [1, 'asc'],
+        [0, 'desc'],
+      ];
+      await page.waitForChanges();
+      expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
+      <ion-content style=\"height: calc(3.04rem + (3 * 3.04rem));\">
+        <table>
+          <thead>
+            <tr>
+              <th class=\"cronk-grid-header-colour primary sort-desc\">
+                LENGTH
+              </th>
+              <th class=\"cronk-grid-header-colour primary sort-asc\">
+                NAME
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  12
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  10
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  8
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  6
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  4
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  2
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>
+                  LENGTH
+                </span>
+                <div>
+                  0
+                </div>
+              </td>
+              <td>
+                <span>
+                  NAME
+                </span>
+                <div></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
+          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
     </cronk-simple-grid>`);
     });
   });

@@ -88,9 +88,14 @@ export namespace Components {
         "selector": any;
     }
     interface CronkSimpleGrid {
+        "appendItems": () => Promise<void>;
+        "batchSize": number;
         "data": any[];
         "display": "grid" | "auto";
+        "headerColour": "primary" | "secondary" | "tertiary" | "dark";
         "headers": string[];
+        "rows": number;
+        "sort": null | [number, string][];
     }
     interface CronkSocketioDatastream {
         "acceptsFilters": boolean;
@@ -325,9 +330,13 @@ declare namespace LocalJSX {
         "selector"?: any;
     }
     interface CronkSimpleGrid {
+        "batchSize"?: number;
         "data"?: any[];
         "display"?: "grid" | "auto";
+        "headerColour"?: "primary" | "secondary" | "tertiary" | "dark";
         "headers"?: string[];
+        "rows"?: number;
+        "sort"?: null | [number, string][];
     }
     interface CronkSocketioDatastream {
         "acceptsFilters"?: boolean;

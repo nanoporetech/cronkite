@@ -1,0 +1,46 @@
+{
+  "id": "many:rows",
+  "components": [
+    {
+      "element": "epi-headlinevalue",
+      "@label": "NUMBER OF ROWS",
+      "@value": {
+        "fn:jmespath": "length(chromsomes)"
+      },
+      "listen": "many:rows:results"
+    },
+    {
+      "element": "cronk-simple-grid",
+      "@data": {
+        "fn:jmespath": "chromsomes[][name, length]"
+      },
+      "@headers": [
+        [
+          "SEQUENCE ID",
+          "LENGTH (bases)"
+        ]
+      ],
+      "listen": "many:rows:results",
+      "layout": {
+        "width": 4
+      }
+    }
+  ],
+  "streams": [
+    {
+      "element": "cronk-poll-datastream",
+      "@url": "http://localhost:3333/cronkite/examples/data/many-rows.json",
+      "@poll-frequency": 25000,
+      "@credentials": "omit",
+      "@acceptsFilters": true,
+      "@channels": [
+        {
+          "channel": "many:rows:results",
+          "shape": {
+            "fn:jmespath": "@"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,67 +1,115 @@
 cronk-simple-grid {
-  /* Default table styles for this demo */
-  & table {
-    border-collapse: collapse;
-    text-align: left;
-    width: 100%;
+  ion-content {
+    & table {
+      border-collapse: collapse;
+      text-align: left;
+      width: 100%;
+      position: relative;
 
-    & tr {
-      background: white;
-      border-bottom: 1px solid;
+      & tr {
+        background: white;
+        border-bottom: 1px solid;
 
-      &.grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(1%, 1fr));
+        &.grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(1%, 1fr));
+        }
+      }
+
+      & th,
+      & td {
+        padding: 0.8rem 1rem;
+      }
+
+      th {
+        background: white;
+        position: sticky;
+        top: 0;
+        // box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+
+        &.primary {
+          background: var(--cronk-color-primary-rgb);
+          color: var(--cronk-color-primary-contrast);
+        }
+
+        &.secondary {
+          background: var(--cronk-color-secondary-rgb);
+          color: var(--cronk-color-secondary-contrast);
+        }
+
+        &.tertiary {
+          background: var(--cronk-color-tertiary-rgb);
+          color: var(--cronk-color-tertiary-contrast);
+        }
+
+        &.dark {
+          background: var(--cronk-color-dark-rgb);
+          color: var(--cronk-color-dark-contrast);
+        }
+
+        &.sort-desc::before {
+          content: '\25BC ';
+          padding-right: 0.5rem;
+          font-family: sans-serif;
+        }
+
+        &.sort-asc::before {
+          content: '\25B2 ';
+          padding-right: 0.5rem;
+          font-family: sans-serif;
+        }
+      }
+
+      & td {
+        & span,
+        & div {
+          line-height: 1.5;
+        }
+
+        & span {
+          background: #eee;
+          color: dimgrey;
+          display: none;
+          font-size: 10px;
+          font-weight: bold;
+          // padding: 5px;
+          position: absolute;
+          text-transform: uppercase;
+          top: 0;
+          left: 0;
+        }
       }
     }
 
-    & th,
-    & td {
-      padding: 10px 20px;
-    }
+    /* stylelint-disable order/order */
+    @media (max-width: 800px) {
+      /* Simple CSS for flexbox table on mobile */
+      & table thead {
+        left: -9999px;
+        position: absolute;
+        visibility: hidden;
+      }
 
-    & td span {
-      background: #eee;
-      color: dimgrey;
-      display: none;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 5px;
-      position: absolute;
-      text-transform: uppercase;
-      top: 0;
-      left: 0;
-    }
-  }
+      & table tr,
+      & table tr.grid {
+        border-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+      }
 
-  /* stylelint-disable order/order */
-  @media (max-width: 800px) {
-    /* Simple CSS for flexbox table on mobile */
-    & table thead {
-      left: -9999px;
-      position: absolute;
-      visibility: hidden;
-    }
+      & table td {
+        border: 1px solid;
+        margin: 0 -1px -1px 0;
+        padding-top: 35px;
+        position: relative;
+        width: 100%;
+      }
 
-    & table tr,
-    & table tr.grid {
-      border-bottom: 0;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-
-    & table td {
-      border: 1px solid;
-      margin: 0 -1px -1px 0;
-      padding-top: 35px;
-      position: relative;
-      width: 100%;
-    }
-
-    & table td span {
-      display: block;
+      & table td span {
+        display: block;
+      }
     }
   }
 }
