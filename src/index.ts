@@ -1,5 +1,5 @@
-// tslint:disable-next-line: no-import-side-effect
+// tslint:disable no-import-side-effect
+import 'jmespath-plus';
 import 'jmespath-edit';
 
 export * from './components';
-
