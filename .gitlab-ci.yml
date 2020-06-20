@@ -1,4 +1,7 @@
-image: git.oxfordnanolabs.local:4567/metrichor-ui/node-cypress-runner/master:node10
+image: ${GITLAB_REGISTRY}/metrichor-ui/node-cypress-runner/master:node14
+
+variables:
+  GITLAB_REGISTRY:  '$CI_REGISTRY'
 
 stages:
   - versiontrack
