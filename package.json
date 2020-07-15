@@ -51,7 +51,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@metrichor/jmespath-plus": "0.0.4",
-    "@metrichor/ui-components": "1.1.0-3868130",
+    "@metrichor/ui-components": "1.1.0-3873466",
     "ajv": "6.12.3",
     "jmespath-edit": "0.0.11",
     "number-scale": "0.0.9",

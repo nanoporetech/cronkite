@@ -122,7 +122,7 @@ export namespace Components {
         /**
           * Page configuration JSON
          */
-        "pageConfig"?: ReportDefinition | string | undefined;
+        "pageConfig": ReportDefinition | string | undefined;
         /**
           * show or hide the configuration used to render the page
          */
