@@ -22,8 +22,8 @@
       "@message": {
         "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
       },
-      "@fail": {
-        "fn:jmespath": "clientX>`500`"
+      "@status": {
+        "fn:jmespath": "clientX <= 100 && `unknown` || (clientX > `100` && clientX <= 200 && `success` || ((clientX > `200` && clientX <= 300 && `warn` || ((clientX > `300` && clientX <= 400 && `error` || ())))"
       },
       "@size": {
         "fn:jmespath": "divide(clientY,`4`)"

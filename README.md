@@ -400,8 +400,8 @@ Here's an full example of a [hello-world](./examples/reports/hello-world.json) r
       "@message": {
         "fn:jmespath": "(clientX>`500` && 'GREATER than 500px' || 'LESS than 500px') || 'Mouse position...'"
       },
-      "@fail": {
-        "fn:jmespath": "clientX>`500`"
+      "@status": {
+        "fn:jmespath": "clientX>`500` && `success` || `error`"
       },
       "@size": {
         "fn:divide": [
