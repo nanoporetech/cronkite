@@ -30,7 +30,7 @@ export class CronkPage {
   /** enable/disable validation ot the cronkite schema */
   @Prop({ reflect: true }) validationEnabled = true;
   /** Page configuration JSON */
-  @Prop({ reflect: true, mutable: true }) pageConfig?: ReportDefinition | string | undefined;
+  @Prop({ reflect: true, mutable: true }) pageConfig: ReportDefinition | string | undefined = undefined;
 
   @Watch('pageConfig')
   async watchHandler(newConfig: any) {
