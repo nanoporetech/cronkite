@@ -2,7 +2,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
-    "baseUrl": "src",
     "declaration": false,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -13,47 +12,15 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "paths": {
-      "cronkite/examples/*": [
-        "src/examples/*"
-      ]
-    },
-    "plugins": [
-      {
-        "alwaysShowRuleFailuresAsWarnings": false,
-        "configFile": "tslint.json",
-        "ignoreDefinitionFiles": true,
-        "jsEnable": true,
-        "mockTypeScriptVersion": false,
-        "name": "typescript-tslint-plugin",
-        "suppressWhileTypeErrorsPresent": false
-      }
-    ],
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "target": "es2017",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ]
+    "target": "es2017"
   },
   "exclude": [
-    "node_modules",
-    "dist",
-    "typedoc",
-    "www"
+    "node_modules"
   ],
   "include": [
-    "src",
-    "__mocks__"
+    "src"
   ]
 }

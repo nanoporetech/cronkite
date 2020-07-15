@@ -1,5 +1,5 @@
 import numberScale from 'number-scale';
-import { struct } from 'superstruct';
+import { array, assert, number, object, tuple } from 'superstruct';
 import { query } from '../workers/jmespath';
 
 // tslint:disable: object-literal-sort-keys
@@ -33,10 +33,10 @@ numberScale.defineScale(
 );
 // tslint:enable: object-literal-sort-keys
 
-export const CoordinateTuple = struct(['number', 'number']);
-export const Coordinate = struct({ x: 'number', y: 'number' });
-export const RawHistogram = struct([CoordinateTuple]);
-export const Histogram = struct([Coordinate]);
+export const CoordinateTuple = tuple([number(), number()])
+export const Coordinate = object({ x: number(), y: number() });
+export const RawHistogram = array(CoordinateTuple);
+export const Histogram = array(Coordinate);
 
 export const debounce = (func: any, wait: number, immediate?: boolean) => {
   let timeout: any;
@@ -74,13 +74,13 @@ export const uniqBy = (arr: any[], predicate: any) => {
 export const validateArray = (arrayIn: any) => {
   if (!Array.isArray(arrayIn)) return arrayIn;
   try {
-    RawHistogram(arrayIn);
+    assert(arrayIn, RawHistogram);
     return arrayIn.map(([x, y]) => ({ x, y }));
   } catch (ignore) {
     // ignore
   }
   try {
-    Histogram(arrayIn);
+    assert(arrayIn, Histogram);
     const arrayOut = Object.entries(
       arrayIn.reduce((mergedCoordinates, { x, y }) => {
         if (y === 0) return mergedCoordinates;

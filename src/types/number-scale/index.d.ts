@@ -1,17 +1,11 @@
 // number-scale/index.d.ts
 
-export as namespace numberScaleLib;
-
-/*~ This declaration specifies that the function
- *~ is the exported object from the file
- */
-
 declare module 'number-scale' {
   export = NumberScale;
 }
 
 /*~ This example shows how to have multiple overloads for your function */
-declare function NumberScale(data: number, options: NumberScale.INumberScaleOptions): string;
+declare function NumberScale(data: number, options: NumberScale.NumberScaleOptions): string;
 // declare function NumberScale(length: number): NumberScale.LengthReturnType;
 
 /*~ If you want to expose types from your module as well, you can
@@ -26,11 +20,11 @@ declare function NumberScale(data: number, options: NumberScale.INumberScaleOpti
  */
 declare namespace NumberScale {
 
-  export interface IScaleDefinition {
+  export interface ScaleDefinition {
     [unit: string]: number
   }
 
-  export interface INumberScaleOptions {
+  export interface NumberScaleOptions {
     scale: string;
     precision: number;
     recursive: number;
@@ -43,5 +37,5 @@ declare namespace NumberScale {
    *~   import f = require('numberScaleLibrary');
    *~   console.log(f.defaultName);
    */
-  export function defineScale(name: string, scale: IScale, base: number): void
+  export function defineScale(name: string, scale: ScaleDefinition, base: number): void
 }
