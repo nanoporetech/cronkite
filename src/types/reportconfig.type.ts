@@ -2,7 +2,7 @@ import { JSONObject } from './json.type';
 
 export interface ReportDefinition {
   id: string;
-  components: Component[];
+  components: ComponentConfig[];
   streams: Stream[];
 }
 
@@ -17,12 +17,12 @@ export interface Channel {
   shape: JMESPathFn;
 }
 
-export interface Component extends JSONObject {
+export interface ComponentConfig extends JSONObject {
   element: string;
   layout?: Layout;
   listen?: string;
   style?: Style;
-  components?: Component[];
+  components?: ComponentConfig[];
   heading?: string;
   [attribute: string]: ValueFn | any;
 }

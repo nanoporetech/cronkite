@@ -4,7 +4,7 @@ import '@metrichor/ui-components';
 import { Component, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import Ajv from 'ajv';
 import reportSchema from '../../cronkite.schema.json';
-import { ReportDefinition, Stream } from '../../types/reportconfig.type';
+import { ComponentConfig, ReportDefinition, Stream } from '../../types/reportconfig.type';
 import { debounce } from '../../utils';
 
 @Component({
@@ -29,7 +29,7 @@ export class CronkPage {
   /** enable/disable validation ot the cronkite schema */
   @Prop({ reflect: true }) validationEnabled = true;
   /** Page configuration JSON */
-  @Prop({ reflect: true, mutable: true }) pageConfig: ReportDefinition | string | undefined = undefined;
+  @Prop({ reflect: true, mutable: true }) pageConfig: ReportDefinition | string | undefined;
 
   @Watch('pageConfig')
   async watchHandler(newConfig: any) {
@@ -146,12 +146,15 @@ export class CronkPage {
     return <Host id={id} class={classes}>
       {/* RENDER COMPONENTS */}
       {(isValidConfig && (
-        <cronk-page-components slot="components">
-          {(components || []).map((compDef: any) => {
+        <cronk-page-components id={`${id}-components`} slot="components">
+          {(components || []).map((compDef: ComponentConfig, componentIndex: number) => {
             const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
+            const uuid = `${id}-panel-${componentIndex}`;
             return (
               <cronk-page-panel
                 slot={componentDefinition.layout.position}
+                key={uuid}
+                id={uuid}
                 panelConfig={componentDefinition}
               />
             );

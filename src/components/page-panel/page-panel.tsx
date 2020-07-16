@@ -1,7 +1,8 @@
 // tslint:disable: no-import-side-effect
-import { Component, h, Host, Prop, State } from '@stencil/core';
+import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
+import { ComponentConfig } from '../../types/reportconfig.type';
 import { mapAttributesToProps } from '../../utils';
 import { eventAsJSON } from '../../utils/event_transform';
 
@@ -10,6 +11,8 @@ import { eventAsJSON } from '../../utils/event_transform';
   tag: 'cronk-page-panel',
 })
 export class CronkPagePanel {
+
+  @Element() hostEl: HTMLCronkPagePanelElement;
   /** Configuration for a specific component */
   @Prop() panelConfig: any;
 
@@ -97,11 +100,14 @@ export class CronkPagePanel {
               {(this.panelConfig.heading && <h5>{this.panelConfig.heading}</h5>) || null}
               {hasComponents ? (
                 <cronk-page-components>
-                  {(this.panelConfig.components || []).map((compDef: any) => {
+                  {(this.panelConfig.components || []).map((compDef: ComponentConfig, componentIndex: number) => {
                     const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
+                    const uuid = `${this.hostEl.id}-panel-${componentIndex}`;
                     return (
                       <cronk-page-panel
                         slot={componentDefinition.layout.position}
+                        key={uuid}
+                        id={uuid}
                         panelConfig={componentDefinition}
                       />
                     );
