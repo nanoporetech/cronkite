@@ -3,7 +3,6 @@ import '@ionic/core';
 import '@metrichor/ui-components';
 import { Component, Event, EventEmitter, h, Host, Listen, Method, Prop, State, Watch } from '@stencil/core';
 import Ajv from 'ajv';
-import { v4 as uuidv4 } from 'uuid';
 import reportSchema from '../../cronkite.schema.json';
 import { ReportDefinition, Stream } from '../../types/reportconfig.type';
 import { debounce } from '../../utils';
@@ -147,15 +146,12 @@ export class CronkPage {
     return <Host id={id} class={classes}>
       {/* RENDER COMPONENTS */}
       {(isValidConfig && (
-        <cronk-page-components id={uuidv4()} slot="components">
+        <cronk-page-components slot="components">
           {(components || []).map((compDef: any) => {
             const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
-            const uuid = componentDefinition.layout.i || uuidv4();
             return (
               <cronk-page-panel
                 slot={componentDefinition.layout.position}
-                key={uuid}
-                id={uuid}
                 panelConfig={componentDefinition}
               />
             );

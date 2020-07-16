@@ -2,7 +2,6 @@
 import { Component, h, Host, Prop, State } from '@stencil/core';
 import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid';
 import { mapAttributesToProps } from '../../utils';
 import { eventAsJSON } from '../../utils/event_transform';
 
@@ -100,12 +99,9 @@ export class CronkPagePanel {
                 <cronk-page-components>
                   {(this.panelConfig.components || []).map((compDef: any) => {
                     const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
-                    const uuid = componentDefinition.layout.i || uuidv4();
                     return (
                       <cronk-page-panel
                         slot={componentDefinition.layout.position}
-                        key={uuid}
-                        id={uuid}
                         panelConfig={componentDefinition}
                       />
                     );
