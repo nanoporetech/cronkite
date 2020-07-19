@@ -1,6 +1,6 @@
 {
   "name": "@metrichor/cronkite",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "repository": "https://github.com/nanoporetech/cronkite",
   "description": "Cronkite - Build dashboards and reports from datastreams",
   "main": "dist/index.js",
@@ -51,7 +51,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@metrichor/jmespath-plus": "0.0.4",
-    "@metrichor/ui-components": "1.1.0-3873466",
+    "@metrichor/ui-components": "1.1.0-3884121",
     "ajv": "6.12.3",
     "jmespath-edit": "0.0.11",
     "number-scale": "0.0.9",
@@ -60,14 +60,14 @@
   },
   "devDependencies": {
     "@ionic/core": "5.2.3",
-    "@stencil/core": "1.16.2",
+    "@stencil/core": "1.16.4",
     "@stencil/eslint-plugin": "0.3.1",
     "@stencil/sass": "1.3.2",
     "@types/jest": "25.2.3",
     "@types/puppeteer": "2.0.1",
     "@typescript-eslint/eslint-plugin": "3.6.1",
     "@typescript-eslint/parser": "3.6.1",
-    "eslint": "7.4.0",
+    "eslint": "7.5.0",
     "eslint-plugin-react": "7.20.3",
     "husky": "4.2.5",
     "jest": "26.0.1",
