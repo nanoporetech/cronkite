@@ -1,37 +1,6 @@
-import numberScale from 'number-scale';
+import { numberScale } from '@metrichor/jmespath-plus/dist/lib/utils/number-scale.js';
 import { array, assert, number, object, tuple } from 'superstruct';
 import { query } from '../workers/jmespath';
-
-// tslint:disable: object-literal-sort-keys
-numberScale.defineScale(
-  'genome',
-  {
-    base: 1,
-    k: 1e3,
-    M: 1e6,
-    G: 1e9,
-    T: 1e12,
-    P: 1e15,
-    E: 1e18,
-    Z: 1e21,
-    Y: 1e24,
-  },
-  1,
-);
-
-numberScale.defineScale(
-  'filesize',
-  {
-    '': 1024 ** 0,
-    k: 1024 ** 1,
-    M: 1024 ** 2,
-    G: 1024 ** 3,
-    T: 1024 ** 4,
-    P: 1024 ** 5,
-  },
-  1,
-);
-// tslint:enable: object-literal-sort-keys
 
 export const CoordinateTuple = tuple([number(), number()])
 export const Coordinate = object({ x: number(), y: number() });
