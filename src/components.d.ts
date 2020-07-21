@@ -5,122 +5,278 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CronkJSONTypes, } from "./types/report-json";
-import { CronkDataTypes, } from "./types";
+import { ReportDefinition, Stream } from "./types/reportconfig.type";
+import { FunnelListItem } from "./types/funnel.type";
+import { ChannelShape, DatastreamResponseHandler, FilterFn, MetadataObj, ResponseTypes, StreamConfig } from "./types/datastreams.type";
+import { JSONValue } from "./types/json.type";
+import { SelectListMember } from "./types/selector.type";
+import { StatsBoxListItem } from "./types/statsbox.type";
 export namespace Components {
     interface CronkApp {
+        /**
+          * Example file name
+         */
         "report": string;
     }
     interface CronkDatastreams {
-        "getState": () => Promise<{
-            streams: CronkJSONTypes.Stream[] | undefined;
-            pageComponentsReady: boolean;
-        }>;
+        /**
+          * Rebroadcast the last cached payload
+         */
         "reload": () => Promise<void>;
-        "streams"?: CronkJSONTypes.Stream[];
+        /**
+          * Array of stream configuration
+         */
+        "streams"?: Stream[];
+        /**
+          * Unique ID for stream
+         */
         "streamsID"?: string;
     }
     interface CronkErrormessage {
+        /**
+          * Customised message for error reporting
+         */
         "message": string;
     }
     interface CronkEventStream {
-        "config": any;
+        /**
+          * Event stream configuration
+         */
+        "config": Stream;
     }
     interface CronkFunnel {
+        /**
+          * Show/hide count
+         */
         "hideCount": boolean;
+        /**
+          * Show/hide label
+         */
         "hideLabel": boolean;
+        /**
+          * Show/hide percent
+         */
         "hidePercent": boolean;
+        /**
+          * Show/hide stats
+         */
         "hideStats": boolean;
-        "statsList": CronkDataTypes.IFunnelListItem[];
+        /**
+          * {label, count}[] of members
+         */
+        "statsList": FunnelListItem[];
     }
     interface CronkList {
+        /**
+          * Show/hide bullets
+         */
         "bullets": boolean;
+        /**
+          * any[] of items to list
+         */
         "items": any[];
+        /**
+          * Render bullets as numbers (true) or not (discs)
+         */
         "ordered": boolean;
+        /**
+          * reverse the provided order
+         */
         "reverse": boolean;
     }
     interface CronkManagedDatastream {
+        /**
+          * Whether or not a datastream is affected by filters like cronk-selector
+         */
         "acceptsFilters": boolean;
-        "addFilter": (fnKey: string, filterFn: CronkDataStream.IFilterFn) => Promise<void>;
-        "channels": CronkDataStream.IChannelShape[];
-        "data": CronkDataStream.JSONValue;
+        /**
+          * Attach/add a new filter function to apply to members of a datastream
+         */
+        "addFilter": (fnKey: string, filterFn: FilterFn) => Promise<void>;
+        /**
+          * Channel configuration describing how broadcasts are constructed
+         */
+        "channels": ChannelShape[];
+        /**
+          * Stream data source managed externally to component
+         */
+        "data": JSONValue;
+        /**
+          * List any filter functions applied to the data streams
+         */
         "listFilters": () => Promise<{}>;
+        /**
+          * Rebroadcast latest cached payload to on all configured channels
+         */
         "resendBroadcast": () => Promise<void>;
+        /**
+          * sets class `cronk-${this.type}-eventstream` on cronk-managed-datastream element
+         */
         "type": string;
     }
     interface CronkPage {
+        /**
+          * Load new page configuration JSON
+         */
         "loadConfig": (newConfig: any) => Promise<void>;
-        "pageConfig"?: CronkJSONTypes.ReportDefinition | string | undefined;
+        /**
+          * Page configuration JSON
+         */
+        "pageConfig": ReportDefinition | string | undefined;
+        /**
+          * show or hide the configuration used to render the page
+         */
         "showConfig": boolean;
+        /**
+          * validate provided configuration JSON for a page
+         */
         "validateConfig": (configIn: any) => Promise<boolean>;
+        /**
+          * enable/disable validation ot the cronkite schema
+         */
         "validationEnabled": boolean;
     }
     interface CronkPageComponents {
     }
     interface CronkPagePanel {
+        /**
+          * Configuration for a specific component
+         */
         "panelConfig": any;
     }
     interface CronkPollDatastream {
+        /**
+          * Whether or not a datastream is affected by filters like cronk-selector
+         */
         "acceptsFilters": boolean;
+        /**
+          * Attach/add a new filter function to apply to members of a datastream
+         */
         "addFilter": (fnKey: string, filterFn: () => boolean) => Promise<void>;
-        "channels": CronkDataStream.IChannelShape[];
-        "corsProxy": string;
+        /**
+          * Channel configuration describing how broadcasts are constructed
+         */
+        "channels": ChannelShape[];
+        /**
+          * fetch API credentials
+         */
         "credentials": RequestCredentials;
-        "listFilters": () => Promise<{}>;
+        /**
+          * List any filter functions applied to the data streams
+         */
+        "listFilters": () => Promise<any>;
+        /**
+          * fetch API request mode
+         */
         "mode": RequestMode;
+        /**
+          * Polling interval to check URL for changes
+         */
         "pollFrequency": number;
+        /**
+          * Rebroadcast latest cached payload to on all configured channels
+         */
         "resendBroadcast": () => Promise<void>;
-        "responseFormat": RESPONSE_TYPES;
-        "responseHandler": CronkDataStream.IDatastreamResponseHandler;
+        /**
+          * fetch API response format
+         */
+        "responseFormat": ResponseTypes;
+        /**
+          * Custom response handler
+         */
+        "responseHandler": DatastreamResponseHandler;
+        /**
+          * sets class `cronk-${this.type}-eventstream` on cronk-poll-datastream element
+         */
         "type": string;
+        /**
+          * fetch API URL
+         */
         "url": string | null;
     }
     interface CronkProportionBar {
+        /**
+          * Colour of the proportion bar
+         */
         "color": string;
+        /**
+          * proportion ( 0 <= value <= 1)
+         */
         "value": number;
     }
     interface CronkSelector {
+        /**
+          * Custom heading for the selector
+         */
         "heading": string;
+        /**
+          * Label for each selectable - default 'COUNT'
+         */
         "label": string;
+        /**
+          * Minimum number of selected members
+         */
         "minimumSelection": number;
+        /**
+          * Should all selectable members be selected on initial render
+         */
         "selectAllOnLoad": boolean;
-        "selectList": ISelectListMember[];
+        /**
+          * a list of selectable members {select, label, count}[]
+         */
+        "selectList": SelectListMember[];
+        /**
+          * a value that will be used to filter data streams by
+         */
         "selector": any;
     }
     interface CronkSimpleGrid {
+        /**
+          * Append items to the grid
+         */
         "appendItems": () => Promise<void>;
+        /**
+          * How many new elements to attach to grid when the bottom is reached
+         */
         "batchSize": number;
+        /**
+          * any[][] for data to be rendered in the table
+         */
         "data": any[];
-        "display": "grid" | "auto";
-        "headerColour": "primary" | "secondary" | "tertiary" | "dark";
+        /**
+          * CSS display property
+         */
+        "display": 'grid' | 'auto';
+        /**
+          * Style settings for grid header row
+         */
+        "headerColour": 'primary' | 'secondary' | 'tertiary' | 'dark';
+        /**
+          * string[] of table headers
+         */
         "headers": string[];
+        /**
+          * How many rows to render before scroll overflow kicks in
+         */
         "rows": number;
+        /**
+          * How to sort columns
+         */
         "sort": null | [number, string][];
     }
-    interface CronkSocketioDatastream {
-        "acceptsFilters": boolean;
-        "channels": CronkDataStream.IChannelShape[];
-        "resendBroadcast": () => Promise<void>;
-        "responseHandler": CronkDataStream.IDatastreamSocketResponseHandler;
-        "type": string;
-        "url": string | null;
-    }
     interface CronkStatsbox {
-        "statsList": CronkDataTypes.IStatsBoxListItem[];
+        /**
+          * Array of {label: string, value: JSONValue} for stats box headline values
+         */
+        "statsList": StatsBoxListItem[];
     }
     interface CronkTitle {
+        /**
+          * Specify a title
+         */
         "reportTitle": string;
     }
     interface CronkVersion {
-    }
-    interface EpiInstanceDatastream {
-        "channel": string;
-        "credentials": RequestCredentials;
-        "flavour": string;
-        "idWorkflowInstance": string | number;
-        "mode": RequestMode;
-        "pollFrequency": number;
-        "type": string;
     }
 }
 declare global {
@@ -208,12 +364,6 @@ declare global {
         prototype: HTMLCronkSimpleGridElement;
         new (): HTMLCronkSimpleGridElement;
     };
-    interface HTMLCronkSocketioDatastreamElement extends Components.CronkSocketioDatastream, HTMLStencilElement {
-    }
-    var HTMLCronkSocketioDatastreamElement: {
-        prototype: HTMLCronkSocketioDatastreamElement;
-        new (): HTMLCronkSocketioDatastreamElement;
-    };
     interface HTMLCronkStatsboxElement extends Components.CronkStatsbox, HTMLStencilElement {
     }
     var HTMLCronkStatsboxElement: {
@@ -232,12 +382,6 @@ declare global {
         prototype: HTMLCronkVersionElement;
         new (): HTMLCronkVersionElement;
     };
-    interface HTMLEpiInstanceDatastreamElement extends Components.EpiInstanceDatastream, HTMLStencilElement {
-    }
-    var HTMLEpiInstanceDatastreamElement: {
-        prototype: HTMLEpiInstanceDatastreamElement;
-        new (): HTMLEpiInstanceDatastreamElement;
-    };
     interface HTMLElementTagNameMap {
         "cronk-app": HTMLCronkAppElement;
         "cronk-datastreams": HTMLCronkDatastreamsElement;
@@ -253,114 +397,245 @@ declare global {
         "cronk-proportion-bar": HTMLCronkProportionBarElement;
         "cronk-selector": HTMLCronkSelectorElement;
         "cronk-simple-grid": HTMLCronkSimpleGridElement;
-        "cronk-socketio-datastream": HTMLCronkSocketioDatastreamElement;
         "cronk-statsbox": HTMLCronkStatsboxElement;
         "cronk-title": HTMLCronkTitleElement;
         "cronk-version": HTMLCronkVersionElement;
-        "epi-instance-datastream": HTMLEpiInstanceDatastreamElement;
     }
 }
 declare namespace LocalJSX {
     interface CronkApp {
+        /**
+          * Example file name
+         */
         "report"?: string;
     }
     interface CronkDatastreams {
-        "streams"?: CronkJSONTypes.Stream[];
+        /**
+          * Array of stream configuration
+         */
+        "streams"?: Stream[];
+        /**
+          * Unique ID for stream
+         */
         "streamsID"?: string;
     }
     interface CronkErrormessage {
+        /**
+          * Customised message for error reporting
+         */
         "message"?: string;
     }
     interface CronkEventStream {
-        "config"?: any;
+        /**
+          * Event stream configuration
+         */
+        "config"?: Stream;
     }
     interface CronkFunnel {
+        /**
+          * Show/hide count
+         */
         "hideCount"?: boolean;
+        /**
+          * Show/hide label
+         */
         "hideLabel"?: boolean;
+        /**
+          * Show/hide percent
+         */
         "hidePercent"?: boolean;
+        /**
+          * Show/hide stats
+         */
         "hideStats"?: boolean;
-        "statsList"?: CronkDataTypes.IFunnelListItem[];
+        /**
+          * {label, count}[] of members
+         */
+        "statsList"?: FunnelListItem[];
     }
     interface CronkList {
+        /**
+          * Show/hide bullets
+         */
         "bullets"?: boolean;
+        /**
+          * any[] of items to list
+         */
         "items"?: any[];
+        /**
+          * Render bullets as numbers (true) or not (discs)
+         */
         "ordered"?: boolean;
+        /**
+          * reverse the provided order
+         */
         "reverse"?: boolean;
     }
     interface CronkManagedDatastream {
+        /**
+          * Whether or not a datastream is affected by filters like cronk-selector
+         */
         "acceptsFilters"?: boolean;
-        "channels"?: CronkDataStream.IChannelShape[];
-        "data"?: CronkDataStream.JSONValue;
+        /**
+          * Channel configuration describing how broadcasts are constructed
+         */
+        "channels"?: ChannelShape[];
+        /**
+          * Stream data source managed externally to component
+         */
+        "data"?: JSONValue;
+        /**
+          * sets class `cronk-${this.type}-eventstream` on cronk-managed-datastream element
+         */
         "type"?: string;
     }
     interface CronkPage {
+        /**
+          * broadcast to any listener (mostly datastreams) that the page has fully rendered and payloads should be rebroadcast to ensure the lated data is set on components
+         */
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
-        "pageConfig"?: CronkJSONTypes.ReportDefinition | string | undefined;
+        /**
+          * Page configuration JSON
+         */
+        "pageConfig"?: ReportDefinition | string | undefined;
+        /**
+          * show or hide the configuration used to render the page
+         */
         "showConfig"?: boolean;
+        /**
+          * enable/disable validation ot the cronkite schema
+         */
         "validationEnabled"?: boolean;
     }
     interface CronkPageComponents {
+        /**
+          * Notify whe component has been finally rendered
+         */
         "onComponentsLoaded"?: (event: CustomEvent<void>) => void;
     }
     interface CronkPagePanel {
+        /**
+          * Configuration for a specific component
+         */
         "panelConfig"?: any;
     }
     interface CronkPollDatastream {
+        /**
+          * Whether or not a datastream is affected by filters like cronk-selector
+         */
         "acceptsFilters"?: boolean;
-        "channels"?: CronkDataStream.IChannelShape[];
-        "corsProxy"?: string;
+        /**
+          * Channel configuration describing how broadcasts are constructed
+         */
+        "channels"?: ChannelShape[];
+        /**
+          * fetch API credentials
+         */
         "credentials"?: RequestCredentials;
+        /**
+          * fetch API request mode
+         */
         "mode"?: RequestMode;
+        /**
+          * Polling interval to check URL for changes
+         */
         "pollFrequency"?: number;
-        "responseFormat"?: RESPONSE_TYPES;
-        "responseHandler"?: CronkDataStream.IDatastreamResponseHandler;
+        /**
+          * fetch API response format
+         */
+        "responseFormat"?: ResponseTypes;
+        /**
+          * Custom response handler
+         */
+        "responseHandler"?: DatastreamResponseHandler;
+        /**
+          * sets class `cronk-${this.type}-eventstream` on cronk-poll-datastream element
+         */
         "type"?: string;
+        /**
+          * fetch API URL
+         */
         "url"?: string | null;
     }
     interface CronkProportionBar {
+        /**
+          * Colour of the proportion bar
+         */
         "color"?: string;
+        /**
+          * proportion ( 0 <= value <= 1)
+         */
         "value"?: number;
     }
     interface CronkSelector {
+        /**
+          * Custom heading for the selector
+         */
         "heading"?: string;
+        /**
+          * Label for each selectable - default 'COUNT'
+         */
         "label"?: string;
+        /**
+          * Minimum number of selected members
+         */
         "minimumSelection"?: number;
+        /**
+          * Should all selectable members be selected on initial render
+         */
         "selectAllOnLoad"?: boolean;
-        "selectList"?: ISelectListMember[];
+        /**
+          * a list of selectable members {select, label, count}[]
+         */
+        "selectList"?: SelectListMember[];
+        /**
+          * a value that will be used to filter data streams by
+         */
         "selector"?: any;
     }
     interface CronkSimpleGrid {
+        /**
+          * How many new elements to attach to grid when the bottom is reached
+         */
         "batchSize"?: number;
+        /**
+          * any[][] for data to be rendered in the table
+         */
         "data"?: any[];
-        "display"?: "grid" | "auto";
-        "headerColour"?: "primary" | "secondary" | "tertiary" | "dark";
+        /**
+          * CSS display property
+         */
+        "display"?: 'grid' | 'auto';
+        /**
+          * Style settings for grid header row
+         */
+        "headerColour"?: 'primary' | 'secondary' | 'tertiary' | 'dark';
+        /**
+          * string[] of table headers
+         */
         "headers"?: string[];
+        /**
+          * How many rows to render before scroll overflow kicks in
+         */
         "rows"?: number;
+        /**
+          * How to sort columns
+         */
         "sort"?: null | [number, string][];
     }
-    interface CronkSocketioDatastream {
-        "acceptsFilters"?: boolean;
-        "channels"?: CronkDataStream.IChannelShape[];
-        "responseHandler"?: CronkDataStream.IDatastreamSocketResponseHandler;
-        "type"?: string;
-        "url"?: string | null;
-    }
     interface CronkStatsbox {
-        "statsList"?: CronkDataTypes.IStatsBoxListItem[];
+        /**
+          * Array of {label: string, value: JSONValue} for stats box headline values
+         */
+        "statsList"?: StatsBoxListItem[];
     }
     interface CronkTitle {
+        /**
+          * Specify a title
+         */
         "reportTitle"?: string;
     }
     interface CronkVersion {
-    }
-    interface EpiInstanceDatastream {
-        "channel"?: string;
-        "credentials"?: RequestCredentials;
-        "flavour": string;
-        "idWorkflowInstance": string | number;
-        "mode"?: RequestMode;
-        "pollFrequency"?: number;
-        "type"?: string;
     }
     interface IntrinsicElements {
         "cronk-app": CronkApp;
@@ -377,11 +652,9 @@ declare namespace LocalJSX {
         "cronk-proportion-bar": CronkProportionBar;
         "cronk-selector": CronkSelector;
         "cronk-simple-grid": CronkSimpleGrid;
-        "cronk-socketio-datastream": CronkSocketioDatastream;
         "cronk-statsbox": CronkStatsbox;
         "cronk-title": CronkTitle;
         "cronk-version": CronkVersion;
-        "epi-instance-datastream": EpiInstanceDatastream;
     }
 }
 export { LocalJSX as JSX };
@@ -402,11 +675,9 @@ declare module "@stencil/core" {
             "cronk-proportion-bar": LocalJSX.CronkProportionBar & JSXBase.HTMLAttributes<HTMLCronkProportionBarElement>;
             "cronk-selector": LocalJSX.CronkSelector & JSXBase.HTMLAttributes<HTMLCronkSelectorElement>;
             "cronk-simple-grid": LocalJSX.CronkSimpleGrid & JSXBase.HTMLAttributes<HTMLCronkSimpleGridElement>;
-            "cronk-socketio-datastream": LocalJSX.CronkSocketioDatastream & JSXBase.HTMLAttributes<HTMLCronkSocketioDatastreamElement>;
             "cronk-statsbox": LocalJSX.CronkStatsbox & JSXBase.HTMLAttributes<HTMLCronkStatsboxElement>;
             "cronk-title": LocalJSX.CronkTitle & JSXBase.HTMLAttributes<HTMLCronkTitleElement>;
             "cronk-version": LocalJSX.CronkVersion & JSXBase.HTMLAttributes<HTMLCronkVersionElement>;
-            "epi-instance-datastream": LocalJSX.EpiInstanceDatastream & JSXBase.HTMLAttributes<HTMLEpiInstanceDatastreamElement>;
         }
     }
 }

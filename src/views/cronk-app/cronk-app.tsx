@@ -6,24 +6,22 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 })
 export class CronkApp {
   @Element() el!: HTMLCronkAppElement;
+
+  /** Example file name */
   @Prop() report = 'hello-world';
 
-  cronkPageEl?: HTMLCronkPageElement;
+  private cronkPageEl?: HTMLCronkPageElement;
 
   async componentDidLoad() {
-    if (this.cronkPageEl) {
-      const response = await fetch(`/cronkite/examples/reports/${this.report}.json`);
-      const reportConfig = await response.json();
-      this.cronkPageEl.pageConfig = reportConfig;
-    }
+    const response = await fetch(`/cronkite/examples/reports/${this.report}.json`);
+    const reportConfig = await response.json();
+    this.cronkPageEl.pageConfig = reportConfig;
   }
 
   async componentWillUpdate() {
-    if (this.cronkPageEl) {
-      const response = await fetch(`/cronkite/examples/reports/${this.report}.json`);
-      const reportConfig = await response.json();
-      this.cronkPageEl.pageConfig = reportConfig;
-    }
+    const response = await fetch(`/cronkite/examples/reports/${this.report}.json`);
+    const reportConfig = await response.json();
+    this.cronkPageEl.pageConfig = reportConfig;
   }
 
   render() {

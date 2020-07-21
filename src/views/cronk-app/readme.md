@@ -7,16 +7,16 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default         |
-| -------- | --------- | ----------- | -------- | --------------- |
-| `report` | `report`  |             | `string` | `'hello-world'` |
+| Property | Attribute | Description       | Type     | Default         |
+| -------- | --------- | ----------------- | -------- | --------------- |
+| `report` | `report`  | Example file name | `string` | `'hello-world'` |
 
 
 ## Dependencies
 
 ### Depends on
 
-- [cronk-page](../../components/cronk-page)
+- [cronk-page](../../components/page)
 
 ### Graph
 ```mermaid

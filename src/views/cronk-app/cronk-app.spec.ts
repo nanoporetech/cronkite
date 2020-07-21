@@ -3,7 +3,6 @@ import { CronkApp } from './cronk-app';
 
 describe('cronk-app', () => {
   let rootInst: CronkApp;
-  let rootEl: HTMLCronkAppElement;
   let page: SpecPage;
 
   beforeEach(async () => {
@@ -12,12 +11,11 @@ describe('cronk-app', () => {
       html: '<cronk-app></cronk-app>',
     });
     rootInst = page.rootInstance;
-    rootEl = page.root as HTMLCronkAppElement;
   });
 
   describe('sanity', () => {
     it('builds', () => {
-      expect(new CronkApp()).toBeTruthy();
+      expect(rootInst).toBeTruthy();
     });
   });
 
