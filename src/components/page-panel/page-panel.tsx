@@ -1,7 +1,7 @@
 // tslint:disable: no-import-side-effect
 import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { ComponentConfig } from '../../types/reportconfig.type';
 import { mapAttributesToProps } from '../../utils';
 import { eventAsJSON } from '../../utils/event_transform';
@@ -27,10 +27,10 @@ export class CronkPagePanel {
   private async updateCustomElProps(attributes: any, dataIn: any) {
     try {
       const newProps = await mapAttributesToProps(attributes, dataIn);
-      console.debug(`updateCustomElProps::<${this.panelConfig.element}>`, newProps);
+      // console.debug(`updateCustomElProps::<${this.panelConfig.element}>`, newProps);
       this.customElProps = newProps;
     } catch (error) {
-      console.debug(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
+      console.error(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
       this.errorMessage = error;
     }
   }
@@ -55,7 +55,7 @@ export class CronkPagePanel {
       this.listeners$ = eventObservable$
         .pipe(
           debounceTime(debounce),
-          tap((event: Event | CustomEvent) => console.debug(`Got event for <${this.panelConfig.element}>`, event)),
+          // tap((event: Event | CustomEvent) => console.debug(`Got event for <${this.panelConfig.element}>`, event)),
           map((event: Event | CustomEvent) => {
             const { detail } = event as CustomEvent;
             return detail || eventAsJSON(event);

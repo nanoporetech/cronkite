@@ -9,7 +9,7 @@ export class CronkPageComponents {
   @Event() componentsLoaded!: EventEmitter<void>;
 
   componentDidLoad() {
-    console.debug('%cEPI-REPORT-COMPONENTS :: componentDidLoad', 'color: goldenrod');
+    // console.debug('%cEPI-REPORT-COMPONENTS :: componentDidLoad', 'color: goldenrod');
     this.componentsLoaded.emit();
   }
 

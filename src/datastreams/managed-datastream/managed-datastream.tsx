@@ -27,7 +27,7 @@ export class CronkManagedDatastream {
       composed: true,
       detail: payload,
     });
-    console.debug(eventName, payload);
+    // console.debug(eventName, payload);
     sourceNode.dispatchEvent(event);
   };
 
@@ -104,7 +104,7 @@ export class CronkManagedDatastream {
         );
       }
       const dispatchFn = (_channel: string, _hostEl: HTMLElement, _filteredData: any) => async () => {
-        console.debug(`%cCRONK-MANAGED-DATASTREAM::dispatch::${_channel}`, 'color: violet');
+        console.trace(`%cCRONK-MANAGED-DATASTREAM::dispatch::${_channel}`, 'color: violet');
         dispatch(_channel, _hostEl, _filteredData);
       };
       this.cachedBroadcasts[c.channel] = dispatchFn(c.channel, this.hostEl, filteredData);

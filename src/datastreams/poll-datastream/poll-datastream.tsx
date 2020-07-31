@@ -22,7 +22,7 @@ export class CronkPollDatastream {
       composed: true,
       detail: payload,
     });
-    console.debug(eventName, payload);
+    // console.debug(eventName, payload);
     // TODO: HACK TO ENSURE EVENTS FIRE AFTER COMPONENTS ARE RENDERED
     // setTimeout(sourceNode.dispatchEvent, 100, event);
     sourceNode.dispatchEvent(event);
@@ -63,7 +63,7 @@ export class CronkPollDatastream {
         );
       }
       const dispatchFn = (_channel: string, _hostEl: HTMLElement, _filteredData: any) => async () => {
-        console.debug(`%cEPI-POLL-DATASTREAM::dispatch::${_channel}`, 'color: violet');
+        // console.debug(`%cEPI-POLL-DATASTREAM::dispatch::${_channel}`, 'color: violet');
         dispatch(_channel, _hostEl, _filteredData);
       };
       this.cachedBroadcasts[c.channel] = dispatchFn(c.channel, this.hostEl, filteredData);
@@ -115,7 +115,7 @@ export class CronkPollDatastream {
   }
 
   private fetchData = async () => {
-    console.debug('In fetchData', this.url);
+    // console.debug('In fetchData', this.url);
     let response: Response | null = null;
     try {
       response = await this.requestHandler('GET');

@@ -1,6 +1,6 @@
-import { numberScale } from '@metrichor/jmespath-plus/dist/lib/utils/number-scale.js';
+import { numberScale } from '@metrichor/jmespath-plus/dist/lib/utils/number-scale';
 import { array, assert, number, object, tuple } from 'superstruct';
-import { query } from '../workers/jmespath';
+import { query } from '../workers/jmespath.worker';
 
 export const CoordinateTuple = tuple([number(), number()])
 export const Coordinate = object({ x: number(), y: number() });

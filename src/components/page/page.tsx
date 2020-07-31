@@ -72,7 +72,7 @@ export class CronkPage {
   }
 
   private reloadStreams = debounce(async () => {
-    console.debug('%cCRONK-PAGE::reloadStreams::RELOADING', 'color: mediumseagreen');
+    // console.debug('%cCRONK-PAGE::reloadStreams::RELOADING', 'color: mediumseagreen');
     this.cronkPageReady.emit();
     document.querySelector('cronk-datastreams')?.reload();
   }, 0);
