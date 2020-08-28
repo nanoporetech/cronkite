@@ -53,8 +53,7 @@
     "@metrichor/ui-components": "1.1.1-3890145",
     "ajv": "6.12.3",
     "jmespath-edit": "0.0.14",
-    "rxjs": "6.6.2",
-    "superstruct": "0.10.12"
+    "rxjs": "6.6.2"
   },
   "devDependencies": {
     "@ionic/core": "5.3.1",
