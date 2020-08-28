@@ -26,6 +26,9 @@ export class CronkSelector {
 
   @Watch('selectList')
   async updateSelectList() {
+    if (!this.selectList.length) {
+      return;
+    }
     const newReference: SelectListMember[] = uniqBy(this.selectList, 'select').map(s => {
       s.label = s.label.replace(/(.{5}).+(.{5})/g, '$1...$2');
       return s;
