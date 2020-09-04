@@ -89,7 +89,7 @@ export class CronkPagePanel {
         style={{
           flex: `${colSpan} auto`,
           minWidth: `20rem`,
-          width: `${(colSpan / 4) * 100}%`,
+          width: `${((colSpan / 4) * 100) - 1}%`,
           ...(this.panelConfig.style || {}),
         }}
       >
