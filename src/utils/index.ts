@@ -100,7 +100,7 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
         unit: unit || '',
       });
       const hasOne = (/[\d\.]+/g.exec(formattedNumber) || [''])[0] === '1';
-      return `${formattedNumber}${hasOne ? '' : 's'}`;
+      return `${formattedNumber}${hasOne || !unit ? '' : 's'}`;
     case 'fn:toFixed':
       [arg, precision, unit] = val;
       result = (await transformValue(arg, data))[0] || 0.0;

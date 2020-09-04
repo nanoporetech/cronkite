@@ -97,24 +97,38 @@ describe('Dashboard utils', () => {
 
   it('applies the `formatNumber` function', async () => {
     // Load when there's nothing but ID given
-    let returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 2, 'base'], {});
-    expect(returnValue).toStrictEqual('123.46Mbases');
-    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, 'base'], {});
-    expect(returnValue).toStrictEqual('123.5Mbases');
-    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 0, 'base'], {});
-    expect(returnValue).toStrictEqual('124Mbases');
+    let returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 2, `base`], {});
+    expect(returnValue).toStrictEqual('123.46 Mbases');
+    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, `base`], {});
+    expect(returnValue).toStrictEqual('123.5 Mbases');
+    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, ``], {});
+    expect(returnValue).toStrictEqual('123.5 M');
+    returnValue = await applyFunction('fn:formatNumber', [[123.45], 1, ``], {});
+    expect(returnValue).toStrictEqual('123.5');
+    returnValue = await applyFunction('fn:formatNumber', [[123.45], 1, `base`], {});
+    expect(returnValue).toStrictEqual('123.5 bases');
+    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 0, `base`], {});
+    expect(returnValue).toStrictEqual('124 Mbases');
+    returnValue = await applyFunction('fn:formatNumber', [[0], 2, ``], {});
+    expect(returnValue).toStrictEqual('0');
+    returnValue = await applyFunction('fn:formatNumber', [[NaN], 2, ``], {});
+    expect(returnValue).toStrictEqual('0');
+    returnValue = await applyFunction('fn:formatNumber', [[0], 2, `foo`], {});
+    expect(returnValue).toStrictEqual('0 foos');
+    returnValue = await applyFunction('fn:formatNumber', [[NaN], 2, `foo`], {});
+    expect(returnValue).toStrictEqual('0 foos');
 
     // Test singular
     returnValue = await applyFunction('fn:formatNumber', [[1000.1], 1, 'base'], {});
-    expect(returnValue).toStrictEqual('1.1kbases');
+    expect(returnValue).toStrictEqual('1.1 kbases');
     returnValue = await applyFunction('fn:formatNumber', [[1000.1], 0, 'base'], {});
-    expect(returnValue).toStrictEqual('2kbases');
+    expect(returnValue).toStrictEqual('2 kbases');
     returnValue = await applyFunction('fn:formatNumber', [[1000.0], 0, 'base'], {});
-    expect(returnValue).toStrictEqual('1kbase');
+    expect(returnValue).toStrictEqual('1 kbase');
     returnValue = await applyFunction('fn:formatNumber', [[1001], 1, 'base'], {});
-    expect(returnValue).toStrictEqual('1.1kbases');
+    expect(returnValue).toStrictEqual('1.1 kbases');
     returnValue = await applyFunction('fn:formatNumber', [[1e6], 0, 'base'], {});
-    expect(returnValue).toStrictEqual('1Mbase');
+    expect(returnValue).toStrictEqual('1 Mbase');
   });
 
   it('applies the `tofixed` function', async () => {
