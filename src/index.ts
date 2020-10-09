@@ -9,4 +9,3 @@ export * from './types/json.type';
 export * from './types/reportconfig.type';
 export * from './types/selector.type';
 export * from './types/statsbox.type';
-

@@ -25,7 +25,7 @@ export class CronkSelector {
   @Prop() minimumSelection = 0;
 
   @Watch('selectList')
-  async updateSelectList() {
+  async updateSelectList(): Promise<void> {
     if (!this.selectList.length) {
       return;
     }

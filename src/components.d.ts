@@ -7,7 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ReportDefinition, Stream } from "./types/reportconfig.type";
 import { FunnelListItem } from "./types/funnel.type";
-import { ChannelShape, DatastreamResponseHandler, FilterFn, MetadataObj, ResponseTypes, StreamConfig } from "./types/datastreams.type";
+import { ChannelShape, DatastreamResponseHandler, FilterFn, FilterFnMap, MetadataObj, ResponseTypes, StreamConfig } from "./types/datastreams.type";
 import { JSONValue } from "./types/json.type";
 import { SelectListMember } from "./types/selector.type";
 import { StatsBoxListItem } from "./types/statsbox.type";
@@ -104,7 +104,7 @@ export namespace Components {
         /**
           * List any filter functions applied to the data streams
          */
-        "listFilters": () => Promise<{}>;
+        "listFilters": () => Promise<FilterFnMap>;
         /**
           * Rebroadcast latest cached payload to on all configured channels
          */

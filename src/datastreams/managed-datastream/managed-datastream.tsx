@@ -1,7 +1,15 @@
 import { Component, Element, h, Host, Method, Prop, Watch } from '@stencil/core';
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { DEFAULT_CHANNEL, DEFAULT_CHANNELS, DEFAULT_SHAPE } from '../../constants/datastream.constant';
-import { ChannelShape, DatastreamEventDispatcher, FilterFn, FilterFnMap, ManagedDatastreamResponseHandler, MetadataObj, StreamConfig } from '../../types/datastreams.type';
+import {
+  ChannelShape,
+  DatastreamEventDispatcher,
+  FilterFn,
+  FilterFnMap,
+  ManagedDatastreamResponseHandler,
+  MetadataObj,
+  StreamConfig,
+} from '../../types/datastreams.type';
 import { JSONValue } from '../../types/json.type';
 import { processValue } from '../../utils';
 
@@ -17,11 +25,7 @@ export class CronkManagedDatastream {
   private channels$ = new BehaviorSubject<ChannelShape[]>(DEFAULT_CHANNELS);
   private streamState$ = combineLatest([this.data$, this.channels$, this.filters$]);
 
-  private dispatch: DatastreamEventDispatcher = async (
-    eventName: string,
-    sourceNode: HTMLElement,
-    payload,
-  ) => {
+  private dispatch: DatastreamEventDispatcher = async (eventName: string, sourceNode: HTMLElement, payload) => {
     const event = new CustomEvent(eventName || DEFAULT_CHANNEL, {
       bubbles: true,
       composed: true,
@@ -42,7 +46,7 @@ export class CronkManagedDatastream {
   @Prop({ reflect: true }) data: JSONValue = null;
 
   @Watch('channels')
-  handleChannelsUpdate(newChannels: ChannelShape[]) {
+  handleChannelsUpdate(newChannels: ChannelShape[]): Promise<void> {
     let sanitized: ChannelShape[] | null = null;
     if (typeof newChannels === 'string' || Array.isArray(newChannels)) {
       try {
@@ -58,7 +62,7 @@ export class CronkManagedDatastream {
   }
 
   @Watch('data')
-  handleDataUpdate(newData: JSONValue) {
+  handleDataUpdate(newData: JSONValue): Promise<void> {
     if (typeof newData !== 'string') {
       this.data$?.next(newData);
       return;
@@ -72,26 +76,23 @@ export class CronkManagedDatastream {
 
   /** List any filter functions applied to the data streams */
   @Method()
-  async listFilters(): Promise<{}> {
+  async listFilters(): Promise<FilterFnMap> {
     return this.filters$.getValue();
   }
 
   /** Attach/add a new filter function to apply to members of a datastream */
   @Method()
-  async addFilter(fnKey: string, filterFn: FilterFn) {
+  async addFilter(fnKey: string, filterFn: FilterFn): Promise<void> {
     this.filters$?.next({ ...this.filters$.getValue(), [fnKey]: filterFn });
   }
 
   /** Rebroadcast latest cached payload to on all configured channels */
   @Method()
-  async resendBroadcast() {
+  async resendBroadcast(): Promise<void> {
     Object.values(this.cachedBroadcasts).forEach((dispatcherFn: any) => dispatcherFn());
   }
 
-  private responseHandler: ManagedDatastreamResponseHandler = async (
-    data: any,
-    streamState: StreamConfig,
-  ) => {
+  private responseHandler: ManagedDatastreamResponseHandler = async (data: any, streamState: StreamConfig) => {
     const { channels, dispatch, filters } = streamState;
     let filteredData: any;
 
@@ -99,9 +100,7 @@ export class CronkManagedDatastream {
       filteredData = await processValue(data, c.shape || DEFAULT_SHAPE);
       const canFilter = c.filtered !== undefined ? c.filtered : true;
       if (canFilter && filters.length && Array.isArray(filteredData)) {
-        filteredData = filteredData.filter((datum: MetadataObj) =>
-          filters.map(filter => filter(datum)).every(i => i),
-        );
+        filteredData = filteredData.filter((datum: MetadataObj) => filters.map(filter => filter(datum)).every(i => i));
       }
       const dispatchFn = (_channel: string, _hostEl: HTMLElement, _filteredData: any) => async () => {
         // console.trace(`%cCRONK-MANAGED-DATASTREAM::dispatch::${_channel}`, 'color: violet');
@@ -112,11 +111,9 @@ export class CronkManagedDatastream {
     });
   };
 
-  private broadcast = async ([data, channels, filters]: [
-    JSONValue | undefined,
-    ChannelShape[],
-    FilterFnMap,
-  ]): Promise<void> => {
+  private broadcast = async ([data, channels, filters]: [JSONValue | undefined, ChannelShape[], FilterFnMap]): Promise<
+    void
+  > => {
     if (data === undefined) return;
     try {
       await this.responseHandler(data, {

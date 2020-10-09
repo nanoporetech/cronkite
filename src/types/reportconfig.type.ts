@@ -29,38 +29,49 @@ export interface ComponentConfig extends JSONObject {
 
 export type JMESPathNumber = JMESPathFn | number;
 
-export type ValueFn = SumFn | DivideFn | FormatNumberFn | ToFixedFn | ModeFn | UniqFn | MapFn | RoundFn | CountFn | AverageFn | JMESPathFn;
+export type ValueFn =
+  | SumFn
+  | DivideFn
+  | FormatNumberFn
+  | ToFixedFn
+  | ModeFn
+  | UniqFn
+  | MapFn
+  | RoundFn
+  | CountFn
+  | AverageFn
+  | JMESPathFn;
 
 export interface SumFn {
   'fn:sum': [JMESPathNumber, JMESPathNumber];
 }
 export interface DivideFn {
-  'fn:divide': [JMESPathNumber, JMESPathNumber]
-};
+  'fn:divide': [JMESPathNumber, JMESPathNumber];
+}
 export interface FormatNumberFn {
-  'fn:formatNumber': [JMESPathNumber, number, string]
-};
+  'fn:formatNumber': [JMESPathNumber, number, string];
+}
 export interface ToFixedFn {
-  'fn:toFixed': [JMESPathNumber, number]
-};
+  'fn:toFixed': [JMESPathNumber, number];
+}
 export interface ModeFn {
-  'fn:mode': [JMESPathNumber, number]
-};
+  'fn:mode': [JMESPathNumber, number];
+}
 export interface UniqFn {
-  'fn:uniq': ValueFn
-};
+  'fn:uniq': ValueFn;
+}
 export interface MapFn {
-  'fn:map': { [member: string]: ValueFn }[]
-};
+  'fn:map': { [member: string]: ValueFn }[];
+}
 export interface RoundFn {
-  'fn:round': JMESPathNumber
-};
+  'fn:round': JMESPathNumber;
+}
 export interface CountFn {
-  'fn:count': JMESPathFn
-};
+  'fn:count': JMESPathFn;
+}
 export interface AverageFn {
-  'fn:average': JMESPathFn
-};
+  'fn:average': JMESPathFn;
+}
 
 export interface JMESPathFn {
   'fn:jmespath': string;

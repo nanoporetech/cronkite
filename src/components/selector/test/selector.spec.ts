@@ -43,7 +43,7 @@ describe('cronk-selector', () => {
           count: 20,
           label: 'TWENTY',
           select: 'thing_to_select',
-        }
+        },
       ];
       await page.waitForChanges();
       expect(rootEl).toEqualHtml(`
@@ -94,7 +94,6 @@ describe('cronk-selector', () => {
       await page.waitForChanges();
       expect(rootEl).toEqualHtml('<cronk-selector></cronk-selector>');
     });
-
   });
 
   // describe('rendering', () => {

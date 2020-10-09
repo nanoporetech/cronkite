@@ -7,7 +7,7 @@ describe('cronk-page', () => {
   let rootInst: CronkPage;
   let rootEl: HTMLCronkPageElement;
   let page: SpecPage;
-  const originalConsoleError = (console.error as jest.Mock);
+  const originalConsoleError = console.error as jest.Mock;
 
   beforeEach(async () => {
     (console.error as jest.Mock) = jest.fn();

@@ -18,7 +18,7 @@ export class CronkFunnel {
   @Prop() hidePercent = false;
 
   @Watch('statsList')
-  statsListValidator(newStatsList: any[]) {
+  statsListValidator(newStatsList: any[]): void {
     const isValid = newStatsList.length === 0 || newStatsList.every(member => !!member.label && !!member.count);
     if (!isValid) {
       throw new Error('Error: @Prop() statsList - property does not contain valid members');
@@ -39,9 +39,9 @@ export class CronkFunnel {
       total += member.count || 0;
     });
 
-    const sortedMembers: FunnelListItem[] = (Object.values(
-      members,
-    ) as FunnelListItem[]).sort((a, b) => b.count - a.count);
+    const sortedMembers: FunnelListItem[] = (Object.values(members) as FunnelListItem[]).sort(
+      (a, b) => b.count - a.count,
+    );
 
     return (
       <Host class="summary-funnel">

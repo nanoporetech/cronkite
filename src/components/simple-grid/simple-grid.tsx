@@ -30,7 +30,7 @@ export class CronkSimpleGrid {
   @Watch('rows')
   @Watch('sort')
   @Watch('data')
-  reloadData() {
+  reloadData(): Promise<void> {
     if (!this.gridListEl) return;
     this.gridListEl.innerHTML = '';
     this.length = 0;
@@ -45,7 +45,7 @@ export class CronkSimpleGrid {
 
   /** Append items to the grid */
   @Method()
-  async appendItems() {
+  async appendItems(): Promise<void> {
     if (!this.gridListEl) return;
     const originalLength = this.length;
     this._data.slice(this.length, originalLength + this.batchSize).forEach((row: any[]) => {

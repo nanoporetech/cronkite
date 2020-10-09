@@ -31,7 +31,7 @@ export class CronkPage {
   @Prop({ reflect: true, mutable: true }) pageConfig: ReportDefinition | string | undefined;
 
   @Watch('pageConfig')
-  async watchHandler(newConfig: any) {
+  async watchHandler(newConfig: any): Promise<void> {
     const sanitized = this.coerceCronkiteConfig(newConfig);
     if ((await this.validateConfig(sanitized)) || !this.validationEnabled || newConfig === null) {
       this._schemaError = '';
@@ -42,7 +42,7 @@ export class CronkPage {
 
   /** validate provided configuration JSON for a page */
   @Method()
-  async validateConfig(configIn: any) {
+  async validateConfig(configIn: any): Promise<boolean> {
     if (!configIn) return false;
     let isValid = false;
     const alarm = (this.validationEnabled && 'error') || 'warn';
@@ -66,7 +66,7 @@ export class CronkPage {
   }
 
   @Listen('componentsLoaded')
-  async componentsLoadedHandler() {
+  async componentsLoadedHandler(): Promise<void> {
     this.reloadStreams();
   }
 
@@ -142,37 +142,39 @@ export class CronkPage {
       'no:streams';
 
     // console.debug('CRONK-PAGE::render', { hasConfig, isValidConfig, id, classes, components, streams, streamsKey });
-    return <Host id={id} class={classes}>
-      {/* RENDER COMPONENTS */}
-      {(isValidConfig && (
-        <cronk-page-components id={`${id}-components`} slot="components">
-          {(components || []).map((compDef: ComponentConfig, componentIndex: number) => {
-            const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
-            const uuid = `${id}-panel-${componentIndex}`;
-            return (
-              <cronk-page-panel
-                slot={componentDefinition.layout.position}
-                key={uuid}
-                id={uuid}
-                panelConfig={componentDefinition}
-              />
-            );
-          })}
-        </cronk-page-components>
-      )) ||
-        null}
-      {/* RENDER STREAMS */}
-      {(streams && streams.length && (
-        <cronk-datastreams streams={streams} streamsID={streamsKey}></cronk-datastreams>
-      )) ||
-        null}
-      {/* RENDER RAW CONFIG IF REQUESTED */}
-      {(this.showConfig && (
-        <pre>{isValidConfig ? JSON.stringify(this._pageConfig, null, 2) : 'No config provided'}</pre>
-      )) ||
-        null}
-      {/* RENDER SCHEMA VALIDATION ERRORS */}
-      {(this.validationEnabled && this._schemaError && <pre>{this._schemaError}</pre>) || null}
-    </Host>
+    return (
+      <Host id={id} class={classes}>
+        {/* RENDER COMPONENTS */}
+        {(isValidConfig && (
+          <cronk-page-components id={`${id}-components`} slot="components">
+            {(components || []).map((compDef: ComponentConfig, componentIndex: number) => {
+              const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
+              const uuid = `${id}-panel-${componentIndex}`;
+              return (
+                <cronk-page-panel
+                  slot={componentDefinition.layout.position}
+                  key={uuid}
+                  id={uuid}
+                  panelConfig={componentDefinition}
+                />
+              );
+            })}
+          </cronk-page-components>
+        )) ||
+          null}
+        {/* RENDER STREAMS */}
+        {(streams && streams.length && (
+          <cronk-datastreams streams={streams} streamsID={streamsKey}></cronk-datastreams>
+        )) ||
+          null}
+        {/* RENDER RAW CONFIG IF REQUESTED */}
+        {(this.showConfig && (
+          <pre>{isValidConfig ? JSON.stringify(this._pageConfig, null, 2) : 'No config provided'}</pre>
+        )) ||
+          null}
+        {/* RENDER SCHEMA VALIDATION ERRORS */}
+        {(this.validationEnabled && this._schemaError && <pre>{this._schemaError}</pre>) || null}
+      </Host>
+    );
   }
 }

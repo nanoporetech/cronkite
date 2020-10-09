@@ -1,6 +1,17 @@
 import { Component, Element, h, Host, Method, Prop } from '@stencil/core';
-import { DEFAULT_CHANNEL, DEFAULT_CHANNELS, DEFAULT_SHAPE, RESPONSE_MIMETYPE } from '../../constants/datastream.constant';
-import { DatastreamEventDispatcher, DatastreamResponseHandler, MetadataObj, ResponseTypes, StreamConfig } from '../../types/datastreams.type';
+import {
+  DEFAULT_CHANNEL,
+  DEFAULT_CHANNELS,
+  DEFAULT_SHAPE,
+  RESPONSE_MIMETYPE,
+} from '../../constants/datastream.constant';
+import {
+  DatastreamEventDispatcher,
+  DatastreamResponseHandler,
+  MetadataObj,
+  ResponseTypes,
+  StreamConfig,
+} from '../../types/datastreams.type';
 import { processValue } from '../../utils';
 
 @Component({
@@ -12,11 +23,7 @@ export class CronkPollDatastream {
   private cachedResponse: MetadataObj | null = null;
   private cachedBroadcasts = {};
   private filters = {};
-  private dispatch: DatastreamEventDispatcher = async (
-    eventName: string,
-    sourceNode: HTMLElement,
-    payload,
-  ) => {
+  private dispatch: DatastreamEventDispatcher = async (eventName: string, sourceNode: HTMLElement, payload) => {
     const event = new CustomEvent(eventName || DEFAULT_CHANNEL, {
       bubbles: true,
       composed: true,
@@ -33,7 +40,7 @@ export class CronkPollDatastream {
   /** sets class `cronk-${this.type}-eventstream` on cronk-poll-datastream element */
   @Prop() type = 'data';
   /** fetch API response format  */
-  @Prop() responseFormat: ResponseTypes = 'json'
+  @Prop() responseFormat: ResponseTypes = 'json';
   /** fetch API URL */
   @Prop() url: string | null = null;
   /** Channel configuration describing how broadcasts are constructed */
@@ -47,10 +54,7 @@ export class CronkPollDatastream {
   /** Polling interval to check URL for changes */
   @Prop() pollFrequency = 15000;
   /** Custom response handler */
-  @Prop() responseHandler: DatastreamResponseHandler = async (
-    data: any,
-    streamState: StreamConfig,
-  ) => {
+  @Prop() responseHandler: DatastreamResponseHandler = async (data: any, streamState: StreamConfig) => {
     const { channels, dispatch, filters } = streamState;
     let filteredData: any;
 
@@ -58,9 +62,7 @@ export class CronkPollDatastream {
       filteredData = await processValue(data, c.shape || DEFAULT_SHAPE);
       const canFilter = c.filtered !== undefined ? c.filtered : true;
       if (canFilter && filters.length && Array.isArray(filteredData)) {
-        filteredData = filteredData.filter((datum: MetadataObj) =>
-          filters.map(filter => filter(datum)).every(i => i),
-        );
+        filteredData = filteredData.filter((datum: MetadataObj) => filters.map(filter => filter(datum)).every(i => i));
       }
       const dispatchFn = (_channel: string, _hostEl: HTMLElement, _filteredData: any) => async () => {
         // console.debug(`%cEPI-POLL-DATASTREAM::dispatch::${_channel}`, 'color: violet');
@@ -79,14 +81,14 @@ export class CronkPollDatastream {
 
   /** Attach/add a new filter function to apply to members of a datastream */
   @Method()
-  async addFilter(fnKey: string, filterFn: () => boolean) {
+  async addFilter(fnKey: string, filterFn: () => boolean): Promise<void> {
     this.filters[fnKey] = filterFn;
     await this.broadcast(this.cachedResponse);
   }
 
   /** Rebroadcast latest cached payload to on all configured channels */
   @Method()
-  async resendBroadcast() {
+  async resendBroadcast(): Promise<void> {
     Object.values(this.cachedBroadcasts).forEach((dispatcherFn: any) => dispatcherFn());
   }
 

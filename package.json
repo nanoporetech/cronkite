@@ -20,8 +20,8 @@
     "build:docs": "npm run build --docs",
     "build:app": "npm run build --serve",
     "clean": "rm -rf dist www .stencil",
-    "fix-css": "npm run lint-css --fix",
-    "fix-ts": "npm run eslint:app --fix",
+    "fix-css": "npm run lint-css -- --fix",
+    "fix-ts": "npm run eslint:app -- --fix",
     "fix": "npm run fix-ts && npm run fix-css",
     "package:version": "for file in $(find . -type f -name package.json -not -path \"./node_modules/*\" -not -path \"./dist/*\" -not -path \"./loader/*\"); do jq \".version=(.version | split(\\\"-\\\") | .[0] | split(\\\".\\\") | [.[0], .[1], .[2]+\\\"-${PATCH:-`date +\"%-H%M\"`}\\\"] | join(\\\".\\\"))\" < $file > $file.tmp && mv $file.tmp $file; done",
     "lint-css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
@@ -30,7 +30,7 @@
     "start": "stencil build --dev --watch --serve",
     "test:watch": "stencil test --spec --e2e --watchAll",
     "test": "stencil test --spec --e2e",
-    "eslint:app": "npm run eslint  src/**/*.ts src/**/*.tsx",
+    "eslint:app": "npm run eslint 'src/**/*.{ts,tsx,js}'",
     "eslint": "eslint --format stylish"
   },
   "lint-staged": {
@@ -64,6 +64,8 @@
     "@typescript-eslint/eslint-plugin": "4.4.0",
     "@typescript-eslint/parser": "4.4.0",
     "eslint": "7.10.0",
+    "eslint-config-prettier": "6.12.0",
+    "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.21.3",
     "husky": "4.3.0",
     "jest": "26.5.2",
@@ -77,6 +79,7 @@
     "stylelint-no-indistinguishable-colors": "^1.3.0",
     "stylelint-order": "^4.1.0",
     "stylelint-prettier": "^1.1.2",
-    "stylelint-scss": "3.18.0"
+    "stylelint-scss": "3.18.0",
+    "typescript": "4.0.3"
   }
 }

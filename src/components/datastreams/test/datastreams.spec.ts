@@ -31,15 +31,15 @@ describe('cronk-datastreams', () => {
 
   describe('public methods', () => {
     it('returns current state', async () => {
-      expect(rootInst.pageComponentsReady).toBeFalsy()
-      expect(rootInst.streams).toBeFalsy()
-      rootEl.streams = [{ foo: 'bar' } as unknown as Stream];
+      expect(rootInst.pageComponentsReady).toBeFalsy();
+      expect(rootInst.streams).toBeFalsy();
+      rootEl.streams = [({ foo: 'bar' } as unknown) as Stream];
       await page.waitForChanges();
       expect(rootEl).toEqualHtml(` <cronk-datastreams>
         <cronk-event-stream></cronk-event-stream>
       </cronk-datastreams>`);
-      expect(rootInst.pageComponentsReady).toBeFalsy()
-      expect(rootInst.streams).toEqual([{ foo: 'bar' }])
+      expect(rootInst.pageComponentsReady).toBeFalsy();
+      expect(rootInst.streams).toEqual([{ foo: 'bar' }]);
     });
 
     it('creates event stream elements', async () => {
@@ -82,7 +82,6 @@ describe('cronk-datastreams', () => {
       await page.waitForChanges();
 
       expect(mockBroadcaster).toHaveBeenCalled();
-
     });
   });
 });

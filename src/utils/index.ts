@@ -1,15 +1,18 @@
 import { numberScale } from '@metrichor/jmespath-plus/dist/lib/utils/number-scale';
 import { query } from '../workers/jmespath.worker';
 
-export const CoordinateTuple = (value) => Array.isArray(value) && value.length === 2 && value.every(c => typeof c === 'number');
-export const Coordinate = (value) => value instanceof Object && 'x' in value && 'y' in value;
+export const CoordinateTuple = (value: unknown): boolean =>
+  Array.isArray(value) && value.length === 2 && value.every(c => typeof c === 'number');
+export const Coordinate = (value: unknown): boolean => value instanceof Object && 'x' in value && 'y' in value;
 
-export const debounce = (func: any, wait: number, immediate?: boolean) => {
+export const debounce = (
+  func: (...args: any[]) => unknown,
+  wait: number,
+  immediate?: boolean,
+): ((...args: any[]) => void) => {
   let timeout: any;
-  return function (this: any) {
-    // tslint:disable-next-line: no-this-assignment
+  return function (this: unknown, ...args: any[]) {
     const context = this;
-    const args = arguments;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       timeout = null;
@@ -39,19 +42,22 @@ export const uniqBy = (arr: any[], predicate: any): any[] => {
 
 export const validateArray = (arrayIn: any) => {
   if (!Array.isArray(arrayIn)) {
-    return arrayIn
-  };
+    return arrayIn;
+  }
   if (arrayIn.slice(0, 10).every(CoordinateTuple)) {
     return arrayIn.map(([x, y]) => ({ x, y }));
   }
   if (arrayIn.slice(0, 10).every(Coordinate)) {
-    const arrayOut = Object.entries(arrayIn.reduce((mergedCoordinates, { x, y }) => {
-      if (y === 0)
+    const arrayOut = Object.entries(
+      arrayIn.reduce((mergedCoordinates, { x, y }) => {
+        if (y === 0) {
+          return mergedCoordinates;
+        }
+        const xDefined = mergedCoordinates[x];
+        mergedCoordinates[x] = xDefined ? mergedCoordinates[x] + y : y;
         return mergedCoordinates;
-      const xDefined = mergedCoordinates[x];
-      mergedCoordinates[x] = xDefined ? mergedCoordinates[x] + y : y;
-      return mergedCoordinates;
-    }, {})).map(coords => ({ x: +coords[0], y: coords[1] }));
+      }, {}),
+    ).map(coords => ({ x: +coords[0], y: coords[1] }));
     return arrayOut;
   }
   return arrayIn;

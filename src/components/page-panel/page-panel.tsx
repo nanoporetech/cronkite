@@ -11,7 +11,6 @@ import { eventAsJSON } from '../../utils/event_transform';
   tag: 'cronk-page-panel',
 })
 export class CronkPagePanel {
-
   @Element() hostEl: HTMLCronkPagePanelElement;
   /** Configuration for a specific component */
   @Prop() panelConfig: any;
@@ -41,7 +40,7 @@ export class CronkPagePanel {
 
   async componentWillLoad() {
     if (!this.panelConfig) return;
-    const { element, listen, hidden, ...attributes } = this.panelConfig;
+    const { element, listen, hidden: hiddenIgnored, ...attributes } = this.panelConfig;
     this.panelEl = element;
     this.customElAttrs = attributes;
     this.streamCache = new ReplaySubject<any>();
@@ -89,33 +88,33 @@ export class CronkPagePanel {
         style={{
           flex: `${colSpan} auto`,
           minWidth: `20rem`,
-          width: `${((colSpan / 4) * 100) - 1}%`,
+          width: `${(colSpan / 4) * 100 - 1}%`,
           ...(this.panelConfig.style || {}),
         }}
       >
         {this.errorMessage ? (
           <cronk-errormessage message={this.errorMessage} />
         ) : (
-            <ReportPanel {...this.customElProps}>
-              {(this.panelConfig.heading && <h5>{this.panelConfig.heading}</h5>) || null}
-              {hasComponents ? (
-                <cronk-page-components>
-                  {(this.panelConfig.components || []).map((compDef: ComponentConfig, componentIndex: number) => {
-                    const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
-                    const uuid = `${this.hostEl.id}-panel-${componentIndex}`;
-                    return (
-                      <cronk-page-panel
-                        slot={componentDefinition.layout.position}
-                        key={uuid}
-                        id={uuid}
-                        panelConfig={componentDefinition}
-                      />
-                    );
-                  })}
-                </cronk-page-components>
-              ) : null}
-            </ReportPanel>
-          )}
+          <ReportPanel {...this.customElProps}>
+            {(this.panelConfig.heading && <h5>{this.panelConfig.heading}</h5>) || null}
+            {hasComponents ? (
+              <cronk-page-components>
+                {(this.panelConfig.components || []).map((compDef: ComponentConfig, componentIndex: number) => {
+                  const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
+                  const uuid = `${this.hostEl.id}-panel-${componentIndex}`;
+                  return (
+                    <cronk-page-panel
+                      slot={componentDefinition.layout.position}
+                      key={uuid}
+                      id={uuid}
+                      panelConfig={componentDefinition}
+                    />
+                  );
+                })}
+              </cronk-page-components>
+            ) : null}
+          </ReportPanel>
+        )}
       </Host>
     );
   }

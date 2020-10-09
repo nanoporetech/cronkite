@@ -16,8 +16,14 @@ export class CronkDatastreams {
   @State() pageComponentsReady = false;
 
   /** Rebroadcast the last cached payload */
+
+  /** Rebroadcast the last cached payload */
+
+  /** Rebroadcast the last cached payload */
+
+  /** Rebroadcast the last cached payload */
   @Method()
-  async reload() {
+  async reload(): Promise<void> {
     document.querySelectorAll('.cronk-datastream').forEach((datastreamEl: any) => datastreamEl.resendBroadcast());
   }
 

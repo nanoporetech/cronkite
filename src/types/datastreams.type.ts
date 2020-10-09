@@ -30,4 +30,3 @@ export interface FilterFnMap {
 }
 
 export type ResponseTypes = 'json' | 'csv' | 'tsv' | 'text';
-

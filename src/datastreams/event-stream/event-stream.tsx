@@ -5,7 +5,6 @@ import { Stream } from '../../types/reportconfig.type';
   tag: 'cronk-event-stream',
 })
 export class CronkEventStream {
-
   /** Event stream configuration */
   @Prop() config: Stream;
 

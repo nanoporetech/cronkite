@@ -1,57 +1,11 @@
 {
-  "[javascript]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2
-  },
-  "[javascriptreact]": {
-    "editor.formatOnSave": true
-  },
-  "[typescript]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    },
-    "editor.tabSize": 2
-  },
-  "[typescriptreact]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    },
-    "editor.tabSize": 2
-  },
-  "cSpell.words": [
-    "Metricoins",
-    "Workflow",
-    "analytics",
-    "arma",
-    "browserslist",
-    "downshift",
-    "draggable",
-    "exome",
-    "fastq",
-    "gridion",
-    "human",
-    "inputqueue",
-    "keyframes",
-    "metagenomics",
-    "metrichor",
-    "minit",
-    "noopener",
-    "noreferrer",
-    "polyfill",
-    "roboto",
-    "shortcut",
-    "styl",
-    "stylelint",
-    "typedoc",
-    "unmount",
-    "webfonts",
-    "workflows",
-    "remify"
+  "eslint.validate": [
+    "typescript"
   ],
-  "editor.formatOnSave": true,
-  "eslint.enable": false,
+  "eslint.alwaysShowStatus": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "gitlab.instanceUrl": "https://git.oxfordnanolabs.local",
   "stencilTools.component.alphabetizeImports": true,
   "stencilTools.component.defaultImports": [
