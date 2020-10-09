@@ -13,8 +13,7 @@
   "unpkg": "dist/cronkite/cronkite.js",
   "files": [
     "dist/",
-    "loader/",
-    "dist/collection/cronkite.schema.json"
+    "loader/"
   ],
   "scripts": {
     "build": "stencil build",
@@ -52,7 +51,7 @@
   "dependencies": {
     "@metrichor/ui-components": "1.1.1-3890145",
     "ajv": "6.12.4",
-    "jmespath-edit": "0.0.16",
+    "jmespath-edit": "0.0.17",
     "rxjs": "6.6.2"
   },
   "devDependencies": {

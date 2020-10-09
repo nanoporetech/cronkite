@@ -8,7 +8,6 @@ import { ComponentConfig, ReportDefinition, Stream } from '../../types/reportcon
 import { debounce } from '../../utils';
 
 @Component({
-  assetsDirs: ['../../cronkite.schema.json'],
   styleUrl: 'page.scss',
   tag: 'cronk-page',
 })
