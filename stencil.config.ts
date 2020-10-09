@@ -3,10 +3,9 @@ import { sass } from '@stencil/sass';
 
 // https://stenciljs.com/docs/config
 
-const isDevMode = process.argv.includes('--dev');
-const buildTypeStyles = isDevMode ? 'src/global/styles/dev.scss' : 'src/global/styles/prod.scss';
+const buildTypeStyles = 'src/global/styles/prod.scss';
 
-const srcIndexHtml = isDevMode ? 'src/index.dev.html' : 'src/index.html';
+const srcIndexHtml = 'src/index.html';
 
 export const config: Config = {
   commonjs: {
