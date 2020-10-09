@@ -1,5 +1,5 @@
 {
-  "id": "pychopper:report",
+  "id": "pychopper:nesting:report",
   "components": [
     {
       "element": "cronk-title",
