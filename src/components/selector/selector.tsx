@@ -109,7 +109,7 @@ export class CronkSelector {
   private handleToggle = (b: SelectListMember) => (e: Event) => this.toggleThingSelection(e, b);
 
   render() {
-    if (this.reference === undefined) return null;
+    if (this.reference === undefined) return;
 
     const selectedThingsLength = Object.values(this.activeSelection).filter(x => !!x).length;
     return (

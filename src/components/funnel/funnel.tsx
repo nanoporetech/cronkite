@@ -26,7 +26,7 @@ export class CronkFunnel {
   }
 
   render() {
-    if (!Array.isArray(this.statsList) || !this.statsList.length) return null;
+    if (!Array.isArray(this.statsList) || !this.statsList.length) return;
 
     let total = 0;
     const members = {};

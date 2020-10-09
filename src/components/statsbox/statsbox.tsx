@@ -10,7 +10,7 @@ export class CronkStatsbox {
   @Prop() statsList: StatsBoxListItem[] = [];
 
   render() {
-    if (!Array.isArray(this.statsList)) return null;
+    if (!Array.isArray(this.statsList)) return;
     return (
       <Host class="stats-box">
         {this.statsList.map(stat => (
