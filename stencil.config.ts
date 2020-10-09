@@ -16,6 +16,7 @@ export const config: Config = {
     // port: 4400,
     reloadStrategy: 'pageReload',
   },
+
   globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.scss',
   namespace: 'cronkite',
@@ -35,6 +36,9 @@ export const config: Config = {
     {
       type: 'dist',
       esmLoaderPath: '../loader',
+      copy: [
+        { src: 'cronkite.schema.json' }
+      ]
     },
     {
       type: 'docs-readme',
