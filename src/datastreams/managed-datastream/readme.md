@@ -27,13 +27,13 @@ Type: `Promise<void>`
 
 
 
-### `listFilters() => Promise<{}>`
+### `listFilters() => Promise<FilterFnMap>`
 
 List any filter functions applied to the data streams
 
 #### Returns
 
-Type: `Promise<{}>`
+Type: `Promise<FilterFnMap>`
 
 
 
