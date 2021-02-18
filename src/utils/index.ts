@@ -1,4 +1,4 @@
-import { numberScale } from '@metrichor/jmespath-plus/dist/lib/utils/number-scale';
+import { numberScale } from '@metrichor/jmespath-plus';
 import { query } from '../workers/jmespath.worker';
 
 export const CoordinateTuple = (value: unknown): boolean =>
@@ -104,7 +104,7 @@ export const applyFunction = async (func: string, val: any, data: any): Promise<
         recursive: 0,
         scale: 'SI',
         unit: unit || '',
-      });
+      }) as string;
       const hasOne = (/[\d\.]+/g.exec(formattedNumber) || [''])[0] === '1';
       return `${formattedNumber}${hasOne || !unit ? '' : 's'}`;
     case 'fn:toFixed':
