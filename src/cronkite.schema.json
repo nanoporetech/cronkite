@@ -93,7 +93,6 @@
         "listen": {
           "$id": "#/definitions/component/properties/listen",
           "title": "The Listen Schema",
-          "minLength": 1,
           "examples": [
             "mousemove",
             {
@@ -105,7 +104,8 @@
           "oneOf": [
             {
               "type": "string",
-              "pattern": "^\\w(.*)$"
+              "pattern": "^\\w(.*)$",
+              "minLength": 1
             },
             {
               "$ref": "#/definitions/streamConfig"
@@ -287,6 +287,7 @@
             },
             "fn:toFixed": {
               "type": "array",
+              "additionalItems": true,
               "minItems": 2,
               "maxItems": 3,
               "items": [
@@ -300,8 +301,8 @@
             },
             "fn:mode": {
               "type": "array",
+              "additionalItems": false,
               "minItems": 2,
-              "maxItems": 2,
               "items": [
                 {
                   "$ref": "#/definitions/componentProps"
@@ -313,8 +314,8 @@
             },
             "fn:formatNumber": {
               "type": "array",
+              "additionalItems": false,
               "minItems": 3,
-              "maxItems": 3,
               "items": [
                 {
                   "$ref": "#/definitions/componentProps"
@@ -330,7 +331,7 @@
             "fn:divide": {
               "type": "array",
               "minItems": 2,
-              "maxItems": 2,
+              "additionalItems": false,
               "items": [
                 {
                   "title": "dividend",
@@ -345,7 +346,7 @@
             "fn:mod": {
               "type": "array",
               "minItems": 2,
-              "maxItems": 2,
+              "additionalItems": false,
               "items": [
                 {
                   "title": "dividend",
