@@ -8,14 +8,14 @@
     "jsxFactory": "h",
     "lib": [
       "dom",
-      "es2017"
+      "es2020"
     ],
     "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
-    "target": "es2017"
+    "target": "es2020"
   },
   "exclude": [
     "node_modules"
