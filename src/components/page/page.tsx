@@ -12,7 +12,7 @@ import { debounce } from '../../utils';
   tag: 'cronk-page',
 })
 export class CronkPage {
-  private ajv = new Ajv();
+  private ajv = new Ajv({allowUnionTypes: true, strictTuples: false});
 
   /** broadcast to any listener (mostly datastreams) that the page has fully
    * rendered and payloads should be rebroadcast to ensure the lated data

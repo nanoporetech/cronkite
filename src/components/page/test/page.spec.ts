@@ -52,14 +52,14 @@ describe('cronk-page', () => {
       expect(cronkPage.stringifyAjvError()).toBeUndefined();
 
       expect(cronkPage.isValidConfig({})).toEqual(false);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'id'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'id'`);
 
       expect(
         cronkPage.isValidConfig({
           id: 'test:page',
         }),
       ).toEqual(false);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'components'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'components'`);
 
       expect(
         cronkPage.isValidConfig({
@@ -67,7 +67,7 @@ describe('cronk-page', () => {
           components: [],
         }),
       ).toEqual(false);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'streams'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'streams'`);
 
       expect(
         cronkPage.isValidConfig({
@@ -91,8 +91,8 @@ describe('cronk-page', () => {
 
       expect(await cronkPage.validateConfig({})).toEqual(false);
       expect((console.error as jest.Mock).mock.calls).toHaveLength(1);
-      expect((console.error as jest.Mock).mock.calls[0][0]).toContain(`should have required property 'id'`);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'id'`);
+      expect((console.error as jest.Mock).mock.calls[0][0]).toContain(`must have required property 'id'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'id'`);
 
       expect(
         await cronkPage.validateConfig({
@@ -100,8 +100,8 @@ describe('cronk-page', () => {
         }),
       ).toEqual(false);
       expect((console.error as jest.Mock).mock.calls).toHaveLength(2);
-      expect((console.error as jest.Mock).mock.calls[1][0]).toContain(`should have required property 'components'`);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'components'`);
+      expect((console.error as jest.Mock).mock.calls[1][0]).toContain(`must have required property 'components'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'components'`);
 
       expect(
         await cronkPage.validateConfig({
@@ -110,8 +110,8 @@ describe('cronk-page', () => {
         }),
       ).toEqual(false);
       expect((console.error as jest.Mock).mock.calls).toHaveLength(3);
-      expect((console.error as jest.Mock).mock.calls[2][0]).toContain(`should have required property 'streams'`);
-      expect(cronkPage.stringifyAjvError()).toContain(`should have required property 'streams'`);
+      expect((console.error as jest.Mock).mock.calls[2][0]).toContain(`must have required property 'streams'`);
+      expect(cronkPage.stringifyAjvError()).toContain(`must have required property 'streams'`);
 
       expect(
         await cronkPage.validateConfig({
@@ -141,7 +141,7 @@ describe('cronk-page', () => {
       expect(rootEl).not.toHaveAttribute('id');
       expect(rootEl).not.toHaveClass('empty-page-config');
       expect(rootEl).not.toHaveClass('valid-page-config');
-      expect(rootEl.innerText).toContain(`should have required property 'id'`);
+      expect(rootEl.innerText).toContain(`must have required property 'id'`);
 
       rootEl.pageConfig = {
         id: 'test:page',
