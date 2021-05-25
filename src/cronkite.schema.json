@@ -1,5 +1,16 @@
 {
   "definitions": {
+    "jmespathProp": {
+      "type": "object",
+      "$id": "#/props/jmespathProp",
+      "title": "JMESPath function expression",
+      "additionalProperties": false,
+      "properties": {
+        "fn:jmespath": {
+          "type": "string"
+        }
+      }
+    },
     "streamConfig": {
       "$id": "#/definitions/streamConfig",
       "title": "Event listener configuration",
@@ -89,6 +100,25 @@
           "$id": "#/definitions/component/properties/heading",
           "type": "string",
           "title": "The Heading Schema"
+        },
+        "when": {
+          "$id": "#/definitions/component/properties/when",
+          "title": "The When Schema",
+          "oneOf": [
+            {
+              "type": "boolean",
+              "default": true
+            },
+            {
+              "$ref": "#/definitions/jmespathProp"
+            }
+          ],
+          "examples": [
+            {
+              "fn:jmespath": "@ != `null`"
+            },
+            true
+          ]
         },
         "listen": {
           "$id": "#/definitions/component/properties/listen",
@@ -250,12 +280,7 @@
         },
         {
           "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "fn:jmespath": {
-              "type": "string"
-            }
-          }
+          "$ref": "#/definitions/jmespathProp"
         },
         {
           "type": "object",
@@ -270,6 +295,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "fn:uniq": {
+              "$ref": "#/definitions/componentProps"
+            },
             "fn:uniq": {
               "$ref": "#/definitions/componentProps"
             },

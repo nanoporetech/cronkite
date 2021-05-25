@@ -3,7 +3,7 @@ import { Component, Element, h, Host, Prop, State } from '@stencil/core';
 import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ComponentConfig } from '../../types/reportconfig.type';
-import { mapAttributesToProps } from '../../utils';
+import { mapAttributesToProps, transformValue } from '../../utils';
 import { eventAsJSON } from '../../utils/event_transform';
 
 @Component({
@@ -18,10 +18,12 @@ export class CronkPagePanel {
   @State() customElProps?: any;
   @State() customElAttrs?: any;
   @State() errorMessage?: any;
+  @State() shouldRender = true;
 
   private panelEl?: string;
   private listeners$?: Subscription;
   private streamCache?: ReplaySubject<any>;
+  private renderCondition?: any;
 
   private async updateCustomElProps(attributes: any, dataIn: any) {
     try {
@@ -30,19 +32,30 @@ export class CronkPagePanel {
       this.customElProps = newProps;
     } catch (error) {
       console.error(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
-      this.errorMessage = error;
+      this.errorMessage = error.message;
     }
   }
 
   private payloadHandler = async (payload: any): Promise<void> => {
+    if (this.renderCondition !== undefined) {
+      try {
+        [this.shouldRender] = await transformValue(this.renderCondition, payload);
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
+    }
+    if (!this.shouldRender) {
+      return;
+    }
     await this.updateCustomElProps(this.customElAttrs, payload);
   };
 
   async componentWillLoad() {
     if (!this.panelConfig) return;
-    const { element, listen, hidden: hiddenIgnored, ...attributes } = this.panelConfig;
+    const { element, listen, hidden: hiddenIgnored, when: renderCondition, ...attributes } = this.panelConfig;
     this.panelEl = element;
     this.customElAttrs = attributes;
+    this.renderCondition = renderCondition;
     this.streamCache = new ReplaySubject<any>();
     let payloadCache: any[] = [];
 
@@ -76,7 +89,7 @@ export class CronkPagePanel {
   }
 
   render() {
-    if (!this.panelConfig || !this.panelEl) return;
+    if (!this.panelConfig || !this.panelEl || !this.shouldRender) return;
 
     const ReportPanel = this.panelEl;
     const colSpan = (this.panelConfig.layout && this.panelConfig.layout.width) || 4;
@@ -92,11 +105,11 @@ export class CronkPagePanel {
           ...(this.panelConfig.style || {}),
         }}
       >
+        {(this.panelConfig.heading && <h5 key={this.panelConfig.heading}>{this.panelConfig.heading}</h5>) || null}
         {this.errorMessage ? (
-          <cronk-errormessage message={this.errorMessage} />
+          <cronk-errormessage message={this.errorMessage} ></cronk-errormessage>
         ) : (
           <ReportPanel {...this.customElProps}>
-            {(this.panelConfig.heading && <h5>{this.panelConfig.heading}</h5>) || null}
             {hasComponents ? (
               <cronk-page-components>
                 {(this.panelConfig.components || []).map((compDef: ComponentConfig, componentIndex: number) => {

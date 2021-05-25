@@ -28,7 +28,22 @@
           "@value": {
             "fn:jmespath": "format('Client X: ${0}, Client Y: ${1}', [clientX, clientY])"
           },
-          "listen": "mousemove"
+          "listen": "mousemove",
+          "layout": {
+            "width": 2
+          }
+        },
+        {
+          "element": "h1",
+          "heading": "Conditional rendering demo",
+          "@innerText": "BOO!",
+          "listen": "mousemove",
+          "when": {
+            "fn:jmespath": "clientX > `500`"
+          },
+          "layout": {
+            "width": 2
+          }
         }
       ],
       "layout": {
