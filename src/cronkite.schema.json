@@ -286,18 +286,6 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "fn:jq": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "fn:uniq": {
-              "$ref": "#/definitions/componentProps"
-            },
             "fn:uniq": {
               "$ref": "#/definitions/componentProps"
             },
