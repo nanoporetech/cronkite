@@ -51,11 +51,11 @@
   "dependencies": {
     "@metrichor/ui-components": "1.1.1-3890145",
     "ajv": "8.5.0",
-    "jmespath-edit": "0.3.1",
+    "jmespath-edit": "0.3.2",
     "rxjs": "^6.6.7"
   },
   "devDependencies": {
-    "@ionic/core": "5.6.7",
+    "@ionic/core": "5.6.8",
     "@stencil/core": "2.5.2",
     "@stencil/eslint-plugin": "0.3.1",
     "@stencil/sass": "1.4.1",
@@ -80,6 +80,6 @@
     "stylelint-order": "^4.1.0",
     "stylelint-prettier": "1.2.0",
     "stylelint-scss": "3.19.0",
-    "typescript": "4.2.4"
+    "typescript": "4.3.2"
   }
 }
