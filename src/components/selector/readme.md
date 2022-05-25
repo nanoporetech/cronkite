@@ -12,15 +12,17 @@
 | `heading`          | `heading`            | Custom heading for the selector                             | `string`             | `''`        |
 | `label`            | `label`              | Label for each selectable - default 'COUNT'                 | `string`             | `'COUNT'`   |
 | `minimumSelection` | `minimum-selection`  | Minimum number of selected members                          | `number`             | `0`         |
+| `multiselect`      | `multiselect`        | multi select                                                | `boolean`            | `true`      |
 | `selectAllOnLoad`  | `select-all-on-load` | Should all selectable members be selected on initial render | `boolean`            | `true`      |
 | `selectList`       | --                   | a list of selectable members {select, label, count}[]       | `SelectListMember[]` | `[]`        |
-| `selector`         | `selector`           | a value that will be used to filter data streams by         | `any`                | `undefined` |
+| `selector`         | `selector`           | a value that will be used to filter data streams by         | `string`             | `undefined` |
 
 
 ## Dependencies
 
 ### Depends on
 
+- ion-radio-group
 - ion-item
 - ion-checkbox
 - ion-label
@@ -29,6 +31,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  cronk-selector --> ion-radio-group
   cronk-selector --> ion-item
   cronk-selector --> ion-checkbox
   cronk-selector --> ion-label

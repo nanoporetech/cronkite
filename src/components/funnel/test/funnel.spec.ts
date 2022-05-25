@@ -29,7 +29,7 @@ describe('cronk-funnel', () => {
 
     it('throws when given rubbish', async () => {
       try {
-        rootEl.statsList = [('not the correct data' as unknown) as FunnelListItem];
+        rootEl.statsList = ['not the correct data' as unknown as FunnelListItem];
         await page.waitForChanges();
       } catch (error) {
         expect(error.message).toBe('Error: @Prop() statsList - property does not contain valid members');

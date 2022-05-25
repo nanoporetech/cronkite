@@ -241,6 +241,44 @@
             "text"
           ]
         },
+        "@mode": {
+          "$id": "#/definitions/datastream/properties/@mode",
+          "type": "string",
+          "title": "The @mode Schema",
+          "default": "cors",
+          "enum": [
+            "cors",
+            "no-cors",
+            "same-origin"
+          ],
+          "examples": [
+            "cors",
+            "no-cors",
+            "same-origin"
+          ]
+        },
+        "@cache": {
+          "$id": "#/definitions/datastream/properties/@cache",
+          "type": "string",
+          "title": "The @cache Schema",
+          "default": "default",
+          "enum": [
+            "default",
+            "no-store",
+            "reload",
+            "no-cache",
+            "force-cache",
+            "only-if-cached"
+          ],
+          "examples": [
+            "default",
+            "no-store",
+            "reload",
+            "no-cache",
+            "force-cache",
+            "only-if-cached"
+          ]
+        },
         "@credentials": {
           "$id": "#/definitions/datastream/properties/@credentials",
           "type": "string",
@@ -464,21 +502,6 @@
               }
             ]
           }
-        ],
-        [
-          {
-            "element": "cronk-socketio-datastream",
-            "@url": "https://socket-io-chat.now.sh/",
-            "@channels": [
-              {
-                "channel": "socketio:newmessage",
-                "listen": "new message",
-                "shape": {
-                  "fn:jmespath": "@"
-                }
-              }
-            ]
-          }
         ]
       ],
       "items": {
@@ -487,6 +510,7 @@
             "type": "object",
             "required": [
               "element",
+              "@channels",
               "@url"
             ],
             "additionalProperties": false,
@@ -513,85 +537,12 @@
               },
               "@responseFormat": {
                 "$ref": "#/definitions/datastream/properties/@responseFormat"
-              }
-            }
-          },
-          {
-            "type": "object",
-            "required": [
-              "element",
-              "@url"
-            ],
-            "properties": {
-              "element": {
-                "type": "string",
-                "title": "Generic Socket.io datastream",
-                "const": "cronk-socketio-datastream"
               },
-              "@url": {
-                "$ref": "#/definitions/datastream/properties/@url"
+              "@mode": {
+                "$ref": "#/definitions/datastream/properties/@mode"
               },
-              "@channels": {
-                "$ref": "#/definitions/datastream/properties/@channels"
-              }
-            }
-          },
-          {
-            "type": "object",
-            "required": [
-              "element",
-              "@flavour",
-              "@type",
-              "@id-workflow-instance"
-            ],
-            "properties": {
-              "@flavour": {
-                "$id": "#/properties/streams/items/properties/@flavour",
-                "type": "string",
-                "title": "The @flavour Schema",
-                "default": "",
-                "examples": [
-                  "basecalling_1d_barcode-v1"
-                ],
-                "pattern": "^(.*)$"
-              },
-              "@type": {
-                "$id": "#/properties/streams/items/properties/@type",
-                "type": "string",
-                "title": "The @type Schema",
-                "default": "",
-                "examples": [
-                  "telemetry"
-                ],
-                "enum": [
-                  "telemetry",
-                  "status"
-                ]
-              },
-              "@id-workflow-instance": {
-                "$id": "#/properties/streams/items/properties/@id-workflow-instance",
-                "type": [
-                  "string",
-                  "number"
-                ],
-                "title": "The @id-workflow-instance Schema",
-                "default": "",
-                "examples": [
-                  "123456",
-                  234567
-                ],
-                "pattern": "^(\\d*)$"
-              },
-              "element": {
-                "type": "string",
-                "title": "Workflow instance polling datastream",
-                "const": "epi-workflow-instance-datastream"
-              },
-              "@channels": {
-                "$ref": "#/definitions/datastream/properties/@channels"
-              },
-              "@poll-frequency": {
-                "$ref": "#/definitions/datastream/properties/@poll-frequency"
+              "@cache": {
+                "$ref": "#/definitions/datastream/properties/@cache"
               }
             }
           }

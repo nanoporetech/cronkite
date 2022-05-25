@@ -1,5 +1,5 @@
 import jmespath, { TreeInterpreter } from '@metrichor/jmespath-plus';
-import { JSONValue } from '../types/json.type';
+import { JSONValue } from 'ts-runtime-typecheck';
 
 const EXPRESSION_CACHE = {};
 export const query = async (path: string, json: JSONValue): Promise<JSONValue> => {

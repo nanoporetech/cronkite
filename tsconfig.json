@@ -4,23 +4,23 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
-    "jsx": "react",
-    "jsxFactory": "h",
     "lib": [
       "dom",
-      "es2020"
+      "es2018"
     ],
-    "module": "esnext",
+    "resolveJsonModule": true,
     "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2017",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "target": "es2020"
+    "jsx": "react",
+    "jsxFactory": "h"
   },
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

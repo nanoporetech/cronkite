@@ -19,6 +19,7 @@ export class CronkPageComponents {
         <slot name="header"></slot>
         <div class="components-content">
           <slot></slot>
+          <slot name="error"></slot>
         </div>
         <slot name="footer"></slot>
       </Host>

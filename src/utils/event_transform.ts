@@ -1,9 +1,13 @@
-import { JSONValue } from '../types/json.type';
+import { JSONValue, isPrimitive } from 'ts-runtime-typecheck';
 
-export function eventAsJSON(event: Event | CustomEvent): JSONValue {
+export function normaliseEvent(event: Event | CustomEvent): JSONValue {
+  return event instanceof CustomEvent ? event.detail : eventAsJSON(event);
+}
+
+export function eventAsJSON(event: Event): JSONValue {
   const obj = {};
   for (const key in event) {
-    if (typeof event[key] === 'string' || typeof event[key] === 'number' || typeof event[key] === 'boolean') {
+    if (isPrimitive(event[key])) {
       obj[key] = event[key];
     }
   }

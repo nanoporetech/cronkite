@@ -4,11 +4,10 @@ module.exports = {
   // The standard config based on a handful of CSS style guides
   // https://github.com/stylelint/stylelint-config-standard
   extends: [
-    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
     "stylelint-a11y",
     "stylelint-no-indistinguishable-colors",
     "stylelint-prettier",
-    "stylelint-scss",
   ],
 
   plugins: [

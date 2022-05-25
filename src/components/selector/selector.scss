@@ -11,6 +11,7 @@ cronk-selector {
 
   & ion-progress-bar {
     height: 1.5rem;
+
     // display: block;
   }
 
@@ -71,8 +72,10 @@ cronk-selector {
       & th,
       & td {
         padding: 0;
+
         // border: solid 1px;
         text-align: right;
+
         // margin: 1rem 0;
 
         &:nth-child(3) {

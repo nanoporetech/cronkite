@@ -8,6 +8,8 @@ import {
 import {
   DatastreamEventDispatcher,
   DatastreamResponseHandler,
+  FilterFn,
+  FilterFnMap,
   MetadataObj,
   ResponseTypes,
   StreamConfig,
@@ -51,6 +53,8 @@ export class CronkPollDatastream {
   @Prop() credentials: RequestCredentials = 'include';
   /** fetch API request mode */
   @Prop() mode: RequestMode = 'cors';
+  /** fetch API request cache strategy */
+  @Prop() cache: RequestCache = 'default';
   /** Polling interval to check URL for changes */
   @Prop() pollFrequency = 15000;
   /** Custom response handler */
@@ -75,13 +79,13 @@ export class CronkPollDatastream {
 
   /** List any filter functions applied to the data streams */
   @Method()
-  async listFilters(): Promise<any> {
+  async listFilters(): Promise<FilterFnMap> {
     return this.filters;
   }
 
   /** Attach/add a new filter function to apply to members of a datastream */
   @Method()
-  async addFilter(fnKey: string, filterFn: () => boolean): Promise<void> {
+  async addFilter(fnKey: string, filterFn: FilterFn): Promise<void> {
     this.filters[fnKey] = filterFn;
     await this.broadcast(this.cachedResponse);
   }
@@ -95,7 +99,7 @@ export class CronkPollDatastream {
   private requestHandler = async (method: string): Promise<Response> => {
     const response = await fetch(this.url as string, {
       body: null,
-      cache: 'force-cache',
+      cache: this.cache,
       credentials: this.credentials,
       headers: {
         accept: RESPONSE_MIMETYPE[this.responseFormat],
@@ -119,6 +123,7 @@ export class CronkPollDatastream {
   private fetchData = async () => {
     // console.debug('In fetchData', this.url);
     let response: Response | null = null;
+    let rawCsvResponse = '';
     try {
       response = await this.requestHandler('GET');
     } catch (error) {
@@ -131,15 +136,15 @@ export class CronkPollDatastream {
         newData = await response.json();
         break;
       case 'csv':
-        const rawCsvResponse: string = await response.text();
+        rawCsvResponse = await response.text();
         newData = rawCsvResponse
           .trimRight()
           .split(/[\n\r]+/g)
           .map(line => line.split(','));
         break;
       case 'tsv':
-        const rawTsvResponse: string = await response.text();
-        newData = rawTsvResponse
+        rawCsvResponse = await response.text();
+        newData = rawCsvResponse
           .trimRight()
           .split(/[\n\r]+/g)
           .map(line => line.split('\t'));

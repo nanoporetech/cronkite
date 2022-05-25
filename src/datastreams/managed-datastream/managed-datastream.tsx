@@ -111,9 +111,11 @@ export class CronkManagedDatastream {
     });
   };
 
-  private broadcast = async ([data, channels, filters]: [JSONValue | undefined, ChannelShape[], FilterFnMap]): Promise<
-    void
-  > => {
+  private broadcast = async ([data, channels, filters]: [
+    JSONValue | undefined,
+    ChannelShape[],
+    FilterFnMap,
+  ]): Promise<void> => {
     if (data === undefined) return;
     try {
       await this.responseHandler(data, {

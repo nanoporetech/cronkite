@@ -1,69 +1,79 @@
 :root {
   --cronk-base-font-size: 16;
+
   // PRIMARY
   --cronk-color-primary: #007a9a;
-  --cronk-color-primary-rgb: rgb(0, 122, 154);
+  --cronk-color-primary-rgb: rgb(0 122 154);
   --cronk-color-primary-contrast: #efefef;
-  --cronk-color-primary-contrast-rgb: rgb(239, 239, 239);
+  --cronk-color-primary-contrast-rgb: rgb(239 239 239);
   --cronk-color-primary-shade: #006b88;
   --cronk-color-primary-tint: #1a87a4;
+
   // SECONDARY
   --cronk-color-secondary: #68bbb9;
-  --cronk-color-secondary-rgb: rgb(104, 187, 185);
+  --cronk-color-secondary-rgb: rgb(104 187 185);
   --cronk-color-secondary-contrast: #000;
-  --cronk-color-secondary-contrast-rgb: rgb(0, 0, 0);
+  --cronk-color-secondary-contrast-rgb: rgb(0 0 0);
   --cronk-color-secondary-shade: #5ca5a3;
   --cronk-color-secondary-tint: #77c2c0;
+
   // TERTIARY
   --cronk-color-tertiary: #fece62;
-  --cronk-color-tertiary-rgb: rgb(254, 206, 98);
+  --cronk-color-tertiary-rgb: rgb(254 206 98);
   --cronk-color-tertiary-contrast: #000;
-  --cronk-color-tertiary-contrast-rgb: rgb(0, 0, 0);
+  --cronk-color-tertiary-contrast-rgb: rgb(0 0 0);
   --cronk-color-tertiary-shade: #e0b556;
   --cronk-color-tertiary-tint: #fed372;
+
   // SUCCESS
   --cronk-color-success: #17bb75;
-  --cronk-color-success-rgb: rgb(23, 187, 117);
+  --cronk-color-success-rgb: rgb(23 187 117);
   --cronk-color-success-contrast: #000;
-  --cronk-color-success-contrast-rgb: rgb(0, 0, 0);
+  --cronk-color-success-contrast-rgb: rgb(0 0 0);
   --cronk-color-success-shade: #14a567;
   --cronk-color-success-tint: #2ec283;
+
   // WARNING
   --cronk-color-warning: #ffe728;
-  --cronk-color-warning-rgb: rgb(255, 231, 40);
+  --cronk-color-warning-rgb: rgb(255 231 40);
   --cronk-color-warning-contrast: #000;
-  --cronk-color-warning-contrast-rgb: rgb(0, 0, 0);
+  --cronk-color-warning-contrast-rgb: rgb(0 0 0);
   --cronk-color-warning-shade: #e0cb23;
   --cronk-color-warning-tint: #ffe93e;
+
   // DANGER
   --cronk-color-danger: #ef4135;
-  --cronk-color-danger-rgb: rgb(239, 65, 53);
+  --cronk-color-danger-rgb: rgb(239 65 53);
   --cronk-color-danger-contrast: #efefef;
-  --cronk-color-danger-contrast-rgb: rgb(239, 239, 239);
+  --cronk-color-danger-contrast-rgb: rgb(239 239 239);
   --cronk-color-danger-shade: #d2392f;
   --cronk-color-danger-tint: #f15449;
+
   // DARK
   --cronk-color-dark: #333;
-  --cronk-color-dark-rgb: rgb(51, 51, 51);
+  --cronk-color-dark-rgb: rgb(51 51 51);
   --cronk-color-dark-contrast: #efefef;
-  --cronk-color-dark-contrast-rgb: rgb(239, 239, 239);
+  --cronk-color-dark-contrast-rgb: rgb(239 239 239);
   --cronk-color-dark-shade: #3d4b4c;
   --cronk-color-dark-tint: #586667;
+
   // MEDIUM
   --cronk-color-medium: #68767e;
-  --cronk-color-medium-rgb: rgb(104, 118, 126);
+  --cronk-color-medium-rgb: rgb(104 118 126);
   --cronk-color-medium-contrast: #efefef;
-  --cronk-color-medium-contrast-rgb: rgb(239, 239, 239);
+  --cronk-color-medium-contrast-rgb: rgb(239 239 239);
   --cronk-color-medium-shade: #5c686f;
   --cronk-color-medium-tint: #77848b;
+
   // LIGHT
   --cronk-color-light: #e4e6e8;
-  --cronk-color-light-rgb: rgb(228, 230, 232);
+  --cronk-color-light-rgb: rgb(228 230 232);
   --cronk-color-light-contrast: #000;
-  --cronk-color-light-contrast-rgb: rgb(0, 0, 0);
+  --cronk-color-light-contrast-rgb: rgb(0 0 0);
   --cronk-color-light-shade: #c9cacc;
   --cronk-color-light-tint: #e7e9ea;
+
   // BACKGROUND
   --cronk-background-color: #fff;
-  --cronk-background-color-rgb: rgb(255, 255, 255);
+  --cronk-background-color-rgb: rgb(255 255 255);
 }

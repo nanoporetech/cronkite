@@ -13,8 +13,4 @@ cronk-version {
   &::selection {
     background: none; /* WebKit/Blink Browsers */
   }
-
-  &::-moz-selection {
-    background: none; /* Gecko Browsers */
-  }
 }

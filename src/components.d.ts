@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ReportDefinition, Stream } from "./types/reportconfig.type";
 import { FunnelListItem } from "./types/funnel.type";
 import { ChannelShape, DatastreamResponseHandler, FilterFn, FilterFnMap, MetadataObj, ResponseTypes, StreamConfig } from "./types/datastreams.type";
 import { JSONValue } from "./types/json.type";
+import { ComponentConfig, ReportDefinition } from "./types";
 import { SelectListMember } from "./types/selector.type";
 import { StatsBoxListItem } from "./types/statsbox.type";
 export namespace Components {
@@ -18,31 +18,11 @@ export namespace Components {
          */
         "report": string;
     }
-    interface CronkDatastreams {
-        /**
-          * Rebroadcast the last cached payload
-         */
-        "reload": () => Promise<void>;
-        /**
-          * Array of stream configuration
-         */
-        "streams"?: Stream[];
-        /**
-          * Unique ID for stream
-         */
-        "streamsID"?: string;
-    }
     interface CronkErrormessage {
         /**
           * Customised message for error reporting
          */
         "message": string;
-    }
-    interface CronkEventStream {
-        /**
-          * Event stream configuration
-         */
-        "config": Stream;
     }
     interface CronkFunnel {
         /**
@@ -116,13 +96,17 @@ export namespace Components {
     }
     interface CronkPage {
         /**
+          * enable/disable validation ot the cronkite schema
+         */
+        "disableSchemaValidation": boolean;
+        /**
           * Load new page configuration JSON
          */
-        "loadConfig": (newConfig: any) => Promise<void>;
+        "loadConfig": (newConfig: ReportDefinition | string) => Promise<void>;
         /**
           * Page configuration JSON
          */
-        "pageConfig": ReportDefinition | string | undefined;
+        "pageConfig": ReportDefinition | string;
         /**
           * show or hide the configuration used to render the page
          */
@@ -130,11 +114,7 @@ export namespace Components {
         /**
           * validate provided configuration JSON for a page
          */
-        "validateConfig": (configIn: any) => Promise<boolean>;
-        /**
-          * enable/disable validation ot the cronkite schema
-         */
-        "validationEnabled": boolean;
+        "validateConfig": (configIn: unknown) => Promise<boolean>;
     }
     interface CronkPageComponents {
     }
@@ -142,7 +122,7 @@ export namespace Components {
         /**
           * Configuration for a specific component
          */
-        "panelConfig": any;
+        "panelConfig": ComponentConfig;
     }
     interface CronkPollDatastream {
         /**
@@ -152,7 +132,11 @@ export namespace Components {
         /**
           * Attach/add a new filter function to apply to members of a datastream
          */
-        "addFilter": (fnKey: string, filterFn: () => boolean) => Promise<void>;
+        "addFilter": (fnKey: string, filterFn: FilterFn) => Promise<void>;
+        /**
+          * fetch API request cache strategy
+         */
+        "cache": RequestCache;
         /**
           * Channel configuration describing how broadcasts are constructed
          */
@@ -164,7 +148,7 @@ export namespace Components {
         /**
           * List any filter functions applied to the data streams
          */
-        "listFilters": () => Promise<any>;
+        "listFilters": () => Promise<FilterFnMap>;
         /**
           * fetch API request mode
          */
@@ -218,6 +202,10 @@ export namespace Components {
          */
         "minimumSelection": number;
         /**
+          * multi select
+         */
+        "multiselect": boolean;
+        /**
           * Should all selectable members be selected on initial render
          */
         "selectAllOnLoad": boolean;
@@ -228,7 +216,7 @@ export namespace Components {
         /**
           * a value that will be used to filter data streams by
          */
-        "selector": any;
+        "selector": string;
     }
     interface CronkSimpleGrid {
         /**
@@ -286,23 +274,11 @@ declare global {
         prototype: HTMLCronkAppElement;
         new (): HTMLCronkAppElement;
     };
-    interface HTMLCronkDatastreamsElement extends Components.CronkDatastreams, HTMLStencilElement {
-    }
-    var HTMLCronkDatastreamsElement: {
-        prototype: HTMLCronkDatastreamsElement;
-        new (): HTMLCronkDatastreamsElement;
-    };
     interface HTMLCronkErrormessageElement extends Components.CronkErrormessage, HTMLStencilElement {
     }
     var HTMLCronkErrormessageElement: {
         prototype: HTMLCronkErrormessageElement;
         new (): HTMLCronkErrormessageElement;
-    };
-    interface HTMLCronkEventStreamElement extends Components.CronkEventStream, HTMLStencilElement {
-    }
-    var HTMLCronkEventStreamElement: {
-        prototype: HTMLCronkEventStreamElement;
-        new (): HTMLCronkEventStreamElement;
     };
     interface HTMLCronkFunnelElement extends Components.CronkFunnel, HTMLStencilElement {
     }
@@ -384,9 +360,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "cronk-app": HTMLCronkAppElement;
-        "cronk-datastreams": HTMLCronkDatastreamsElement;
         "cronk-errormessage": HTMLCronkErrormessageElement;
-        "cronk-event-stream": HTMLCronkEventStreamElement;
         "cronk-funnel": HTMLCronkFunnelElement;
         "cronk-list": HTMLCronkListElement;
         "cronk-managed-datastream": HTMLCronkManagedDatastreamElement;
@@ -409,27 +383,11 @@ declare namespace LocalJSX {
          */
         "report"?: string;
     }
-    interface CronkDatastreams {
-        /**
-          * Array of stream configuration
-         */
-        "streams"?: Stream[];
-        /**
-          * Unique ID for stream
-         */
-        "streamsID"?: string;
-    }
     interface CronkErrormessage {
         /**
           * Customised message for error reporting
          */
         "message"?: string;
-    }
-    interface CronkEventStream {
-        /**
-          * Event stream configuration
-         */
-        "config"?: Stream;
     }
     interface CronkFunnel {
         /**
@@ -491,21 +449,21 @@ declare namespace LocalJSX {
     }
     interface CronkPage {
         /**
+          * enable/disable validation ot the cronkite schema
+         */
+        "disableSchemaValidation"?: boolean;
+        /**
           * broadcast to any listener (mostly datastreams) that the page has fully rendered and payloads should be rebroadcast to ensure the lated data is set on components
          */
         "onCronkPageReady"?: (event: CustomEvent<void>) => void;
         /**
           * Page configuration JSON
          */
-        "pageConfig"?: ReportDefinition | string | undefined;
+        "pageConfig"?: ReportDefinition | string;
         /**
           * show or hide the configuration used to render the page
          */
         "showConfig"?: boolean;
-        /**
-          * enable/disable validation ot the cronkite schema
-         */
-        "validationEnabled"?: boolean;
     }
     interface CronkPageComponents {
         /**
@@ -517,13 +475,17 @@ declare namespace LocalJSX {
         /**
           * Configuration for a specific component
          */
-        "panelConfig"?: any;
+        "panelConfig"?: ComponentConfig;
     }
     interface CronkPollDatastream {
         /**
           * Whether or not a datastream is affected by filters like cronk-selector
          */
         "acceptsFilters"?: boolean;
+        /**
+          * fetch API request cache strategy
+         */
+        "cache"?: RequestCache;
         /**
           * Channel configuration describing how broadcasts are constructed
          */
@@ -581,6 +543,10 @@ declare namespace LocalJSX {
          */
         "minimumSelection"?: number;
         /**
+          * multi select
+         */
+        "multiselect"?: boolean;
+        /**
           * Should all selectable members be selected on initial render
          */
         "selectAllOnLoad"?: boolean;
@@ -591,7 +557,7 @@ declare namespace LocalJSX {
         /**
           * a value that will be used to filter data streams by
          */
-        "selector"?: any;
+        "selector"?: string;
     }
     interface CronkSimpleGrid {
         /**
@@ -639,9 +605,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "cronk-app": CronkApp;
-        "cronk-datastreams": CronkDatastreams;
         "cronk-errormessage": CronkErrormessage;
-        "cronk-event-stream": CronkEventStream;
         "cronk-funnel": CronkFunnel;
         "cronk-list": CronkList;
         "cronk-managed-datastream": CronkManagedDatastream;
@@ -662,9 +626,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "cronk-app": LocalJSX.CronkApp & JSXBase.HTMLAttributes<HTMLCronkAppElement>;
-            "cronk-datastreams": LocalJSX.CronkDatastreams & JSXBase.HTMLAttributes<HTMLCronkDatastreamsElement>;
             "cronk-errormessage": LocalJSX.CronkErrormessage & JSXBase.HTMLAttributes<HTMLCronkErrormessageElement>;
-            "cronk-event-stream": LocalJSX.CronkEventStream & JSXBase.HTMLAttributes<HTMLCronkEventStreamElement>;
             "cronk-funnel": LocalJSX.CronkFunnel & JSXBase.HTMLAttributes<HTMLCronkFunnelElement>;
             "cronk-list": LocalJSX.CronkList & JSXBase.HTMLAttributes<HTMLCronkListElement>;
             "cronk-managed-datastream": LocalJSX.CronkManagedDatastream & JSXBase.HTMLAttributes<HTMLCronkManagedDatastreamElement>;

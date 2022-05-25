@@ -3,13 +3,13 @@
 @import '~@ionic/core/css/ionic.bundle.css';
 
 /* Custom theme */
-@import '../theme/theme.scss';
+@import '../theme/theme';
 
 /* Conkite styles */
-@import './styles/colours.scss';
-@import './styles/variables.scss';
-@import './styles/font.scss';
-@import './styles/scaling.scss';
+@import './styles/colours';
+@import './styles/variables';
+@import './styles/font';
+@import './styles/scaling';
 
 html,
 body {
@@ -18,13 +18,13 @@ body {
   font-size: $font-size + px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  position: fixed;
+  position: relative;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
   overscroll-behavior: none;
-  font-family: 'Lato', sans-serif;
+  font-family: Lato, sans-serif;
 }
 
 body,
@@ -32,10 +32,10 @@ input,
 select,
 textarea,
 button {
-  font-family: 'Lato', sans-serif;
+  font-family: Lato, sans-serif;
   color: $dark-shade;
 }
 
 * {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
 }
