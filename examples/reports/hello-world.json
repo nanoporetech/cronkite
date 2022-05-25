@@ -53,11 +53,9 @@
     {
       "element": "cronk-simple-grid",
       "@headers": [
-        [
-          "Title",
-          "Authors",
-          "Year"
-        ]
+        "Title",
+        "Authors",
+        "Year"
       ],
       "@data": {
         "fn:jmespath": "([][format('<a href=\"https://doi.org/${doi}\">${title}</a>', @), authorString, pubYear])[0:2]"

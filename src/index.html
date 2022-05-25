@@ -20,7 +20,9 @@
   <style>
     body,
     html {
-      height: 100%;
+      height: auto;
+      position: relative;
+      overflow: auto;
     }
 
     ion-toolbar ion-item,
@@ -51,7 +53,7 @@
   <ion-toolbar>
     <ion-buttons slot="primary">
       <ion-label class="toolbar-label">PAGE DEMO</ion-label>
-      <ion-select id="report-select" value="hello-world" ok-text="Okay" cancel-text="Dismiss">
+      <ion-select id="report-select" value="pychopper" interface="popover">
 
         <ion-select-option value="hello-world">Hello world</ion-select-option>
         <ion-select-option value="pychopper">Pychopper</ion-select-option>
@@ -70,8 +72,9 @@
     <ion-title>Cronkite demo</ion-title>
   </ion-toolbar>
 
-  <cronk-app report="hello-world"></cronk-app>
+  <cronk-app report="pychopper"></cronk-app>
   <script>
+
     document.addEventListener('ionChange', (e) => {
       let source = e.target.tagName.toLowerCase()
       if (source === 'ion-select') {

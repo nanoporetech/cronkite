@@ -233,9 +233,9 @@ You have already been introduced to your first payload transform `fn:jmespath` w
 
 Streams are a special type of component in that they __*do not*__ render any UI elements. They do however, emit events (usually `CustomEvent` types) with corresponding payloads that can be consumed by `components` via `listen` as described above.
 
-There are (at the time of writing) three configurable data stream components available in Cronkite:
+There are (at the time of writing) two configurable data stream components available in Cronkite:
   1. [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
-  3. [cronk-socketio-datastream](src/components/cronk-socketio-datastream/readme.md) - very much a prototype
+
 
 ### 1. [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md)
 
@@ -278,48 +278,6 @@ The [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) stre
 > ### What's going on
 >
 > `element` specifies a web component [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) that (in this case) abstracts the W3C fetch API. The component polls a URL provided by the user at regular intervals for JSON data. Successful responses are emitted as the payload to a `CustomEvent` object. The default event name is `cronkite:stream` although the user can specify a custom event name using the `@channels` attribute. In the example above, the url `https://jsonplaceholder.typicode.com/todos` will be polled every 25 seconds and the most recent successful response cached. On successful data fetch, the JSON response will be emitted as a `CustomEvent` with the event name set to `my:todos`.
-
-<hr/>
-
-### 2. `epi-workflow-instance-datastream`
-
-This datastream inherits from the [cronk-poll-datastream](src/components/cronk-poll-datastream/readme.md) and inherits all `@` attributes __*except*__ `@url`. It is specialised at retrieval of workflow instance data from the EPI2ME API. This is primarily due to a number of HTTP response transforms that augment workflow instance telemetry. Much of the implementation detail is abstracted away from the user with two attributes namely `@type` and `@flavour`. More information can be found in the [git repository](https://git.oxfordnanolabs.local/metrichor-ui/components/datastream) for the datastream component. In the JSON schema it is implemented as follows:
-
-#### Parameterisation of the request
-
-- `element` (required - `"epi-workflow-instance-datastream"`)
-- `@type` (required - `"telemetry" | "status"` specific types of instance data)
-- `@flavour` (required - if `@type == "telemetry"` then this will be the name of the file output by the telemetry aggregation)
-- `@id-workflow-instance` (required - Workflow instance ID)
-
-    Users are able to specify the prefix to the name of the event (stream) that payloads are delivered on. If no `@channel` is provided then payloads are delivered on a default event stream with a name that is composed of the various bits of information provided for the QC reports this would be something like `instance:telemetry:basecalling1d:1`. The event name is created dynamically by concatenating the following with the `":"` character:
-
-    - `@channel` | `"instance:telemetry"`
-    - `<RESPONSE JSON>.type`
-    - `<RESPONSE JSON>.version`
-
-#### Example:
-
-```javascript
-"streams": [
-    {
-      "@channels": [
-        {
-          "channel": "qctelemetry"
-        }
-      ],
-      "element": "epi-workflow-instance-datastream",
-      "@id-workflow-instance": 123456,
-      "@flavour": "simple_aligner_barcode_compact_quick-v1",
-      "@poll-frequency": 25000,
-      "@type": "telemetry"
-    }
-]
-```
-
-> ### What's going on
->
-> `element` specifies the special workflow instance datastream web component `epi-workflow-instance-datastream`. In the example above the `telemetry` JSON is being polled every 25 seconds (the assumption is that there will be an aggregated telemetry file for the instance ending in `simple_aligner_barcode_compact_quick-v1.json`). On successful retrieval of telemtry data, a flattened telemetry JSON will be emitted as a `CustomEvent` with the event name set to `qctelemetry:basecalling1d:1`.
 
 <hr/>
 

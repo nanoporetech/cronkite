@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cronk-selector rendering renders with selectList checkbox 1`] = `
+<cronk-selector class="thing-selector whichty-selector">
+  <ion-radio-group>
+    <table class="fixed">
+      <thead>
+        <tr>
+          <th>
+            <ion-item class="select-all-things select-all-whichty" lines="none">
+              <ion-checkbox checked="" color="secondary" slot="start" value="selectall"></ion-checkbox>
+              <span class="select-label">
+                SELECT
+              </span>
+            </ion-item>
+          </th>
+          <th></th>
+          <th>
+            COUNT
+          </th>
+          <th>
+            %
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <ion-item lines="none">
+              <ion-checkbox checked="" color="secondary" slot="start" value="select_eighty"></ion-checkbox>
+              <ion-label>
+                EIGHTY
+              </ion-label>
+            </ion-item>
+          </td>
+          <td>
+            <ion-progress-bar value="0.8"></ion-progress-bar>
+          </td>
+          <td>
+            80
+          </td>
+          <td>
+            (80.0%)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <ion-item lines="none">
+              <ion-checkbox checked="" color="secondary" slot="start" value="select_twenty"></ion-checkbox>
+              <ion-label>
+                TWENTY
+              </ion-label>
+            </ion-item>
+          </td>
+          <td>
+            <ion-progress-bar value="0.2"></ion-progress-bar>
+          </td>
+          <td>
+            20
+          </td>
+          <td>
+            (20.0%)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-radio-group>
+</cronk-selector>
+`;
+
+exports[`cronk-selector rendering renders with selectList radio 1`] = `
+<cronk-selector class="thing-selector watchy-selector">
+  <ion-radio-group value="select_eighty">
+    <table class="fixed">
+      <thead>
+        <tr>
+          <th>
+            <ion-item class="select-all-things select-all-watchy" lines="none">
+              <span class="select-label">
+                SELECT
+              </span>
+            </ion-item>
+          </th>
+          <th></th>
+          <th>
+            COUNT
+          </th>
+          <th>
+            %
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <ion-item lines="none">
+              <ion-radio checked="" color="secondary" slot="start" value="select_eighty"></ion-radio>
+              <ion-label>
+                EIGHTY
+              </ion-label>
+            </ion-item>
+          </td>
+          <td>
+            <ion-progress-bar value="0.8"></ion-progress-bar>
+          </td>
+          <td>
+            80
+          </td>
+          <td>
+            (80.0%)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <ion-item lines="none">
+              <ion-radio color="secondary" slot="start" value="select_twenty"></ion-radio>
+              <ion-label>
+                TWENTY
+              </ion-label>
+            </ion-item>
+          </td>
+          <td>
+            <ion-progress-bar value="0.2"></ion-progress-bar>
+          </td>
+          <td>
+            20
+          </td>
+          <td>
+            (20.0%)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-radio-group>
+</cronk-selector>
+`;

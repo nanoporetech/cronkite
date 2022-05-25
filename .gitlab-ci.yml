@@ -1,4 +1,4 @@
-image: ${GITLAB_REGISTRY}/metrichor-ui/node-cypress-runner/master:node14
+image: ${GITLAB_REGISTRY}/metrichor-ui/node-cypress-runner/master:node16
 
 variables:
   GITLAB_REGISTRY:  '$CI_REGISTRY'
@@ -30,7 +30,7 @@ unit-test:
   stage: test
   script:
     - npm i
-    - npm run test
+    - npm run test.spec
 
 .npm-publish-external: &npm_publish_external
   stage: publish

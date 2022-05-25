@@ -1,87 +1,66 @@
-import { JSONObject } from './json.type';
+import { Dictionary, Index, JSONObject, JSONValue, Optional } from 'ts-runtime-typecheck';
 
-export interface ReportDefinition {
-  id: string;
+export interface ReportDefinition extends JSONObject {
+  id: Index;
   components: ComponentConfig[];
   streams: Stream[];
 }
 
-export interface Stream {
-  element: string;
-  '@url': string;
-  '@channels': Channel[];
+export interface HTMLDatastreamElement extends Element {
+  resendBroadcast?: () => Promise<void>;
 }
 
-export interface Channel {
+export type PropTag = `@${string}`;
+
+export type FunctionTag = `fn:${string}`;
+
+export interface Stream extends JSONObject {
+  element: string;
+  '@channels': Channel[];
+  '@responseFormat'?: Optional<'json' | 'csv' | 'tsv' | 'text'>;
+  '@acceptsFilters'?: Optional<boolean>;
+  '@mode'?: Optional<string>;
+  '@url'?: Optional<string>;
+  [other: string]: JSONValue | Channel[];
+}
+
+export interface EventStream extends JSONObject {
+  stream: string;
+  debounce: number;
+  cache: number;
+}
+
+export interface Channel extends JSONObject {
   channel: string;
   shape: JMESPathFn;
+  filtered?: Optional<boolean>;
+  listen?: Optional<string>;
 }
+
+export interface Layout extends JSONObject {
+  position?: Optional<'header' | 'footer'>;
+  width?: Optional<number>;
+}
+
+export type ComponentProps = Exclude<JSONValue, JSONObject> | TransformFn;
 
 export interface ComponentConfig extends JSONObject {
   element: string;
-  layout?: Layout;
-  listen?: string;
-  style?: Style;
-  components?: ComponentConfig[];
-  heading?: string;
-  [attribute: string]: ValueFn | any;
+  layout?: Optional<Layout>;
+  listen?: Optional<string | EventStream>;
+  style?: Optional<Dictionary<Index>>;
+  components?: Optional<ComponentConfig[]>;
+  heading?: Optional<string>;
+  when?: Optional<JMESPathFn>;
+  [param: string]: JSONValue;
 }
 
-export type JMESPathNumber = JMESPathFn | number;
+export type JMESPathOrNumber = JMESPathFn | number;
 
-export type ValueFn =
-  | SumFn
-  | DivideFn
-  | FormatNumberFn
-  | ToFixedFn
-  | ModeFn
-  | UniqFn
-  | MapFn
-  | RoundFn
-  | CountFn
-  | AverageFn
-  | JMESPathFn;
-
-export interface SumFn {
-  'fn:sum': [JMESPathNumber, JMESPathNumber];
-}
-export interface DivideFn {
-  'fn:divide': [JMESPathNumber, JMESPathNumber];
-}
+export type TransformFn = FormatNumberFn | JMESPathFn;
 export interface FormatNumberFn {
-  'fn:formatNumber': [JMESPathNumber, number, string];
+  'fn:formatNumber': [JMESPathOrNumber, number, string];
 }
-export interface ToFixedFn {
-  'fn:toFixed': [JMESPathNumber, number];
-}
-export interface ModeFn {
-  'fn:mode': [JMESPathNumber, number];
-}
-export interface UniqFn {
-  'fn:uniq': ValueFn;
-}
-export interface MapFn {
-  'fn:map': { [member: string]: ValueFn }[];
-}
-export interface RoundFn {
-  'fn:round': JMESPathNumber;
-}
-export interface CountFn {
-  'fn:count': JMESPathFn;
-}
-export interface AverageFn {
-  'fn:average': JMESPathFn;
-}
-
-export interface JMESPathFn {
+export interface JMESPathFn extends JSONObject {
   'fn:jmespath': string;
-}
-
-export interface Style {
-  [cssAttribute: string]: string | number;
-}
-
-export interface Layout {
-  position?: string;
-  width?: number;
 }

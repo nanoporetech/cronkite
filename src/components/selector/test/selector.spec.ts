@@ -32,61 +32,41 @@ describe('cronk-selector', () => {
       expect(rootEl).toEqualHtml('<cronk-selector></cronk-selector>');
     });
 
-    it('renders with selectList', async () => {
+    it('renders with selectList checkbox', async () => {
+      rootEl.selector = 'whichty';
       rootEl.selectList = [
         {
           count: 80,
           label: 'EIGHTY',
-          select: 'thing_to_select',
+          select: 'select_eighty',
         },
         {
           count: 20,
           label: 'TWENTY',
-          select: 'thing_to_select',
+          select: 'select_twenty',
         },
       ];
       await page.waitForChanges();
-      expect(rootEl).toEqualHtml(`
-      <cronk-selector class="thing-selector undefined-selector">
-        <table class="fixed">
-          <thead>
-            <tr>
-              <th>
-                <ion-item class="select-all-things select-all-undefined" lines="none">
-                  <span class="select-label"></span>
-                </ion-item>
-              </th>
-              <th></th>
-              <th>
-                COUNT
-              </th>
-              <th>
-                %
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <ion-item lines="none">
-                  <ion-label>
-                    EIGHTY
-                  </ion-label>
-                </ion-item>
-              </td>
-              <td>
-                <ion-progress-bar value="1"></ion-progress-bar>
-              </td>
-              <td>
-                80
-              </td>
-              <td>
-                (100.0%)
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </cronk-selector>`);
+      expect(rootEl).toMatchSnapshot();
+    });
+
+    it('renders with selectList radio', async () => {
+      rootEl.selector = 'watchy';
+      rootEl.multiselect = false;
+      rootEl.selectList = [
+        {
+          count: 80,
+          label: 'EIGHTY',
+          select: 'select_eighty',
+        },
+        {
+          count: 20,
+          label: 'TWENTY',
+          select: 'select_twenty',
+        },
+      ];
+      await page.waitForChanges();
+      expect(rootEl).toMatchSnapshot();
     });
 
     it('renders with selector', async () => {

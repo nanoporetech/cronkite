@@ -1,7 +1,6 @@
 {
-  "eslint.validate": [
-    "typescript"
-  ],
+  "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}",
+  "eslint.validate": ["typescript"],
   "eslint.alwaysShowStatus": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
@@ -19,7 +18,6 @@
   "stencilTools.test.extension": "spec.ts",
   "tslint.ignoreDefinitionFiles": false,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}",
   "json.schemas": [
     {
       "fileMatch": [

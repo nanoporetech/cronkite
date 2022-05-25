@@ -45,7 +45,7 @@ describe('cronk-simple-grid', () => {
       ];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+      <ion-content style="height: calc(3.04rem + (10 * 3.04rem));">
         <table>
           <thead>
             <tr></tr>
@@ -97,7 +97,7 @@ describe('cronk-simple-grid', () => {
                   undefined
                 </span>
                 <div>
-                  <a href=\"#\">
+                  <a href="#">
                     LINKED
                   </a>
                 </div>
@@ -105,8 +105,8 @@ describe('cronk-simple-grid', () => {
             </tr>
           </tbody>
         </table>
-        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
-          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        <ion-infinite-scroll id="infinite-scroll" threshold="100px">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
     </cronk-simple-grid>`);
@@ -117,17 +117,17 @@ describe('cronk-simple-grid', () => {
       rootEl.data = [['not the correct data', true, 1234, null]];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+      <ion-content style="height: calc(3.04rem + (10 * 3.04rem));">
         <table>
           <thead>
             <tr>
-              <th class=\"cronk-grid-header-colour dark\">
+              <th class="cronk-grid-header-colour dark">
                 One
               </th>
-              <th class=\"cronk-grid-header-colour dark\">
+              <th class="cronk-grid-header-colour dark">
                 Two
               </th>
-              <th class=\"cronk-grid-header-colour dark\">
+              <th class="cronk-grid-header-colour dark">
                 Three
               </th>
             </tr>
@@ -163,8 +163,8 @@ describe('cronk-simple-grid', () => {
             </tr>
           </tbody>
         </table>
-        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
-          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        <ion-infinite-scroll id="infinite-scroll" threshold="100px">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
     </cronk-simple-grid>`);
@@ -174,13 +174,13 @@ describe('cronk-simple-grid', () => {
       rootEl.display = 'grid';
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <ion-content style=\"height: calc(3.04rem + (10 * 3.04rem));\">
+      <ion-content style="height: calc(3.04rem + (10 * 3.04rem));">
         <table>
           <thead>
-            <tr class=\"grid\"></tr>
+            <tr class="grid"></tr>
           </thead>
           <tbody>
-            <tr class=\"grid\">
+            <tr class="grid">
               <td>
                 <span>
                   undefined
@@ -192,8 +192,8 @@ describe('cronk-simple-grid', () => {
             </tr>
           </tbody>
         </table>
-        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
-          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        <ion-infinite-scroll id="infinite-scroll" threshold="100px">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
     </cronk-simple-grid>`);
@@ -218,14 +218,14 @@ describe('cronk-simple-grid', () => {
       ];
       await page.waitForChanges();
       expect(rootEl).toEqualLightHtml(`<cronk-simple-grid>
-      <ion-content style=\"height: calc(3.04rem + (3 * 3.04rem));\">
+      <ion-content style="height: calc(3.04rem + (3 * 3.04rem));">
         <table>
           <thead>
             <tr>
-              <th class=\"cronk-grid-header-colour primary sort-desc\">
+              <th class="cronk-grid-header-colour primary sort-desc">
                 LENGTH
               </th>
-              <th class=\"cronk-grid-header-colour primary sort-asc\">
+              <th class="cronk-grid-header-colour primary sort-asc">
                 NAME
               </th>
             </tr>
@@ -345,8 +345,8 @@ describe('cronk-simple-grid', () => {
             </tr>
           </tbody>
         </table>
-        <ion-infinite-scroll id=\"infinite-scroll\" threshold=\"100px\">
-          <ion-infinite-scroll-content loading-spinner=\"bubbles\" loading-text=\"Loading more data...\"></ion-infinite-scroll-content>
+        <ion-infinite-scroll id="infinite-scroll" threshold="100px">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
     </cronk-simple-grid>`);

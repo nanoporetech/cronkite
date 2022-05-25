@@ -1,10 +1,10 @@
 // tslint:disable: no-import-side-effect
 import { Component, Element, h, Host, Prop, State } from '@stencil/core';
-import { fromEvent, ReplaySubject, Subscription } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
-import { ComponentConfig } from '../../types/reportconfig.type';
+import { fromEvent, Subscription, debounceTime, map } from 'rxjs';
+import { asBoolean, isDefined, isUndefined, JSONValue } from 'ts-runtime-typecheck';
+import { ComponentConfig, PropTag, JMESPathFn } from '../../types';
 import { mapAttributesToProps, transformValue } from '../../utils';
-import { eventAsJSON } from '../../utils/event_transform';
+import { normaliseEvent } from '../../utils/event_transform';
 
 @Component({
   styleUrl: 'page-panel.scss',
@@ -13,33 +13,34 @@ import { eventAsJSON } from '../../utils/event_transform';
 export class CronkPagePanel {
   @Element() hostEl: HTMLCronkPagePanelElement;
   /** Configuration for a specific component */
-  @Prop() panelConfig: any;
+  @Prop() panelConfig: ComponentConfig;
 
-  @State() customElProps?: any;
-  @State() customElAttrs?: any;
-  @State() errorMessage?: any;
+  @State() customElProps?: Record<PropTag, JSONValue>;
+  @State() errorMessage?: string;
   @State() shouldRender = true;
 
-  private panelEl?: string;
+  private panelEl: string;
   private listeners$?: Subscription;
-  private streamCache?: ReplaySubject<any>;
-  private renderCondition?: any;
+  private renderCondition?: JMESPathFn;
 
-  private async updateCustomElProps(attributes: any, dataIn: any) {
+  private payloadCache: JSONValue[] = [];
+
+  private async updateCustomElProps(dataIn: JSONValue = {}) {
     try {
-      const newProps = await mapAttributesToProps(attributes, dataIn);
-      // console.debug(`updateCustomElProps::<${this.panelConfig.element}>`, newProps);
-      this.customElProps = newProps;
+      this.customElProps = await mapAttributesToProps(this.panelConfig, dataIn);
+      // console.debug(`updateCustomElProps::<${this.panelConfig.element}>`, this.customElProps);
     } catch (error) {
-      console.error(`updateCustomElProps::<${this.panelConfig.element}>::error`, error);
+      console.error(`updateCustomElProps::<${this.panelEl}>::error`, error);
+      this.customElProps = {};
       this.errorMessage = error.message;
     }
   }
 
-  private payloadHandler = async (payload: any): Promise<void> => {
-    if (this.renderCondition !== undefined) {
+  private payloadHandler = async (payload: JSONValue): Promise<void> => {
+    if (isDefined(this.renderCondition)) {
       try {
-        [this.shouldRender] = await transformValue(this.renderCondition, payload);
+        const result = await transformValue(this.renderCondition, payload);
+        this.shouldRender = asBoolean(result);
       } catch (error) {
         this.errorMessage = error.message;
       }
@@ -47,40 +48,40 @@ export class CronkPagePanel {
     if (!this.shouldRender) {
       return;
     }
-    await this.updateCustomElProps(this.customElAttrs, payload);
+    await this.updateCustomElProps(payload);
   };
 
   async componentWillLoad() {
-    if (!this.panelConfig) return;
-    const { element, listen, hidden: hiddenIgnored, when: renderCondition, ...attributes } = this.panelConfig;
+    if (isUndefined(this.panelConfig)) {
+      return;
+    }
+    const { element, listen, hidden: _, when: renderCondition } = this.panelConfig;
     this.panelEl = element;
-    this.customElAttrs = attributes;
     this.renderCondition = renderCondition;
-    this.streamCache = new ReplaySubject<any>();
-    let payloadCache: any[] = [];
 
-    if (listen) {
-      const { stream, debounce, cache: cacheSize } =
-        typeof listen !== 'string' ? listen : { stream: listen, debounce: 0, cache: 1 };
+    if (isDefined(listen)) {
+      const {
+        stream,
+        debounce = 0,
+        cache: cacheSize = 1,
+      } = typeof listen !== 'string' ? listen : { stream: listen, debounce: 0, cache: 1 };
 
-      const eventObservable$ = fromEvent<Event | CustomEvent<any>>(window, stream);
+      const eventObservable$ = fromEvent<Event | CustomEvent<JSONValue>>(window, stream);
       this.listeners$ = eventObservable$
         .pipe(
           debounceTime(debounce),
-          // tap((event: Event | CustomEvent) => console.debug(`Got event for <${this.panelConfig.element}>`, event)),
-          map((event: Event | CustomEvent) => {
-            const { detail } = event as CustomEvent;
-            return detail || eventAsJSON(event);
+          map(normaliseEvent),
+          map(payload => {
+            if (cacheSize === 1) {
+              return payload;
+            }
+            this.payloadCache = [payload, ...this.payloadCache.slice(0, cacheSize - 1)];
+            return this.payloadCache;
           }),
         )
-        .subscribe(payload => {
-          payloadCache = [payload, ...payloadCache.slice(0, cacheSize - 1)];
-          this.streamCache?.next(cacheSize === 1 ? payloadCache[0] : payloadCache);
-        });
-
-      this.listeners$.add(this.streamCache.subscribe(this.payloadHandler));
+        .subscribe(this.payloadHandler);
     } else {
-      await this.updateCustomElProps(attributes, {}); // For components not attached to event streams
+      await this.updateCustomElProps(); // For components not attached to event streams
     }
   }
 
@@ -89,35 +90,37 @@ export class CronkPagePanel {
   }
 
   render() {
-    if (!this.panelConfig || !this.panelEl || !this.shouldRender) return;
+    if (!this.shouldRender) return;
 
+    const { components = [], layout = {}, heading, style = {} } = this.panelConfig;
     const ReportPanel = this.panelEl;
-    const colSpan = (this.panelConfig.layout && this.panelConfig.layout.width) || 4;
-    const hasComponents = this.panelConfig.components && this.panelConfig.components.length;
+    const colSpan = layout?.width ?? 4;
+    const hasComponents = components.length > 0;
+    const headingEl = isDefined(heading) ? <h5 key={heading}>{heading}</h5> : null;
+
     return (
       <Host
-        class={`component-panel ${this.panelConfig.hidden ? 'panel-hidden' : ''}`}
-        data-grid={this.panelConfig.layout}
+        class={'component-panel'}
+        data-grid={layout}
         style={{
           flex: `${colSpan} auto`,
           minWidth: `20rem`,
           width: `${(colSpan / 4) * 100 - 1}%`,
-          ...(this.panelConfig.style || {}),
+          ...style,
         }}
       >
-        {(this.panelConfig.heading && <h5 key={this.panelConfig.heading}>{this.panelConfig.heading}</h5>) || null}
-        {this.errorMessage ? (
-          <cronk-errormessage message={this.errorMessage} ></cronk-errormessage>
+        {headingEl}
+        {isDefined(this.errorMessage) ? (
+          <cronk-errormessage message={this.errorMessage}></cronk-errormessage>
         ) : (
           <ReportPanel {...this.customElProps}>
             {hasComponents ? (
               <cronk-page-components>
-                {(this.panelConfig.components || []).map((compDef: ComponentConfig, componentIndex: number) => {
-                  const componentDefinition = compDef.layout ? compDef : { ...compDef, layout: {} };
+                {components.map((componentDefinition: ComponentConfig, componentIndex: number) => {
                   const uuid = `${this.hostEl.id}-panel-${componentIndex}`;
                   return (
                     <cronk-page-panel
-                      slot={componentDefinition.layout.position}
+                      slot={componentDefinition?.layout?.position}
                       key={uuid}
                       id={uuid}
                       panelConfig={componentDefinition}

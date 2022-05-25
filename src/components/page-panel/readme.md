@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                            | Type  | Default     |
-| ------------- | -------------- | -------------------------------------- | ----- | ----------- |
-| `panelConfig` | `panel-config` | Configuration for a specific component | `any` | `undefined` |
+| Property      | Attribute | Description                            | Type              | Default     |
+| ------------- | --------- | -------------------------------------- | ----------------- | ----------- |
+| `panelConfig` | --        | Configuration for a specific component | `ComponentConfig` | `undefined` |
 
 
 ## Dependencies

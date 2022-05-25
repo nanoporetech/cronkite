@@ -27,6 +27,22 @@ export class CronkApp {
   render() {
     return (
       <Host>
+        {/* <cronk-page
+          disableValidation
+          pageConfig={
+            '{"id": "hello:world1","components": [{"element": "epi-headlinevalue","@label": "User defined values","@value": "Hello World! - STRING"}],"streams": []}'
+          }
+        ></cronk-page>
+        <cronk-page
+          disableValidation
+          pageConfig={{
+            id: 'hello:world2',
+            components: [
+              { element: 'epi-headlinevalue', '@label': 'User defined values', '@value': 'Hello World! - OBJECT' },
+            ],
+            streams: [],
+          }}
+        ></cronk-page> */}
         <cronk-page ref={init => (this.cronkPageEl = init)}></cronk-page>
       </Host>
     );

@@ -2,10 +2,12 @@
   min-height: var(--proportion-bar-min-height, 100%);
   min-width: var(--proportion-bar-min-width, 100%);
   height: var(--proportion-bar-height, 100%);
+  /* stylelint-disable declaration-block-no-redundant-longhand-properties */
   margin-top: var(--proportion-bar-margin-top, 0);
   margin-left: var(--proportion-bar-margin-left, 0);
   margin-bottom: var(--proportion-bar-margin-bottom, 0);
   margin-right: var(--proportion-bar-margin-right, 0);
+  /* stylelint-enable declaration-block-no-redundant-longhand-properties */
   position: relative;
   background-color: var(--proportion-bar--background-color, var(--cronk-color-light, var(--ion-color-light, #eee)));
   flex: 1 1 auto;

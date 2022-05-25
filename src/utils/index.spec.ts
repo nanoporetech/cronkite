@@ -1,4 +1,12 @@
-import { applyFunction, mapAttributesToProps, validateArray } from './index';
+import {
+  isFunctionTransform,
+  transformValue,
+  applyFunction,
+  mapAttributesToProps,
+  // validateArray,
+  uniqBy,
+  filterProps,
+} from './index';
 
 const MOCK_PAYLOAD = {
   data: [
@@ -19,463 +27,283 @@ const MOCK_PAYLOAD = {
       start_time: '12',
     },
   ],
+  nums: [26, 27, 1.2, 1.5],
 };
+
+describe('isFunctionTransform', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('Detects function transforms', () => {
+    expect(isFunctionTransform('I am a string')).toBeFalsy();
+    expect(isFunctionTransform(1234)).toBeFalsy();
+    expect(isFunctionTransform(null)).toBeFalsy();
+    expect(isFunctionTransform(true)).toBeFalsy();
+    expect(isFunctionTransform([1, 2, 3, 4])).toBeFalsy();
+    expect(isFunctionTransform({ foo: 'bar' })).toBeFalsy();
+    expect(isFunctionTransform({ 'fn:unknown': 'bar', test: 1234 })).toBeFalsy();
+    expect(isFunctionTransform([{ 'fn:unknown': 'bar' }, { 'fn:other': 'bar' }])).toBeFalsy();
+    expect(isFunctionTransform({ 'fn:unknown': 'bar', 'fn:other': 1234 })).toBeTruthy();
+    expect(isFunctionTransform({ 'fn:unknown': 'bar' })).toBeTruthy();
+  });
+});
+
+describe('uniqBy', () => {
+  it('Re-organises array on the basis of property or predicate', () => {
+    expect(uniqBy(null, 'foo')).toStrictEqual([]);
+    expect(uniqBy(['one', 'two', 'three', 'nine'], 'length')).toStrictEqual(['one', 'three', 'nine']);
+    expect(
+      uniqBy(
+        [
+          {
+            label: 'one',
+            value: 1,
+          },
+          {
+            label: 'two',
+            value: 2,
+          },
+          {
+            label: 'one',
+            value: 100,
+          },
+        ],
+        'label',
+      ),
+    ).toStrictEqual([
+      {
+        label: 'one',
+        value: 1,
+      },
+      {
+        label: 'two',
+        value: 2,
+      },
+    ]);
+    expect(
+      uniqBy(
+        [
+          {
+            label: 'one',
+            value: 1,
+          },
+          {
+            label: 'two',
+            value: 2,
+          },
+          {
+            label: 'ninety-nine',
+            value: 99,
+          },
+        ],
+        (x: { value: number }) => x.value % 3 === 0,
+      ),
+    ).toStrictEqual([
+      {
+        label: 'one',
+        value: 1,
+      },
+      {
+        label: 'ninety-nine',
+        value: 99,
+      },
+    ]);
+  });
+});
+
+describe('transformValue', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('Transforms values as expected', async () => {
+    expect(await transformValue('I am a string')).toStrictEqual('I am a string');
+    expect(await transformValue(1234)).toStrictEqual(1234);
+    expect(await transformValue(null)).toStrictEqual(null);
+    expect(await transformValue(true)).toStrictEqual(true);
+    expect(await transformValue([1, 2, 3, 4])).toStrictEqual([1, 2, 3, 4]);
+    expect(await transformValue({ foo: 'bar' })).toStrictEqual({ foo: 'bar' });
+    expect(await transformValue({ 'fn:unknown': 'bar', test: 1234 })).toStrictEqual({
+      'fn:unknown': 'bar',
+      test: 1234,
+    });
+    expect(await transformValue([{ 'fn:unknown': 'bar' }, { 'fn:other': 'bar' }])).toStrictEqual([
+      { 'fn:unknown': 'bar' },
+      { 'fn:other': 'bar' },
+    ]);
+    expect(await transformValue({ 'fn:unknown': 'bar', 'fn:other': 1234 })).toStrictEqual([null, null]);
+    expect(await transformValue({ 'fn:unknown': 'bar' })).toStrictEqual(null);
+    expect(await transformValue({ 'fn:jmespath': '[data[0].barcode, data[].count]' }, MOCK_PAYLOAD)).toStrictEqual([
+      'BC01',
+      [377356],
+    ]);
+    expect(
+      await transformValue(
+        {
+          'fn:jmespath': '[data[0].barcode, data[].count]',
+          'fn:formatNumber': [{ 'fn:jmespath': 'data[0].mean_qscore.avg' }, 2, 'foo'],
+        },
+        MOCK_PAYLOAD,
+      ),
+    ).toStrictEqual([['BC01', [377356]], '10.48 foos']);
+  });
+});
 
 describe('Dashboard utils', () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
-  it('validates an array', () => {
-    const symbol = Symbol('dummy');
-    expect(validateArray([])).toStrictEqual([]);
-    expect(validateArray({})).toStrictEqual({});
-    expect(validateArray(true)).toStrictEqual(true);
-    expect(validateArray('foo')).toStrictEqual('foo');
-    expect(validateArray(null)).toStrictEqual(null);
-    expect(validateArray(undefined)).toStrictEqual(undefined);
-    expect(validateArray(symbol)).toStrictEqual(symbol);
-    expect(validateArray(Infinity)).toStrictEqual(Infinity);
+  it("Doesn't transform JSON primitives", async () => {
+    expect(await transformValue('I am a string')).toStrictEqual('I am a string');
+    expect(await transformValue(false)).toStrictEqual(false);
+    expect(await transformValue(1234)).toStrictEqual(1234);
+    expect(await transformValue({ foo: 1234 })).toStrictEqual({ foo: 1234 });
+    expect(await transformValue([1, 2, 3, 4])).toStrictEqual([1, 2, 3, 4]);
+    expect(await transformValue(null)).toStrictEqual(null);
   });
 
-  it('validates modifies tuples to coordinates', () => {
-    expect(validateArray([[0, 1]])).toStrictEqual([{ x: 0, y: 1 }]);
-    expect(
-      validateArray([
-        [0, 1],
-        [1, 2],
-      ]),
-    ).toStrictEqual([
-      { x: 0, y: 1 },
-      { x: 1, y: 2 },
-    ]);
-    expect(
-      validateArray([
-        { x: 0, y: 1 },
-        { x: 1, y: 2 },
-      ]),
-    ).toStrictEqual([
-      { x: 0, y: 1 },
-      { x: 1, y: 2 },
-    ]);
-  });
+  // it('validates an array', () => {
+  //   const symbol = Symbol('dummy');
+  //   expect(validateArray([])).toStrictEqual([]);
+  //   expect(validateArray({})).toStrictEqual({});
+  //   expect(validateArray(true)).toStrictEqual(true);
+  //   expect(validateArray('foo')).toStrictEqual('foo');
+  //   expect(validateArray(null)).toStrictEqual(null);
+  //   expect(validateArray(undefined)).toStrictEqual(undefined);
+  //   expect(validateArray(symbol)).toStrictEqual(symbol);
+  //   expect(validateArray(Infinity)).toStrictEqual(Infinity);
+  // });
+
+  // it('validates modifies tuples to coordinates', () => {
+  //   expect(validateArray([[0, 1]])).toStrictEqual([{ x: 0, y: 1 }]);
+  //   expect(
+  //     validateArray([
+  //       [0, 1],
+  //       [1, 2],
+  //     ]),
+  //   ).toStrictEqual([
+  //     { x: 0, y: 1 },
+  //     { x: 1, y: 2 },
+  //   ]);
+  //   expect(
+  //     validateArray([
+  //       { x: 0, y: 1 },
+  //       { x: 1, y: 2 },
+  //     ]),
+  //   ).toStrictEqual([
+  //     { x: 0, y: 1 },
+  //     { x: 1, y: 2 },
+  //   ]);
+  // });
 
   it('maps HTML attributes to React props', async () => {
     // Load when there's nothing but ID given
     const mappedAttributes = await mapAttributesToProps(
       {
         '@hidden': [false],
+        '@available': true,
         '@label': 'Dummy size',
-        '@size': [666],
+        '@sizes': [666, 777, 888],
+        '@foo': null,
+        '@bar': 1234,
         '@value': [
-          [
-            [7, 3078],
-            [7.1, 3144],
-          ],
+          [7, 3078],
+          [7.1, 3144],
         ],
+        '@test': {
+          'fn:jmespath': 'data[].barcode',
+        },
         ignored: 'THIS SHOULD BE IGNORED',
       },
       MOCK_PAYLOAD,
     );
 
     expect(mappedAttributes).toStrictEqual({
-      hidden: false,
+      hidden: [false],
+      available: true,
       label: 'Dummy size',
-      size: '666',
+      sizes: [666, 777, 888],
+      foo: null,
+      bar: 1234,
       value: [
-        { x: 7, y: 3078 },
-        { x: 7.1, y: 3144 },
+        [7, 3078],
+        [7.1, 3144],
       ],
+      test: ['BC01'],
     });
-  });
-
-  it('applies the `sum` function', async () => {
-    // Load when there's nothing but ID given
-    const returnValue = await applyFunction('fn:sum', [[1, 2, 3, 4, 5, 6, 7]], MOCK_PAYLOAD);
-    expect(returnValue).toStrictEqual(28);
   });
 
   it('applies the `formatNumber` function', async () => {
     // Load when there's nothing but ID given
-    let returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 2, `base`], {});
+    let returnValue = await applyFunction('fn:formatNumber', [123456789.12345678, 2, `base`]);
     expect(returnValue).toStrictEqual('123.46 Mbases');
-    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, `base`], {});
+    returnValue = await applyFunction('fn:formatNumber', [123456789.12345678, 1, `base`]);
     expect(returnValue).toStrictEqual('123.5 Mbases');
-    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 1, ``], {});
+    returnValue = await applyFunction('fn:formatNumber', [123456789.12345678, 1, ``]);
     expect(returnValue).toStrictEqual('123.5 M');
-    returnValue = await applyFunction('fn:formatNumber', [[123.45], 1, ``], {});
+    returnValue = await applyFunction('fn:formatNumber', [123.45, 1, ``]);
     expect(returnValue).toStrictEqual('123.5');
-    returnValue = await applyFunction('fn:formatNumber', [[123.45], 1, `base`], {});
+    returnValue = await applyFunction('fn:formatNumber', [123.45, 1, `base`]);
     expect(returnValue).toStrictEqual('123.5 bases');
-    returnValue = await applyFunction('fn:formatNumber', [[123456789.123456789], 0, `base`], {});
+    returnValue = await applyFunction('fn:formatNumber', [123456789.12345678, 0, `base`]);
     expect(returnValue).toStrictEqual('124 Mbases');
-    returnValue = await applyFunction('fn:formatNumber', [[0], 2, ``], {});
+    returnValue = await applyFunction('fn:formatNumber', [0, 2, ``]);
     expect(returnValue).toStrictEqual('0');
-    returnValue = await applyFunction('fn:formatNumber', [[NaN], 2, ``], {});
+    returnValue = await applyFunction('fn:formatNumber', [NaN, 2, ``]);
     expect(returnValue).toStrictEqual('0');
-    returnValue = await applyFunction('fn:formatNumber', [[0], 2, `foo`], {});
+    returnValue = await applyFunction('fn:formatNumber', [0, 2, `foo`]);
     expect(returnValue).toStrictEqual('0 foos');
-    returnValue = await applyFunction('fn:formatNumber', [[NaN], 2, `foo`], {});
+    returnValue = await applyFunction('fn:formatNumber', [NaN, 2, `foo`]);
     expect(returnValue).toStrictEqual('0 foos');
 
     // Test singular
-    returnValue = await applyFunction('fn:formatNumber', [[1000.1], 1, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [1000.1, 1, 'base']);
     expect(returnValue).toStrictEqual('1.1 kbases');
-    returnValue = await applyFunction('fn:formatNumber', [[1000.1], 0, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [1000.1, 0, 'base']);
     expect(returnValue).toStrictEqual('2 kbases');
-    returnValue = await applyFunction('fn:formatNumber', [[1000.0], 0, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [1000.0, 0, 'base']);
     expect(returnValue).toStrictEqual('1 kbase');
-    returnValue = await applyFunction('fn:formatNumber', [[1001], 1, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [1001, 1, 'base']);
     expect(returnValue).toStrictEqual('1.1 kbases');
-    returnValue = await applyFunction('fn:formatNumber', [[1e6], 0, 'base'], {});
+    returnValue = await applyFunction('fn:formatNumber', [1e6, 0, 'base']);
     expect(returnValue).toStrictEqual('1 Mbase');
-  });
 
-  it('applies the `tofixed` function', async () => {
-    let returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 2], {});
-    expect(returnValue).toStrictEqual('123456789.12');
+    // Test transformFunction
 
-    returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 4], {});
-    expect(returnValue).toStrictEqual('123456789.1235');
-
-    returnValue = await applyFunction('fn:toFixed', [[123456789.123456789], 4, '%'], {});
-    expect(returnValue).toStrictEqual('123456789.1235%');
-  });
-
-  it('applies the `mode` function', async () => {
-    // Calculate the most common value
-    let returnValue = await applyFunction(
-      'fn:mode',
-      [[[-1, 2.21, -3.2, 4.2, 5.2, 2.2, 3.3, 4.11, 1.33, 5.1, 2.234, 3.2, 1.11, 5.67]], 1],
-      {},
-    );
-    expect(returnValue).toStrictEqual(2.234);
-
-    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [
-      -1,
-      2.21,
-      -3.2,
-      4.2,
-      5.2,
-      2.21,
-      3.3,
-      4.11,
-      1.33,
-      5.1,
-      2.21,
-      3.2,
-      1.11,
-      5.67,
-    ]);
-    expect(returnValue).toStrictEqual([2.21]);
-    returnValue = await applyFunction('fn:jmespath', 'mode(@)', []);
-    expect(returnValue).toStrictEqual(null);
-    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [1, 2, 3]);
-    expect(returnValue).toStrictEqual(null);
-    returnValue = await applyFunction('fn:jmespath', 'mode(@)', [8, 9, 10, 10, 10, 11, 11, 11, 12, 13]);
-    expect(returnValue).toStrictEqual([10, 11]);
-  });
-
-  it('applies the `median` function', async () => {
-    // Calculate the most common value
-    let returnValue = await applyFunction('fn:jmespath', 'median(@)', [
-      -1,
-      2.21,
-      -3.2,
-      4.2,
-      5.2,
-      2.21,
-      3.3,
-      4.11,
-      1.33,
-      5.1,
-      2.21,
-      3.2,
-      1.11,
-      5.67,
-    ]);
-    expect(returnValue).toStrictEqual(2.705);
-    returnValue = await applyFunction('fn:jmespath', 'median(@)', []);
-    expect(returnValue).toStrictEqual(null);
-    returnValue = await applyFunction('fn:jmespath', 'median(@)', [2, 1, 3]);
-    expect(returnValue).toStrictEqual(2);
-    returnValue = await applyFunction('fn:jmespath', 'median(@)', [4, 2, 1, 3]);
-    expect(returnValue).toStrictEqual(2.5);
-    returnValue = await applyFunction('fn:jmespath', 'median(@)', [8, 9, 10, 10, 10, 11, 11, 11, 12, 13]);
-    expect(returnValue).toStrictEqual(10.5);
-  });
-
-  it('applies the `mod` function', async () => {
-    // Calculate the modulus of two numbers
-    let returnValue = await applyFunction('fn:mod', [27, 2], {});
-    expect(returnValue).toStrictEqual(1);
-    returnValue = await applyFunction('fn:mod', [26, 2], {});
-    expect(returnValue).toStrictEqual(0);
-  });
-
-  it('applies the `divide` function', async () => {
-    // Divide two numerical values
-    let returnValue = await applyFunction('fn:divide', [27, 2], {});
-    expect(returnValue).toStrictEqual(13.5);
-    returnValue = await applyFunction('fn:divide', [26, 2], {});
-    expect(returnValue).toStrictEqual(13);
-  });
-
-  it('applies the `uniq` function', async () => {
-    // Calculate the most common value
-    let returnValue = await applyFunction('fn:uniq', [[1, 2, 4, 3, 2, 3, 4, 1, 2, 3, 2, 3, 3, 4, 2, 1]], {});
-    expect(returnValue).toStrictEqual([1, 2, 4, 3]);
-
-    returnValue = await applyFunction(
-      'fn:uniq',
-      [
-        [
-          'label-2',
-          'label-4',
-          'label-3',
-          'label-2',
-          'label-3',
-          'label-4',
-          'label-1',
-          'label-2',
-          'label-3',
-          'label-2',
-          'label-3',
-          'label-3',
-          'label-4',
-          'label-2',
-          'label-1',
-        ],
-      ],
-      {},
-    );
-    expect(returnValue).toStrictEqual(['label-2', 'label-4', 'label-3', 'label-1']);
-  });
-
-  it('applies the `map` function', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:map', [{ foobar: [1234] }, { Santa: ['Claws'] }], {});
-    expect(returnValue).toStrictEqual([{ foobar: 1234 }, { Santa: 'Claws' }]);
-  });
-
-  it('applies the `round` function', async () => {
-    // Calculate the most common value
-    let returnValue = await applyFunction('fn:round', [[1.1]], {});
-    expect(returnValue).toStrictEqual(1);
-    returnValue = await applyFunction('fn:round', [[1.5]], {});
-    expect(returnValue).toStrictEqual(2);
-  });
-
-  it('applies the `count` function', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:count', [['a', 'b', 'c', 'd', 'e', 'f']], {});
-    expect(returnValue).toStrictEqual(6);
-  });
-
-  it('applies the `average` function', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:average', [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], {});
-    expect(returnValue).toStrictEqual(4.5);
-  });
-
-  it('applies the `mean` function', async () => {
-    // Load when there's nothing but ID given
-    const returnValue = await applyFunction('fn:jmespath', 'mean(@)', [13, 18, 13, 14, 13, 16, 14, 21, 13]);
-    expect(returnValue).toStrictEqual(15);
-  });
-
-  it('handles nested functions', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction(
-      'fn:round',
+    returnValue = await applyFunction('fn:formatNumber', [
       {
-        'fn:average': [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]],
+        'fn:jmespath': '`123.45`',
       },
-      {},
-    );
-    expect(returnValue).toStrictEqual(5);
+      1,
+      `base`,
+    ]);
+    expect(returnValue).toStrictEqual('123.5 bases');
   });
 
   it('handles `unsupported` functions', async () => {
     // Calculate the most common value
-    const returnValue = await applyFunction('fn:unsupported', [[0, 1, 2]], {});
-    expect(returnValue).toStrictEqual({ 'fn:unsupported': [[0, 1, 2]] });
+    const returnValue = await applyFunction('fn:unsupported', [0, 1, 2]);
+    expect(returnValue).toStrictEqual(null);
+  });
+});
+
+describe('filterProps', () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  it('handles `flatMapValues` JMESPath function extension', async () => {
-    // Calculate the most common value
-    let returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', { a: [1, 3, 5], b: [2, 4, 6] });
-    expect(returnValue).toStrictEqual([
-      ['a', 1],
-      ['a', 3],
-      ['a', 5],
-      ['b', 2],
-      ['b', 4],
-      ['b', 6],
-    ]);
-
-    returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', {
-      a: [true, { x: 3 }, null, 1234, ['XXX']],
-      b: { x: 2 },
-    });
-    expect(returnValue).toStrictEqual([
-      ['a', true],
-      ['a', { x: 3 }],
-      ['a', null],
-      ['a', 1234],
-      ['a', ['XXX']],
-      ['b', { x: 2 }],
-    ]);
-
-    returnValue = await applyFunction('fn:jmespath', 'flatMapValues(@)', [
-      [1, 3, 5],
-      [2, 4, 6],
-    ]);
-    expect(returnValue).toStrictEqual([
-      ['0', 1],
-      ['0', 3],
-      ['0', 5],
-      ['1', 2],
-      ['1', 4],
-      ['1', 6],
-    ]);
-  });
-
-  it('handles `toUpperCase` JMESPath function extension', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:jmespath', 'toUpperCase(@)', `Foo bar`);
-    expect(returnValue).toStrictEqual('FOO BAR');
-  });
-
-  it('handles `toLowerCase` JMESPath function extension', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:jmespath', 'toLowerCase(@)', `Foo bar`);
-    expect(returnValue).toStrictEqual('foo bar');
-  });
-
-  it('handles `trim` JMESPath function extension', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:jmespath', 'trim(@)', `\n  Foo bar \r`);
-    expect(returnValue).toStrictEqual('Foo bar');
-  });
-
-  it('handles `groupBy` JMESPath function extension', async () => {
-    let returnValue = await applyFunction('fn:jmespath', 'groupBy(@, `a`)', [
-      { a: 1, b: 2 },
-      { a: 1, b: 3 },
-      { a: 2, b: 2 },
-      { a: null, b: 999 },
-    ]);
-    expect(returnValue).toStrictEqual({
-      1: [
-        { a: 1, b: 2 },
-        { a: 1, b: 3 },
-      ],
-      2: [{ a: 2, b: 2 }],
-      null: [{ a: null, b: 999 }],
-    });
-
-    returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
-      { a: 1, b: 2 },
-      { a: 1, b: 3 },
-      { a: 2, b: 2 },
-      { a: null, b: 999 },
-    ]);
-    expect(returnValue).toStrictEqual({
-      1: [
-        { a: 1, b: 2 },
-        { a: 1, b: 3 },
-      ],
-      2: [{ a: 2, b: 2 }],
-      null: [{ a: null, b: 999 }],
-    });
-
-    returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
-      { a: 1, b: 2 },
-      { a: 1, b: 3 },
-      { b: 4 },
-      { a: null, b: 999 },
-    ]);
-    expect(returnValue).toStrictEqual({
-      1: [
-        { a: 1, b: 2 },
-        { a: 1, b: 3 },
-      ],
-      null: [{ b: 4 }, { a: null, b: 999 }],
-    });
-
-    try {
-      returnValue = await applyFunction('fn:jmespath', 'groupBy(@, &a)', [
-        { a: 1, b: 2 },
-        `{ a: 1, b: 3 }`,
-        { b: 4 },
-        1234,
-      ]);
-    } catch (error) {
-      expect(error.message).toEqualText(
-        'TypeError: unexpected type. Expected Array<object> but received Array<object | string | number>',
-      );
-    }
-  });
-
-  it('handles `combine` JMESPath function extension', async () => {
-    // Calculate the most common value
-    const returnValue = await applyFunction('fn:jmespath', 'combine(@)', [
-      {
-        category_1: [
-          {
-            count: 10,
-            name: 'medium',
-          },
-        ],
-      },
-      {
-        category_2: [
-          {
-            count: 40,
-            name: 'high',
-          },
-        ],
-      },
-    ]);
-    expect(returnValue).toStrictEqual({
-      category_1: [{ count: 10, name: 'medium' }],
-      category_2: [{ count: 40, name: 'high' }],
-    });
-  });
-
-  it('handles `_` JMESPath function extension', async () => {
-    const returnValue = await applyFunction('fn:jmespath', '@._zip([0], [1])', [
-      [1, 3, 5],
-      [2, 4, 6],
-    ]);
-    expect(returnValue).toStrictEqual([
-      [1, 2],
-      [3, 4],
-      [5, 6],
-    ]);
-  });
-
-  it('handles `_fromPairs` JMESPath function extension', async () => {
-    const returnValue = await applyFunction('fn:jmespath', '_fromPairs(@)', [
-      ['a', 1],
-      ['b', 2],
-    ]);
-    expect(returnValue).toStrictEqual({ a: 1, b: 2 });
-  });
-
-  it('handles `_groupBy` JMESPath function extension', async () => {
-    const returnValue = await applyFunction('fn:jmespath', '_groupBy(@, `length`)', ['one', 'two', 'three']);
-    expect(returnValue).toStrictEqual({
-      3: ['one', 'two'],
-      5: ['three'],
-    });
-  });
-
-  it('handles `_maxBy` JMESPath function extension', async () => {
-    const returnValue = await applyFunction('fn:jmespath', '_maxBy(@, `n`)', [{ n: 1 }, { n: 2 }]);
-    expect(returnValue).toStrictEqual({
-      n: 2,
+  it('Filters props from attributes', () => {
+    expect(
+      filterProps({
+        foo: 1,
+        '@bar': 2,
+        '@': 3,
+        'bun@dy': 4,
+      }),
+    ).toStrictEqual({
+      bar: 2,
     });
   });
 });

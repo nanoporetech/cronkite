@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cronk-page rendering renders no pageConfig correctly 1`] = `<cronk-page></cronk-page>`;
+
+exports[`cronk-page rendering renders various pageConfig correctly 1`] = `<cronk-page></cronk-page>`;
+
+exports[`cronk-page rendering renders various pageConfig correctly 2`] = `
+<cronk-page><pre style="padding: 0 1rem;">[
+  {
+    "instancePath": "",
+    "schemaPath": "#/required",
+    "keyword": "required",
+    "params": {
+      "missingProperty": "id"
+    },
+    "message": "must have required property 'id'"
+  }
+]</pre>
+</cronk-page>
+`;
+
+exports[`cronk-page rendering renders various pageConfig correctly 3`] = `
+<cronk-page><pre style="padding: 0 1rem;">[
+  {
+    "instancePath": "",
+    "schemaPath": "#/required",
+    "keyword": "required",
+    "params": {
+      "missingProperty": "components"
+    },
+    "message": "must have required property 'components'"
+  }
+]</pre>
+</cronk-page>
+`;
+
+exports[`cronk-page rendering renders various pageConfig correctly 4`] = `
+<cronk-page class="validate" id="test:page">
+  <cronk-page-components id="test:page-components" slot="components"></cronk-page-components>
+</cronk-page>
+`;

@@ -1,4 +1,4 @@
-import { JSONValue } from './json.type';
+import { JSONValue } from 'ts-runtime-typecheck';
 
 export interface MetadataObj {
   [key: string]: any;
@@ -23,7 +23,7 @@ export interface ChannelShape {
   shape: any;
 }
 
-export type FilterFn = (datum: any) => boolean;
+export type FilterFn = (datum: unknown) => boolean;
 
 export interface FilterFnMap {
   [fnKey: string]: FilterFn;

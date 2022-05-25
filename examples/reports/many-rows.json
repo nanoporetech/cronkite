@@ -15,10 +15,8 @@
         "fn:jmespath": "chromsomes[][name, length]"
       },
       "@headers": [
-        [
           "SEQUENCE ID",
           "LENGTH (bases)"
-        ]
       ],
       "listen": "many:rows:results",
       "layout": {
